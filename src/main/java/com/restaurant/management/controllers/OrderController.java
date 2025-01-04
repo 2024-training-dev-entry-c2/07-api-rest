@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("api/pedidos")
 public class OrderController {
   private final OrderService service;
   
@@ -24,7 +28,8 @@ public class OrderController {
   @PostMapping
   public ResponseEntity<String> addOrder(@RequestBody Order order){
     service.addOrder(order);
-    return ResponseEntity.ok("Pedido agregado éxitosamente");
+    service.applyDiscounts(order);
+    return ResponseEntity.ok("Pedido agregado éxitosamente con descuentos aplicados.");
   }
 
   @GetMapping("/{id}")
@@ -43,7 +48,8 @@ public class OrderController {
   public ResponseEntity<String> updateOrder(@PathVariable Long id, @RequestBody Order order){
     try{
       Order updatedOrder = service.updateOrder(id, order);
-      return ResponseEntity.ok("Se ha actualizado exitosamente el pedido.");
+      service.applyDiscounts(updatedOrder);
+      return ResponseEntity.ok("Se ha actualizado exitosamente el pedido con descuentos aplicados.");
     } catch (RuntimeException e){
       return ResponseEntity.notFound().build();
     }

@@ -3,10 +3,12 @@ package com.restaurant.management.services;
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.repositories.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class DishService {
   private final DishRepository repository;
 

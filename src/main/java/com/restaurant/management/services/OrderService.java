@@ -1,16 +1,20 @@
 package com.restaurant.management.services;
 
-import com.restaurant.management.models.Client;
+import com.restaurant.management.chain.DiscountHandler;
+import com.restaurant.management.chain.FrequentClientDiscounttHandler;
+import com.restaurant.management.chain.PopularDishPriceAdjustmentHandler;
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Order;
 import com.restaurant.management.observer.IObservable;
 import com.restaurant.management.observer.IOrderObserver;
 import com.restaurant.management.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class OrderService implements IObservable {
   private final OrderRepository repository;
   private final List<IOrderObserver> observers;
@@ -22,6 +26,7 @@ public class OrderService implements IObservable {
   }
 
   public void addOrder(Order order){
+    order.calculateTotal();
     repository.save(order);
     notifyObservers(order);
   }
@@ -38,12 +43,21 @@ public class OrderService implements IObservable {
     return repository.findById(id).map(o ->{
       o.setClient(updatedOrder.getClient());
       o.setDishes(updatedOrder.getDishes());
+      o.calculateTotal();
       return repository.save(o);
     }).orElseThrow(()-> new RuntimeException("Pedido con id " + id + " no se pudo actualizar."));
   }
 
   public void deleteOrder(Long id){
     repository.deleteById(id);
+  }
+
+  public void applyDiscounts(Order order){
+    DiscountHandler frequentHandler = new FrequentClientDiscounttHandler();
+    DiscountHandler popularHandler = new PopularDishPriceAdjustmentHandler();
+
+    frequentHandler.setNextHandler(popularHandler);
+    order.setTotal(frequentHandler.applyDiscount(order));
   }
 
   @Override

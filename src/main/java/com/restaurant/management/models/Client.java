@@ -1,6 +1,7 @@
 package com.restaurant.management.models;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,8 @@ public class Client {
   private Long id;
   private String name;
   private String email;
+
+  @Column(nullable = false, columnDefinition = "TINYINT(1)")
   private Boolean frequent;
 
   @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
@@ -29,8 +32,10 @@ public class Client {
     this.name = name;
     this.email = email;
     this.frequent = frequent;
+    this.orders = new ArrayList<>();
   }
 
   public Client() {
+    this.orders = new ArrayList<>();
   }
 }

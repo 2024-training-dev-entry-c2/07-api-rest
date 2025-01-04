@@ -24,7 +24,6 @@ public class DishOrderObserver implements IOrderObserver {
     int dishCount = orderRepository.countByDishesContaining(dish);
     if (dishCount > 100 && !dish.getPopular()) {
       dish.setPopular(true);
-      dish.setPrice(dish.getPrice() * 1.0573f);
       dishRepository.save(dish);
     }
   }

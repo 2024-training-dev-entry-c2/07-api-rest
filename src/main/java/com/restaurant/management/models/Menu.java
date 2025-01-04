@@ -8,7 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,6 +20,15 @@ public class Menu {
   private String name;
 
   @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
-  private List<Dish> dishes;
+  private Set<Dish> dishes;
 
+  public Menu(Long id, String name) {
+    this.id = id;
+    this.name = name;
+    this.dishes = new HashSet<>();
+  }
+
+  public Menu() {
+    this.dishes = new HashSet<>();
+  }
 }
