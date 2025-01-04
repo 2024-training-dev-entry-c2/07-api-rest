@@ -21,7 +21,6 @@ public class OrderService {
         this.repository = repository;
     }
 
-
     public Order createOrder(Order order) {
         Order newOrder = repository.save(order);
         Clientorder client = order.getClient();
