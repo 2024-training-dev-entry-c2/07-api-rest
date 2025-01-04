@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface dishfoodRepository extends JpaRepository<Dishfood,Long> {
+public interface DishfoodRepository extends JpaRepository<Dishfood,Long> {
 }

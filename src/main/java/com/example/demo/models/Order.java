@@ -26,6 +26,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "client_id")
     private Clientorder client;
 
     private LocalDate localDate;
