@@ -21,6 +21,7 @@ public class Dish {
   private String name;
   private String description;
   private Float price;
+  private Boolean popular;
 
   @ManyToOne
   @JoinColumn(name = "menu_id")
@@ -29,11 +30,12 @@ public class Dish {
   @ManyToMany(mappedBy = "dishes")
   private Set<Order> orders;
 
-  public Dish(Long id, String name, String description, Float price) {
+  public Dish(Long id, String name, String description, Float price, Boolean popular) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.price = price;
+    this.popular = popular;
   }
 
   public Dish() {

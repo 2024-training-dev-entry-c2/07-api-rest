@@ -19,14 +19,16 @@ public class Client {
   private Long id;
   private String name;
   private String email;
+  private Boolean frequent;
 
   @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
   private List<Order> orders;
 
-  public Client(Long id, String name, String email) {
+  public Client(Long id, String name, String email, Boolean frequent) {
     this.id = id;
     this.name = name;
     this.email = email;
+    this.frequent = frequent;
   }
 
   public Client() {
