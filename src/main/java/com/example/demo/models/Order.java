@@ -9,18 +9,23 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-@Getter
+
 @Setter
+@Getter
 @Builder
-@Table(name = "order")
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +49,4 @@ public class Order {
         this.dishfoods = dishfoods;
     }
 
-    public Order() {
-    }
 }

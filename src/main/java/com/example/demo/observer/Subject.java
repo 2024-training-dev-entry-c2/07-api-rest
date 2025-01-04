@@ -3,7 +3,7 @@ package com.example.demo.observer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class subject {
+public class Subject {
     private final List<Observer> observers = new ArrayList<>();
 
     public void addObserver(Observer observador) {

@@ -3,12 +3,12 @@ package com.example.demo.observer;
 import com.example.demo.models.Clientorder;
 import com.example.demo.repositories.OrderRepository;
 
-public class clienteObserver implements Observer {
+public class ClientObserver implements Observer {
     private final Clientorder client;
     private final OrderRepository orderRepository;
 
 
-    public clienteObserver(Clientorder cliente, OrderRepository pedidoRepository) {
+    public ClientObserver(Clientorder cliente, OrderRepository pedidoRepository) {
         this.client = cliente;
         this.orderRepository = pedidoRepository;
     }

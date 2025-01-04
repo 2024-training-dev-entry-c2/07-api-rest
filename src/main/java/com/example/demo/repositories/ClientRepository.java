@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClientRepository extends JpaRepository <Clientorder,Long>{
-    @Query("SELECT COUNT(p) FROM Pedido p WHERE p.cliente.id = :clienteId")
-    int countOrderByClient(@Param("clienteId") Long clienteId);
+
 }

@@ -3,12 +3,12 @@ package com.example.demo.observer;
 import com.example.demo.models.Dishfood;
 import com.example.demo.repositories.OrderRepository;
 
-public class dishFoodObserver implements Observer {
+public class DishFoodObserver implements Observer {
     private final Dishfood dishfood;
     private final OrderRepository orderRepository;
 
 
-    public dishFoodObserver(Dishfood dishfood, OrderRepository orderRepository) {
+    public DishFoodObserver(Dishfood dishfood, OrderRepository orderRepository) {
         this.dishfood = dishfood;
         this.orderRepository = orderRepository;
     }
