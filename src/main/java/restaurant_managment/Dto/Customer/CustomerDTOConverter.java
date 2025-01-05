@@ -1,7 +1,9 @@
 package restaurant_managment.Dto.Customer;
 
+import org.springframework.stereotype.Component;
 import restaurant_managment.Models.CustomerModel;
 
+@Component
 public class CustomerDTOConverter {
 
   public static CustomerModel toCustomer(CustomerRequestDTO dto) {
@@ -13,7 +15,7 @@ public class CustomerDTOConverter {
     return customer;
   }
 
-  public static CustomerResponseDTO toCustomerResponseDTO(CustomerModel customer) {
+  public CustomerResponseDTO toCustomerResponseDTO(CustomerModel customer) {
     CustomerResponseDTO dto = new CustomerResponseDTO();
     dto.setId(customer.getId());
     dto.setFirstName(customer.getFirstName());
