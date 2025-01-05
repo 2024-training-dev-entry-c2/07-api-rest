@@ -3,9 +3,9 @@ package restaurant_managment.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import restaurant_managment.Dto.Order.OrderRequestDTO;
-import restaurant_managment.Dto.Order.OrderResponseDTO;
-import restaurant_managment.Dto.Order.OrderDTOConverter;
+import restaurant_managment.Utils.Dto.Order.OrderRequestDTO;
+import restaurant_managment.Utils.Dto.Order.OrderResponseDTO;
+import restaurant_managment.Utils.Dto.Order.OrderDTOConverter;
 import restaurant_managment.Models.OrderModel;
 import restaurant_managment.Services.OrderService;
 

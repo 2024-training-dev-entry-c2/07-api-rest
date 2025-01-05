@@ -1,4 +1,4 @@
-package restaurant_managment.Handlers;
+package restaurant_managment.Utils.Handlers;
 
 
 import org.springframework.stereotype.Component;

@@ -1,15 +1,14 @@
-package restaurant_managment.Dto.Customer;
+package restaurant_managment.Utils.Dto.Customer;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class CustomerResponseDTO {
-  private Long id;
+@Setter
+public class CustomerRequestDTO {
   private String firstName;
   private String lastName;
   private String email;
   private String phone;
-  private Boolean isFrequent;
+
 }

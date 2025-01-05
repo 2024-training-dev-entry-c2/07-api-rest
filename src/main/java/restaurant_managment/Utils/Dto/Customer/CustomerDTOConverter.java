@@ -1,4 +1,4 @@
-package restaurant_managment.Dto.Customer;
+package restaurant_managment.Utils.Dto.Customer;
 
 import org.springframework.stereotype.Component;
 import restaurant_managment.Models.CustomerModel;

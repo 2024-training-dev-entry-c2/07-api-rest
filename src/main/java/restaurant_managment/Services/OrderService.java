@@ -2,9 +2,9 @@ package restaurant_managment.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import restaurant_managment.Handlers.DiscountHandler;
-import restaurant_managment.Handlers.FrequentCustomerHandler;
-import restaurant_managment.Handlers.PopularDishHandler;
+import restaurant_managment.Utils.Handlers.DiscountHandler;
+import restaurant_managment.Utils.Handlers.FrequentCustomerHandler;
+import restaurant_managment.Utils.Handlers.PopularDishHandler;
 import restaurant_managment.Models.OrderModel;
 import restaurant_managment.Observer.IObservable;
 import restaurant_managment.Observer.IObserver;

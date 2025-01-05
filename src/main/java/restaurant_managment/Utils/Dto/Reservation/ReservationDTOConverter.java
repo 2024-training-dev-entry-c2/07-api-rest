@@ -1,4 +1,4 @@
-package restaurant_managment.Dto.Reservation;
+package restaurant_managment.Utils.Dto.Reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

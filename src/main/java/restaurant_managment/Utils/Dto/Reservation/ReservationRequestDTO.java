@@ -1,4 +1,4 @@
-package restaurant_managment.Dto.Reservation;
+package restaurant_managment.Utils.Dto.Reservation;
 
 import lombok.Getter;
 import lombok.Setter;

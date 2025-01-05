@@ -1,6 +1,6 @@
-package restaurant_managment.Dto.Order;
+package restaurant_managment.Utils.Dto.Order;
 
-import restaurant_managment.Dto.Dish.DishResponseDTO;
+import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 import restaurant_managment.Models.DishModel;
 import restaurant_managment.Models.OrderModel;
 import restaurant_managment.Models.ReservationModel;

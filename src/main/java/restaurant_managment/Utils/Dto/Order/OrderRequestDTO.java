@@ -1,4 +1,4 @@
-package restaurant_managment.Dto.Order;
+package restaurant_managment.Utils.Dto.Order;
 
 import lombok.Getter;
 import lombok.Setter;

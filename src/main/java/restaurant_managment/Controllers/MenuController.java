@@ -3,9 +3,10 @@ package restaurant_managment.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import restaurant_managment.Dto.Menu.MenuRequestDTO;
-import restaurant_managment.Dto.Menu.MenuResponseDTO;
-import restaurant_managment.Dto.Menu.MenuDTOConverter;
+import restaurant_managment.Models.DishModel;
+import restaurant_managment.Utils.Dto.Menu.MenuRequestDTO;
+import restaurant_managment.Utils.Dto.Menu.MenuResponseDTO;
+import restaurant_managment.Utils.Dto.Menu.MenuDTOConverter;
 import restaurant_managment.Models.MenuModel;
 import restaurant_managment.Services.MenuService;
 
@@ -26,7 +27,7 @@ public class MenuController {
   @PostMapping
   public ResponseEntity<MenuResponseDTO> createMenu(@RequestBody MenuRequestDTO menuRequestDTO) {
     MenuModel menuModel = menuDTOConverter.toMenu(menuRequestDTO);
-    MenuModel createdMenu = menuService.createMenu(menuModel);
+    MenuModel createdMenu = menuService.createMenu(menuModel, menuRequestDTO.getDishIds());
     MenuResponseDTO responseDTO = menuDTOConverter.toMenuResponseDTO(createdMenu);
     return ResponseEntity.ok(responseDTO);
   }
@@ -50,7 +51,7 @@ public class MenuController {
   @PutMapping("/{id}")
   public ResponseEntity<MenuResponseDTO> updateMenu(@PathVariable Long id, @RequestBody MenuRequestDTO menuRequestDTO) {
     MenuModel updatedMenuModel = menuDTOConverter.toMenu(menuRequestDTO);
-    MenuModel updatedMenu = menuService.updateMenu(id, updatedMenuModel);
+    MenuModel updatedMenu = menuService.updateMenu(id, updatedMenuModel, menuRequestDTO.getDishIds());
     MenuResponseDTO responseDTO = menuDTOConverter.toMenuResponseDTO(updatedMenu);
     return ResponseEntity.ok(responseDTO);
   }

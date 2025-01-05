@@ -2,7 +2,9 @@ package restaurant_managment.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import restaurant_managment.Models.DishModel;
 import restaurant_managment.Models.MenuModel;
+import restaurant_managment.Repositories.DishRepository;
 import restaurant_managment.Repositories.MenuRepository;
 import restaurant_managment.interfaces.IMenuService;
 import restaurant_managment.Observer.IObserver;
@@ -16,6 +18,9 @@ public class MenuService implements IMenuService, IObserver {
   @Autowired
   private MenuRepository menuRepository;
 
+  @Autowired
+  private DishRepository dishRepository;
+
   @Override
   public List<MenuModel> getAllMenus() {
     return menuRepository.findAll();
@@ -26,15 +31,24 @@ public class MenuService implements IMenuService, IObserver {
     return menuRepository.findById(id);
   }
 
-  public MenuModel createMenu(MenuModel menu) {
+  public MenuModel createMenu(MenuModel menu, List<Long> dishIds) {
+    List<DishModel> dishes = dishRepository.findAllById(dishIds);
+    if (dishes.size() != dishIds.size()) {
+      throw new RuntimeException("One or more dishes not found");
+    }
+    menu.setDishes(dishes);
     return menuRepository.save(menu);
   }
 
-  public MenuModel updateMenu(Long id, MenuModel updatedMenu) {
+  public MenuModel updateMenu(Long id, MenuModel updatedMenu, List<Long> dishIds) {
     return menuRepository.findById(id)
       .map(menu -> {
         menu.setName(updatedMenu.getName());
-        menu.setDishes(updatedMenu.getDishes());
+        List<DishModel> dishes = dishRepository.findAllById(dishIds);
+        if (dishes.size() != dishIds.size()) {
+          throw new RuntimeException("One or more dishes not found");
+        }
+        menu.setDishes(dishes);
         return menuRepository.save(menu);
       })
       .orElseThrow(() -> new RuntimeException("Menu not found"));
@@ -46,7 +60,6 @@ public class MenuService implements IMenuService, IObserver {
 
   @Override
   public void update(String message) {
-    // Lógica para manejar la actualización cuando se notifica un cambio en OrderService
     System.out.println(message);
   }
 }

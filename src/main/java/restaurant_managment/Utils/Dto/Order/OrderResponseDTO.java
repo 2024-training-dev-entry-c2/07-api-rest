@@ -1,8 +1,8 @@
-package restaurant_managment.Dto.Order;
+package restaurant_managment.Utils.Dto.Order;
 
 import lombok.Getter;
 import lombok.Setter;
-import restaurant_managment.Dto.Dish.DishResponseDTO;
+import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 
 import java.util.List;
 

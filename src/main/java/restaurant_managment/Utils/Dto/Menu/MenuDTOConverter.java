@@ -1,6 +1,7 @@
-package restaurant_managment.Dto.Menu;
+package restaurant_managment.Utils.Dto.Menu;
 
-import restaurant_managment.Dto.Dish.DishResponseDTO;
+import restaurant_managment.Repositories.DishRepository;
+import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 import restaurant_managment.Models.DishModel;
 import restaurant_managment.Models.MenuModel;
 import restaurant_managment.Repositories.MenuRepository;
@@ -16,17 +17,17 @@ public class MenuDTOConverter {
   @Autowired
   private MenuRepository menuRepository;
 
+  @Autowired
+  private DishRepository dishRepository;
+
   public MenuModel toMenu(MenuRequestDTO dto) {
     MenuModel menu = new MenuModel();
     menu.setName(dto.getName());
 
-    // Convertir los IDs de los platos a objetos DishModel
-    List<DishModel> dishes = dto.getDishIds().stream()
-      .map(dishId -> menuRepository.getReferenceById(dishId).getDishes().stream()
-        .filter(dish -> dish.getId().equals(dishId))
-        .findFirst()
-        .orElseThrow(() -> new IllegalArgumentException("Dish not found in Menu")))
-      .collect(Collectors.toList());
+    List<DishModel> dishes = dishRepository.findAllById(dto.getDishIds());
+    if (dishes.size() != dto.getDishIds().size()) {
+      throw new IllegalArgumentException("One or more dishes not found");
+    }
     menu.setDishes(dishes);
 
     return menu;
@@ -37,7 +38,6 @@ public class MenuDTOConverter {
     dto.setId(menu.getId());
     dto.setName(menu.getName());
 
-    // Convertir los objetos DishModel a DishResponseDTO
     List<DishResponseDTO> dishResponses = menu.getDishes().stream()
       .map(dish -> {
         DishResponseDTO dishResponse = new DishResponseDTO();
