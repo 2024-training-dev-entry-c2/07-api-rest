@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+
 import java.util.List;
 
 @Entity
@@ -30,4 +31,15 @@ public class OrderModel {
   private List<DishModel> dishes;
 
   private String status;
+
+  private Double totalPrice;
+
+  public Double getTotalPrice() {
+    Double total = 0.0;
+    for (DishModel dish : dishes) {
+      total += dish.getPrice();
+    }
+    setTotalPrice(total);
+    return total;
+  }
 }

@@ -13,4 +13,5 @@ public class OrderResponseDTO {
   private Long reservationId;
   private List<DishResponseDTO> dishes;
   private String status;
+  private Double totalPrice;
 }

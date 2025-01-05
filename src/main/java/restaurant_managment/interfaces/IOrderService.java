@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderService {
-  List<OrderModel> getAllOrders();
   Optional<OrderModel> getOrderById(Long id);
 
 }

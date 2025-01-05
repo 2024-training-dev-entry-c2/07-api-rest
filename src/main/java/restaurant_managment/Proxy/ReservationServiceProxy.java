@@ -17,15 +17,6 @@ public class ReservationServiceProxy implements IReservationService {
   private IReservationService reservationService;
 
   private Map<Long, ReservationModel> reservationCache = new HashMap<>();
-  private List<ReservationModel> allReservationsCache;
-
-  @Override
-  public List<ReservationModel> getAllReservations() {
-    if (allReservationsCache == null) {
-      allReservationsCache = reservationService.getAllReservations();
-    }
-    return allReservationsCache;
-  }
 
   @Override
   public Optional<ReservationModel> getReservationById(Long id) {

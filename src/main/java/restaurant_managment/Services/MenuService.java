@@ -7,13 +7,12 @@ import restaurant_managment.Models.MenuModel;
 import restaurant_managment.Repositories.DishRepository;
 import restaurant_managment.Repositories.MenuRepository;
 import restaurant_managment.interfaces.IMenuService;
-import restaurant_managment.Observer.IObserver;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MenuService implements IMenuService, IObserver {
+public class MenuService implements IMenuService {
 
   @Autowired
   private MenuRepository menuRepository;
@@ -21,7 +20,6 @@ public class MenuService implements IMenuService, IObserver {
   @Autowired
   private DishRepository dishRepository;
 
-  @Override
   public List<MenuModel> getAllMenus() {
     return menuRepository.findAll();
   }
@@ -56,10 +54,5 @@ public class MenuService implements IMenuService, IObserver {
 
   public void deleteMenu(Long id) {
     menuRepository.deleteById(id);
-  }
-
-  @Override
-  public void update(String message) {
-    System.out.println(message);
   }
 }

@@ -5,21 +5,20 @@ import org.springframework.stereotype.Service;
 import restaurant_managment.Models.CustomerModel;
 import restaurant_managment.Repositories.CustomerRepository;
 import restaurant_managment.interfaces.ICustomerService;
-import restaurant_managment.Observer.IObserver;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CustomerService implements ICustomerService, IObserver {
+public class CustomerService implements ICustomerService {
 
   @Autowired
   private CustomerRepository customerRepository;
 
-  @Override
   public List<CustomerModel> getAllCustomers() {
     return customerRepository.findAll();
   }
+
   @Override
   public Optional<CustomerModel> getCustomerById(Long id) {
     return customerRepository.findById(id);
@@ -44,10 +43,5 @@ public class CustomerService implements ICustomerService, IObserver {
 
   public void deleteCustomer(Long id) {
     customerRepository.deleteById(id);
-  }
-
-  @Override
-  public void update(String message) {
-    System.out.println(message);
   }
 }

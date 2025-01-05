@@ -3,11 +3,13 @@ package restaurant_managment.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import restaurant_managment.Proxy.ReservationServiceProxy;
 import restaurant_managment.Utils.Dto.Reservation.ReservationRequestDTO;
 import restaurant_managment.Utils.Dto.Reservation.ReservationResponseDTO;
 import restaurant_managment.Utils.Dto.Reservation.ReservationDTOConverter;
 import restaurant_managment.Models.ReservationModel;
 import restaurant_managment.Services.ReservationService;
+import restaurant_managment.interfaces.IReservationService;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,9 @@ public class ReservationController {
 
   @Autowired
   private ReservationService reservationService;
+
+  @Autowired
+  private ReservationServiceProxy reservationServiceProxy;
 
   @Autowired
   private ReservationDTOConverter reservationDTOConverter;
@@ -33,7 +38,7 @@ public class ReservationController {
 
   @GetMapping("/{id}")
   public ResponseEntity<ReservationResponseDTO> getReservationById(@PathVariable Long id) {
-    Optional<ReservationModel> reservationModel = reservationService.getReservationById(id);
+    Optional<ReservationModel> reservationModel = reservationServiceProxy.getReservationById(id);
     return reservationModel.map(reservation -> ResponseEntity.ok(reservationDTOConverter.toReservationResponseDTO(reservation)))
       .orElseGet(() -> ResponseEntity.notFound().build());
   }

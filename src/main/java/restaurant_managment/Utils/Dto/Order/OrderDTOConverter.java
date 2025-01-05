@@ -1,5 +1,6 @@
 package restaurant_managment.Utils.Dto.Order;
 
+import restaurant_managment.Repositories.DishRepository;
 import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 import restaurant_managment.Models.DishModel;
 import restaurant_managment.Models.OrderModel;
@@ -19,7 +20,7 @@ public class OrderDTOConverter {
   private ReservationRepository reservationRepository;
 
   @Autowired
-  private MenuRepository menuRepository;
+  private DishRepository dishRepository;
 
   public OrderModel toOrder(OrderRequestDTO dto) {
     OrderModel order = new OrderModel();
@@ -30,8 +31,7 @@ public class OrderDTOConverter {
     order.setReservation(reservation);
 
     List<DishModel> dishes = dto.getDishIds().stream()
-      .map(dishId -> menuRepository.getReferenceById(dishId).getDishes().stream().filter(dish -> dish.getId().equals(dishId)).findFirst().orElse(null))
-      .collect(Collectors.toList());
+      .map(dishId -> dishRepository.findById(dishId).orElseThrow(() -> new IllegalArgumentException("Dish not found"))).collect(Collectors.toList());
     order.setDishes(dishes);
 
     return order;
@@ -42,13 +42,14 @@ public class OrderDTOConverter {
     dto.setId(order.getId());
     dto.setReservationId(order.getReservation().getId());
     dto.setStatus(order.getStatus());
+    dto.setTotalPrice(order.getTotalPrice());
 
-    // Convertir los objetos DishModel a DishResponseDTO
     List<DishResponseDTO> dishResponses = order.getDishes().stream()
       .map(dish -> {
         DishResponseDTO dishResponse = new DishResponseDTO();
         dishResponse.setId(dish.getId());
         dishResponse.setName(dish.getName());
+        dishResponse.setDescription(dish.getDescription());
         dishResponse.setPrice(dish.getPrice());
         return dishResponse;
       })

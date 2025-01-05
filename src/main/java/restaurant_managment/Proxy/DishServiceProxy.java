@@ -17,15 +17,6 @@ public class DishServiceProxy implements IDishService {
   private IDishService dishService;
 
   private Map<Long, DishModel> dishCache = new HashMap<>();
-  private List<DishModel> allDishesCache;
-
-  @Override
-  public List<DishModel> getAllDishes() {
-    if (allDishesCache == null) {
-      allDishesCache = dishService.getAllDishes();
-    }
-    return allDishesCache;
-  }
 
   @Override
   public Optional<DishModel> getDishById(Long id) {

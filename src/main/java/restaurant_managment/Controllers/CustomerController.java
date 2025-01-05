@@ -3,6 +3,7 @@ package restaurant_managment.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import restaurant_managment.Proxy.CustomerServiceProxy;
 import restaurant_managment.Utils.Dto.Customer.CustomerRequestDTO;
 import restaurant_managment.Utils.Dto.Customer.CustomerResponseDTO;
 import restaurant_managment.Utils.Dto.Customer.CustomerDTOConverter;
@@ -21,6 +22,9 @@ public class CustomerController {
   private CustomerService customerService;
 
   @Autowired
+  private CustomerServiceProxy customerServiceProxy;
+
+  @Autowired
   private CustomerDTOConverter customerDTOConverter;
 
   @PostMapping
@@ -33,7 +37,7 @@ public class CustomerController {
 
   @GetMapping("/{id}")
   public ResponseEntity<CustomerResponseDTO> getCustomerById(@PathVariable Long id) {
-    Optional<CustomerModel> customerModel = customerService.getCustomerById(id);
+    Optional<CustomerModel> customerModel = customerServiceProxy.getCustomerById(id);
     return customerModel.map(customer -> ResponseEntity.ok(customerDTOConverter.toCustomerResponseDTO(customer)))
       .orElseGet(() -> ResponseEntity.notFound().build());
   }

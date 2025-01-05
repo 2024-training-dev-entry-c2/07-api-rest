@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,15 +16,6 @@ public class CustomerServiceProxy implements ICustomerService {
   private ICustomerService customerService;
 
   private Map<Long, CustomerModel> customerCache = new HashMap<>();
-  private List<CustomerModel> allCustomersCache;
-
-  @Override
-  public List<CustomerModel> getAllCustomers() {
-    if (allCustomersCache == null) {
-      allCustomersCache = customerService.getAllCustomers();
-    }
-    return allCustomersCache;
-  }
 
   @Override
   public Optional<CustomerModel> getCustomerById(Long id) {

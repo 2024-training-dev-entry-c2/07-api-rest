@@ -3,7 +3,7 @@ package restaurant_managment.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import restaurant_managment.Models.DishModel;
+import restaurant_managment.Proxy.MenuServiceProxy;
 import restaurant_managment.Utils.Dto.Menu.MenuRequestDTO;
 import restaurant_managment.Utils.Dto.Menu.MenuResponseDTO;
 import restaurant_managment.Utils.Dto.Menu.MenuDTOConverter;
@@ -22,6 +22,9 @@ public class MenuController {
   private MenuService menuService;
 
   @Autowired
+  private MenuServiceProxy menuServiceProxy;
+
+  @Autowired
   private MenuDTOConverter menuDTOConverter;
 
   @PostMapping
@@ -34,7 +37,7 @@ public class MenuController {
 
   @GetMapping("/{id}")
   public ResponseEntity<MenuResponseDTO> getMenuById(@PathVariable Long id) {
-    Optional<MenuModel> menuModel = menuService.getMenuById(id);
+    Optional<MenuModel> menuModel = menuServiceProxy.getMenuById(id);
     return menuModel.map(menu -> ResponseEntity.ok(menuDTOConverter.toMenuResponseDTO(menu)))
       .orElseGet(() -> ResponseEntity.notFound().build());
   }

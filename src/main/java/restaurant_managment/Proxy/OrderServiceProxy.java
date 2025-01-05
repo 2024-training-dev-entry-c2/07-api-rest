@@ -17,15 +17,6 @@ public class OrderServiceProxy implements IOrderService {
   private IOrderService orderService;
 
   private Map<Long, OrderModel> orderCache = new HashMap<>();
-  private List<OrderModel> allOrdersCache;
-
-  @Override
-  public List<OrderModel> getAllOrders() {
-    if (allOrdersCache == null) {
-      allOrdersCache = orderService.getAllOrders();
-    }
-    return allOrdersCache;
-  }
 
   @Override
   public Optional<OrderModel> getOrderById(Long id) {

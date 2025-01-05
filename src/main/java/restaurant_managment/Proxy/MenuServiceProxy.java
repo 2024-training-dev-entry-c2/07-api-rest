@@ -17,15 +17,6 @@ public class MenuServiceProxy implements IMenuService {
   private IMenuService menuService;
 
   private Map<Long, MenuModel> menuCache = new HashMap<>();
-  private List<MenuModel> allMenusCache;
-
-  @Override
-  public List<MenuModel> getAllMenus() {
-    if (allMenusCache == null) {
-      allMenusCache = menuService.getAllMenus();
-    }
-    return allMenusCache;
-  }
 
   @Override
   public Optional<MenuModel> getMenuById(Long id) {
