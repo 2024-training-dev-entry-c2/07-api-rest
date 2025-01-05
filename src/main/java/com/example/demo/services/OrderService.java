@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.models.Clientorder;
+import com.example.demo.models.Client;
 import com.example.demo.models.Dishfood;
 import com.example.demo.models.Order;
 import com.example.demo.observer.ClientObserver;
@@ -23,7 +23,7 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         Order newOrder = repository.save(order);
-        Clientorder client = order.getClient();
+        Client client = order.getClient();
         ClientObserver clientObserver = new ClientObserver(client, repository);
         clientObserver.update();
         for (Dishfood dishfood : order.getDishfoods()) {

@@ -1,4 +1,4 @@
-package com.example.demo.controllers.DTO;
+package com.example.demo.DTO;
 
 import com.example.demo.models.Menu;
 import com.example.demo.models.Order;

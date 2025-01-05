@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.controllers.DTO.ClientDTO;
-import com.example.demo.models.Clientorder;
+import com.example.demo.DTO.ClientDTO;
+import com.example.demo.models.Client;
 import com.example.demo.services.ClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +29,7 @@ public class ClientController {
         if (clientDTO.getEmail().isBlank() && clientDTO.getName().isBlank()) {
             return ResponseEntity.badRequest().build();
         }
-        service.addClient(Clientorder.builder().name(clientDTO.getName())
+        service.addClient(Client.builder().name(clientDTO.getName())
                 .email(clientDTO.getEmail())
                 .build());
         return ResponseEntity.ok("Todo oka");
@@ -37,9 +37,9 @@ public class ClientController {
 
     @GetMapping("/find/{id}")
     public ResponseEntity<?> findClientById(@PathVariable Long id) {
-        Optional<Clientorder> clientOptional = service.findClientById(id);
+        Optional<Client> clientOptional = service.findClientById(id);
         if (clientOptional.isPresent()) {
-            Clientorder client = clientOptional.get();
+            Client client = clientOptional.get();
             ClientDTO clientDTO = ClientDTO.builder()
                     .id(client.getId())
                     .name(client.getName())

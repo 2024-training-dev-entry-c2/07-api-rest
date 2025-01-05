@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.controllers.DTO.OrderDTO;
+import com.example.demo.DTO.OrderDTO;
 import com.example.demo.models.Order;
 import com.example.demo.services.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/menu")
+@RequestMapping("/api/order")
 public class OrderController {
     private final OrderService service;
 

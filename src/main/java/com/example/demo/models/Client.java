@@ -23,7 +23,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "client")
-public class Clientorder {
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +36,7 @@ public class Clientorder {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Order> orderList;
 
-    public Clientorder(String name, String email) {
+    public Client(String name, String email) {
         this.name = name;
         this.email = email;
     }

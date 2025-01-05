@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.controllers.DTO.MenuDTO;
+import com.example.demo.DTO.MenuDTO;
 import com.example.demo.models.Menu;
 import com.example.demo.services.MenuService;
 import org.springframework.http.ResponseEntity;

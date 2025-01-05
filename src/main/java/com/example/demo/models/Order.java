@@ -32,7 +32,7 @@ public class Order {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Clientorder client;
+    private Client client;
 
     private LocalDate localDate;
     @ManyToMany
@@ -43,7 +43,7 @@ public class Order {
     )
     private List<Dishfood> dishfoods;
 
-    public Order(Clientorder client, LocalDate localDate, List<Dishfood> dishfoods) {
+    public Order(Client client, LocalDate localDate, List<Dishfood> dishfoods) {
         this.client = client;
         this.localDate = localDate;
         this.dishfoods = dishfoods;

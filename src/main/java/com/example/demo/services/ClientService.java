@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.models.Clientorder;
+import com.example.demo.models.Client;
 import com.example.demo.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +18,13 @@ public class ClientService {
         this.repository = repository;
     }
 
-    public void addClient(Clientorder client) {
+    public void addClient(Client client) {
         repository.save(client);
     }
-    public Optional<Clientorder> findClientById(Long id){
+    public Optional<Client> findClientById(Long id){
         return repository.findById(id);
     }
-    public List<Clientorder> findAllClients(){
+    public List<Client> findAllClients(){
         return repository.findAll();
     }
     public void removeClient(Long id){

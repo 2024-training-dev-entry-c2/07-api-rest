@@ -1,23 +1,18 @@
-package com.example.demo.controllers.DTO;
+package com.example.demo.DTO;
 
-import com.example.demo.models.Clientorder;
 import com.example.demo.models.Dishfood;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @Builder
-public class OrderDTO {
-
+public class MenuDTO {
     private Long id;
-    private Clientorder client;
-    private LocalDate localDate;
+    private String name;
     private List<Dishfood> dishfoods;
-
 
 }

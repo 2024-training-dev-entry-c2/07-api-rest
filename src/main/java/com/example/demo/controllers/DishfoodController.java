@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.controllers.DTO.DishfoodDTO;
+import com.example.demo.DTO.DishfoodDTO;
 import com.example.demo.models.Dishfood;
 import com.example.demo.services.DishFoodService;
 import org.springframework.http.ResponseEntity;
