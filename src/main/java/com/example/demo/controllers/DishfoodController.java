@@ -1,80 +1,53 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTO.DishfoodDTO;
-import com.example.demo.models.Dishfood;
+import com.example.demo.DTO.DishfoodRequestDTO;
+import com.example.demo.DTO.DishfoodResponseDTO;
 import com.example.demo.services.DishFoodService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/dishfood")
+@RequestMapping("/dishfoods")
 public class DishfoodController {
-    private final DishFoodService service;
 
-    public DishfoodController(DishFoodService service) {
-        this.service = service;
+    @Autowired
+    private DishFoodService dishfoodService;
+
+    // Crear un nuevo platillo
+    @PostMapping
+    public ResponseEntity<DishfoodResponseDTO> createDishfood(@RequestBody DishfoodRequestDTO dishfoodRequestDTO) {
+        DishfoodResponseDTO responseDTO = dishfoodService.createDishFood(dishfoodRequestDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addDishFood(@RequestBody DishfoodDTO dishfoodDTO) {
-        if (dishfoodDTO.getName().isBlank() || dishfoodDTO.getPrice()<0) {
-            return ResponseEntity.badRequest().build();
-        }
-        service.addDishFood(Dishfood.builder().name(dishfoodDTO.getName())
-                        .price(dishfoodDTO.getPrice())
-                        .menu(dishfoodDTO.getMenu())
-                        .build());
-
-        return ResponseEntity.ok("Todo oka");
+    // Obtener todos los platillos
+    @GetMapping
+    public ResponseEntity<List<DishfoodResponseDTO>> getAllDishfoods() {
+        List<DishfoodResponseDTO> dishfoods = dishfoodService.getAllDishfoods();
+        return ResponseEntity.ok(dishfoods);
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> findDishFoodById(@PathVariable Long id) {
-        Optional<Dishfood> dishfoodOptional = service.findDishFoodId(id);
-        if (dishfoodOptional.isPresent()) {
-            Dishfood dishfood = dishfoodOptional.get();
-            DishfoodDTO dishfoodDTO = DishfoodDTO.builder()
-                    .id(dishfood.getId())
-                    .name(dishfood.getName())
-                    .price(dishfood.getPrice())
-                    .menu(dishfood.getMenu())
-                    .build();
-            return ResponseEntity.ok(dishfoodDTO);
-        }
-        return ResponseEntity.notFound().build();
+    // Obtener platillo por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<DishfoodResponseDTO> getDishfoodById(@PathVariable Long id) {
+        DishfoodResponseDTO responseDTO = dishfoodService.getDishfoodById(id);
+        return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping("/find/all")
-    public ResponseEntity<?> findAll() {
-        List<DishfoodDTO> dishfoodDTOS = service.findAllDishfood()
-                .stream().map(dishfood -> DishfoodDTO.builder()
-                        .id(dishfood.getId())
-                        .name(dishfood.getName())
-                        .price(dishfood.getPrice())
-                        .menu(dishfood.getMenu())
-                        .build())
-                .toList();
-        return ResponseEntity.ok(dishfoodDTOS);
-
+    // Actualizar un platillo
+    @PutMapping("/{id}")
+    public ResponseEntity<DishfoodResponseDTO> updateDishfood(@PathVariable Long id, @RequestBody DishfoodRequestDTO dishfoodRequestDTO) {
+        DishfoodResponseDTO updatedDishfood = dishfoodService.updateDishfood(id, dishfoodRequestDTO);
+        return ResponseEntity.ok(updatedDishfood);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> removeDishfood(@PathVariable Long id) {
-        if (service.findDishFoodId(id).isPresent()) {
-            service.removeDishFood(id);
-            return ResponseEntity.ok("deleted");
-        }
-        return ResponseEntity.notFound().build();
+    // Eliminar un platillo
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDishfood(@PathVariable Long id) {
+        dishfoodService.deleteDishfood(id);
+        return ResponseEntity.noContent().build();
     }
-
 }
-

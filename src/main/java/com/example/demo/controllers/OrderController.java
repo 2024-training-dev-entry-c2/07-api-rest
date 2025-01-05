@@ -1,8 +1,9 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTO.OrderDTO;
-import com.example.demo.models.Order;
+import com.example.demo.DTO.OrderRequestDTO;
+import com.example.demo.DTO.OrderResponseDTO;
 import com.example.demo.services.OrderService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,66 +14,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/order")
 public class OrderController {
-    private final OrderService service;
+    private final OrderService orderService;
 
     public OrderController(OrderService service) {
-        this.service = service;
+        this.orderService = service;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addOrder(@RequestBody OrderDTO orderDTO) {
-        if (orderDTO.getClient().getName().isBlank()) {
-            return ResponseEntity.badRequest().build();
-        }
-        service.createOrder(Order.builder().client(orderDTO.getClient())
-                .localDate(orderDTO.getLocalDate())
-                .dishfoods(orderDTO.getDishfoods())
-                .build());
-        return ResponseEntity.ok("Todo oka");
+    @PostMapping
+    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO dto) {
+        return new ResponseEntity<>(orderService.createOrder(dto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> findMenuById(@PathVariable Long id) {
-        Optional<Order> orderOptional = service.findOrderById(id);
-        if (orderOptional.isPresent()) {
-            Order order = orderOptional.get();
-            OrderDTO orderDTO = OrderDTO.builder()
-                    .id(order.getId())
-                    .client(order.getClient())
-                    .localDate(order.getLocalDate())
-                    .dishfoods(order.getDishfoods())
-                    .build();
-            return ResponseEntity.ok(orderDTO);
-        }
-        return ResponseEntity.notFound().build();
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
-    @GetMapping("/find/all")
-    public ResponseEntity<?> findAllMenu() {
-        List<OrderDTO> orderDTOS = service.findAllOrder()
-                .stream().map(order -> OrderDTO.builder()
-                        .id(order.getId())
-                        .client(order.getClient())
-                        .localDate(order.getLocalDate())
-                        .dishfoods(order.getDishfoods())
-                        .build())
-
-                .toList();
-        return ResponseEntity.ok(orderDTOS);
+    @GetMapping
+    public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> removeMenu(@PathVariable Long id) {
-        if (service.findOrderById(id).isPresent()) {
-            service.removeOrder(id);
-            return ResponseEntity.ok("deleted");
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        orderService.removeOrder(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -1,32 +1,60 @@
 package com.example.demo.services;
 
+import com.example.demo.DTO.MenuRequestDTO;
+import com.example.demo.DTO.MenuResponseDTO;
+import com.example.demo.DTO.converterDTO.MenuConverter;
 import com.example.demo.models.Menu;
 import com.example.demo.repositories.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
+
     @Autowired
-    private final MenuRepository repository;
+    private MenuRepository menuRepository;
 
-    public MenuService(MenuRepository repository) {
-        this.repository = repository;
-    }
-    public void addMenu(Menu menu){
-        repository.save(menu);
-    }
-    public Optional<Menu> findMenuById(Long id){
-        return repository.findById(id);
-    }
-    public List<Menu> findAllMenu(){
-        return repository.findAll();
-    }
-    public void removeMenu(Long id){
-        repository.deleteById(id);
+
+    // Crear un nuevo menú
+    public MenuResponseDTO createMenu(MenuRequestDTO menuRequestDTO) {
+        Menu menu = MenuConverter.toEntity(menuRequestDTO);
+        return MenuConverter.toResponseDTO(menuRepository.save(menu));
     }
 
+    // Obtener todos los menús
+    public List<MenuResponseDTO> getAllMenus() {
+        return menuRepository.findAll()
+                .stream()
+                .map(MenuConverter::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Obtener un menú por ID
+    public MenuResponseDTO getMenuById(Long id) {
+        Menu menu = menuRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Menu not found"));
+        return MenuConverter.toResponseDTO(menu);
+    }
+
+    // Actualizar un menú
+    public MenuResponseDTO updateMenu(Long id, MenuRequestDTO menuRequestDTO) {
+        Menu existingMenu = menuRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Menu not found"));
+
+        existingMenu.setName(menuRequestDTO.getName());
+        Menu updatedMenu = menuRepository.save(existingMenu);
+
+        return MenuConverter.toResponseDTO(updatedMenu);
+    }
+
+    // Eliminar un menú
+    public void deleteMenu(Long id) {
+        if (!menuRepository.existsById(id)) {
+            throw new RuntimeException("Menu not found");
+        }
+        menuRepository.deleteById(id);
+    }
 }

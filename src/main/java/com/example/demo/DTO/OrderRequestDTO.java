@@ -1,7 +1,5 @@
 package com.example.demo.DTO;
 
-import com.example.demo.models.Client;
-import com.example.demo.models.Dishfood;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +10,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-public class OrderDTO {
+public class OrderRequestDTO {
 
-    private Long id;
-    private Client client;
+    private Long clientId;
     private LocalDate localDate;
-    private List<Dishfood> dishfoods;
-
+    private List<Long> dishfoodIds;
 
 }
