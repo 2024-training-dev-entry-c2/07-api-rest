@@ -28,11 +28,11 @@ public class MenuService {
   }
 
   public Menu updateMenu(Integer id, Menu menu) {
-    return menuRepository.findById(id).map((Menu x) ->{
+    return menuRepository.findById(id).map( x ->{
       x.setMenuName(menu.getMenuName());
       x.setDescription(menu.getDescription());
       return menuRepository.save(x);
-    }).orElseThrow(()-> new RuntimeException("Menu no encontrado"));
+    }).orElseThrow(()-> new RuntimeException("Menu con el id "+id+" no pudo ser actualizado"));
   }
 
   public void deleteMenu(Integer id) {
