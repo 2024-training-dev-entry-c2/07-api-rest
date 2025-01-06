@@ -48,9 +48,9 @@ public class OrderService {
         List<Dishfood> dishfoods = dishfoodRepository.findAllById(orderDTO.getDishfoodIds());
         if (dishfoods.isEmpty())  throw new RuntimeException("Dishfoods not found");
         double total = dishfoods.stream().mapToDouble(Dishfood::getPrice).sum();
-        Order order = OrderConverter.toEntity(orderDTO, client, dishfoods,total);
         checkClient(client);
         checkDishFood(dishfoods);
+        Order order = OrderConverter.toEntity(orderDTO, client, dishfoods,total);
         FrequentClientDiscountHandler frequentHandler =
                 new FrequentClientDiscountHandler(new FrequentClientPricingStrategy());
         PopularDishPriceIncreaseHandler popularHandler =
