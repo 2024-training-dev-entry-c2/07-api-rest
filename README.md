@@ -55,10 +55,3 @@ El proyecto está organizado en una estructura simple basada en POO que emplea u
 
 ## Contacto
 Para preguntas, problemas o colaboraciones, por favor, contáctame.
-
------
-
-¡Gracias por tu interés en este gestor de operaciones de restaurante! 🎉
-<br><small>Realizado por Karen Rincón, 2024</small><br><br>
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/KJRM20)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-100000?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/karen-rincon/) 
