@@ -1,6 +1,5 @@
 package com.restaurant.management.controllers;
 
-import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Menu;
 import com.restaurant.management.models.dto.MenuRequestDTO;
 import com.restaurant.management.models.dto.MenuResponseDTO;

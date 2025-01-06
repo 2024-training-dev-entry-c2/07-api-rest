@@ -6,7 +6,6 @@ import com.restaurant.management.models.Dish;
 import com.restaurant.management.observer.IOrderObserver;
 import com.restaurant.management.repositories.DishRepository;
 import com.restaurant.management.repositories.OrderDishRepository;
-import com.restaurant.management.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

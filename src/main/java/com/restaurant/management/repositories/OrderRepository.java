@@ -1,7 +1,6 @@
 package com.restaurant.management.repositories;
 
 import com.restaurant.management.models.Client;
-import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

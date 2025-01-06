@@ -1,11 +1,9 @@
 package com.restaurant.management.utils;
 
 import com.restaurant.management.models.Client;
-import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Order;
 import com.restaurant.management.models.OrderDish;
 import com.restaurant.management.models.dto.DishOrderResponseDTO;
-import com.restaurant.management.models.dto.DishResponseDTO;
 import com.restaurant.management.models.dto.OrderRequestDTO;
 import com.restaurant.management.models.dto.OrderResponseDTO;
 

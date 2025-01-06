@@ -8,7 +8,12 @@ import com.restaurant.management.models.Order;
 import com.restaurant.management.models.OrderDish;
 import com.restaurant.management.observer.IObservable;
 import com.restaurant.management.observer.IOrderObserver;
+import com.restaurant.management.repositories.ClientRepository;
+import com.restaurant.management.repositories.DishRepository;
+import com.restaurant.management.repositories.OrderDishRepository;
 import com.restaurant.management.repositories.OrderRepository;
+import com.restaurant.management.services.observer.ClientOrderObserver;
+import com.restaurant.management.services.observer.DishOrderObserver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +26,12 @@ public class OrderService implements IObservable {
   private final List<IOrderObserver> observers;
 
   @Autowired
-  public OrderService(OrderRepository repository, List<IOrderObserver> observers) {
+  public OrderService(OrderRepository repository, List<IOrderObserver> observers, ClientRepository clientRepository, DishRepository dishRepository, OrderDishRepository orderDishRepository) {
     this.repository = repository;
     this.observers = observers;
+
+    addObserver(new ClientOrderObserver(repository, clientRepository));
+    addObserver(new DishOrderObserver(orderDishRepository, dishRepository));
   }
 
   public void addOrder(Order order){
