@@ -5,6 +5,7 @@ import com.restaurant.restaurant_management.repositories.DishRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DishService {
@@ -18,12 +19,26 @@ public class DishService {
     dishRepository.save(dish);
   }
 
+  public Optional<Dish> getDish(Integer id) {
+    return dishRepository.findById(id);
+  }
+
   public List<Dish> listDishes() {
     return dishRepository.findAll();
   }
 
   public List<Dish> listDishesByMenuId(Integer menuId) {
     return dishRepository.findByMenuId(menuId);
+  }
+
+  public Dish updateDish(Integer id, Dish dish) {
+    return dishRepository.findById(id).map( x ->{
+      x.setDishName(dish.getDishName());
+      x.setDescription(dish.getDescription());
+      x.setBasePrice(dish.getBasePrice());
+      x.setIsPopular(dish.getIsPopular());
+      return dishRepository.save(x);
+    }).orElseThrow(()-> new RuntimeException("Dish con el id "+id+" no pudo ser actualizado"));
   }
 
 }

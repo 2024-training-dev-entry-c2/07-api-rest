@@ -1,6 +1,7 @@
 package com.restaurant.restaurant_management.controllers;
 
 import com.restaurant.restaurant_management.dto.DishRequestDTO;
+import com.restaurant.restaurant_management.dto.DishResponseDTO;
 import com.restaurant.restaurant_management.models.Dish;
 import com.restaurant.restaurant_management.models.Menu;
 import com.restaurant.restaurant_management.services.DishService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,22 +31,49 @@ public class DishController {
 
   @PostMapping
   public ResponseEntity<String> saveDish(@RequestBody DishRequestDTO dishRequestDTO) {
-    Menu menu = menuService.getMenu(dishRequestDTO.getMenuId()).orElse(null);
-    if (menu == null) {
-      return ResponseEntity.badRequest().body("Menu not found");
+    try {
+      Menu menu = menuService.getMenu(dishRequestDTO.getMenuId()).orElseThrow();
+      Dish dish = DtoDishConverter.convertToDish(dishRequestDTO, menu);
+      dishService.saveDish(dish);
+      return ResponseEntity.ok("Plato creado con éxito");
+    } catch (RuntimeException e) {
+      return ResponseEntity.badRequest().body("No se encuentra el menú del plato");
     }
-    Dish dish = DtoDishConverter.convertToDish(dishRequestDTO, menu);
-    dishService.saveDish(dish);
-    return ResponseEntity.ok("Dish created successfully");
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<DishResponseDTO> getDish(@PathVariable Integer id) {
+    return dishService.getDish(id)
+        .map(dish -> ResponseEntity.ok(DtoDishConverter.convertToResponseDTO(dish)))
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping
-  public ResponseEntity<List<Dish>> getDishes() {
-    return ResponseEntity.ok(dishService.listDishes());
+  public ResponseEntity<List<DishResponseDTO>> getDishes() {
+    List<Dish> dishes = dishService.listDishes();
+    List<DishResponseDTO> response = dishes.stream()
+        .map(DtoDishConverter::convertToResponseDTO)
+        .toList();
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/menu/{menuId}")
-  public ResponseEntity<List<Dish>> getDishesByMenuId(@PathVariable Integer menuId) {
-    return ResponseEntity.ok(dishService.listDishesByMenuId(menuId));
+  public ResponseEntity<List<DishResponseDTO>> getDishesByMenuId(@PathVariable Integer menuId) {
+    List<Dish> dishes = dishService.listDishesByMenuId(menuId);
+    List<DishResponseDTO> response = dishes.stream()
+        .map(DtoDishConverter::convertToResponseDTO)
+        .toList();
+    return ResponseEntity.ok(response);
   }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<DishResponseDTO> updateDish(@PathVariable Integer id, @RequestBody DishRequestDTO dishRequestDTO) {
+    try {
+      Dish updated = dishService.updateDish(id, DtoDishConverter.convertToDish(dishRequestDTO, null));
+      return ResponseEntity.ok(DtoDishConverter.convertToResponseDTO(updated));
+    } catch (RuntimeException e) {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
 }

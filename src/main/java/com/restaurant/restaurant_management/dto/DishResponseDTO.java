@@ -5,10 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DishRequestDTO {
+public class DishResponseDTO {
+  private Integer id;
   private String dishName;
   private String description;
   private Integer basePrice;
+  private Float price;
   private Boolean isPopular;
-  private Integer menuId;
 }
