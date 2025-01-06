@@ -10,18 +10,13 @@ import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import restaurant_managment.Observer.IObservable;
-import restaurant_managment.Observer.IObserver;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "dishes")
-public class DishModel implements IObservable {
+public class DishModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,9 +33,6 @@ public class DishModel implements IObservable {
   private String description;
 
   @Transient
-  private List<IObserver> observers = new ArrayList<>();
-
-  @Transient
   private Integer totalOrders;
 
   public void updatePopularity(EntityManager entityManager) {
@@ -50,24 +42,6 @@ public class DishModel implements IObservable {
 
     if (totalOrders >= 100 && !this.isPopular) {
       this.isPopular = true;
-      notifyObservers("Dish " + this.name + " has become popular.");
-    }
-  }
-
-  @Override
-  public void addObserver(IObserver observer) {
-    observers.add(observer);
-  }
-
-  @Override
-  public void removeObserver(IObserver observer) {
-    observers.remove(observer);
-  }
-
-  @Override
-  public void notifyObservers(String message) {
-    for (IObserver observer : observers) {
-      observer.update(message);
     }
   }
 }

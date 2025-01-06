@@ -29,7 +29,7 @@ public class DishController {
 
   @PostMapping
   public ResponseEntity<DishResponseDTO> createDish(@RequestBody DishRequestDTO dishRequestDTO) {
-    DishModel dishModel = dishDTOConverter.toDish(dishRequestDTO);
+    DishModel dishModel = DishDTOConverter.toDish(dishRequestDTO);
     DishModel createdDish = dishService.saveDish(dishModel);
     DishResponseDTO responseDTO = dishDTOConverter.toDishResponseDTO(createdDish);
     return ResponseEntity.ok(responseDTO);
