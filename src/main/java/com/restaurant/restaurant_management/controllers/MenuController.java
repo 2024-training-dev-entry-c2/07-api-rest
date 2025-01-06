@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/menu")
@@ -45,7 +44,7 @@ public class MenuController {
     List<Menu> menus = menuService.listMenus();
     List<MenuResponseDTO> response = menus.stream()
         .map(DtoMenuConverter::convertToResponseDTO)
-        .collect(Collectors.toList());
+        .toList();
     return ResponseEntity.ok(response);
   }
 

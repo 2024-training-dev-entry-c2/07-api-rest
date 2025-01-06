@@ -1,9 +1,8 @@
 package com.restaurant.restaurant_management.models;
 
-import jakarta.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,6 +40,7 @@ public class Client {
   @Column(nullable = false)
   private Boolean isFrequent = false;
 
-  @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(targetEntity = ClientOrder.class,mappedBy = "client")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<ClientOrder> orders;
 }
