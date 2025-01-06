@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,11 +36,19 @@ public class Order {
   )
   private List<Dish> dishes;
 
+  private LocalDate date;
   private Float total;
 
-  public Order(Long id, Client client) {
+  public Order(Long id, Client client, LocalDate date) {
     this.id = id;
     this.client = client;
+    this.date = date;
+    this.dishes = new ArrayList<>();
+  }
+
+  public Order(Client client, LocalDate date) {
+    this.client = client;
+    this.date = date;
     this.dishes = new ArrayList<>();
   }
 

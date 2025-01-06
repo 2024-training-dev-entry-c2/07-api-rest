@@ -1,5 +1,6 @@
 package com.restaurant.management.services.observer;
 
+import com.restaurant.management.constants.DishStateEnum;
 import com.restaurant.management.models.Client;
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.observer.IOrderObserver;
@@ -22,8 +23,8 @@ public class DishOrderObserver implements IOrderObserver {
   @Override
   public void updateOrder(Client client, Dish dish) {
     int dishCount = orderRepository.countByDishesContaining(dish);
-    if (dishCount > 100 && !dish.getPopular()) {
-      dish.setPopular(true);
+    if (dishCount > 100 && dish.getState().equals(DishStateEnum.NORMAL)) {
+      dish.setState(DishStateEnum.POPULAR);
       dishRepository.save(dish);
     }
   }

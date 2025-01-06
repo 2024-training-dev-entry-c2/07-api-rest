@@ -1,7 +1,11 @@
 package com.restaurant.management.controllers;
 
 import com.restaurant.management.models.Dish;
+import com.restaurant.management.models.Menu;
+import com.restaurant.management.models.dto.DishRequestDTO;
 import com.restaurant.management.services.DishService;
+import com.restaurant.management.services.MenuService;
+import com.restaurant.management.utils.DtoDishConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,16 +23,25 @@ import java.util.List;
 @RequestMapping("api/platos")
 public class DishController {
   private final DishService service;
+  private final MenuService menuService;
   
   @Autowired
-  public DishController(DishService service) {
+  public DishController(DishService service, MenuService menuService) {
     this.service = service;
+    this.menuService = menuService;
   }
 
   @PostMapping
-  public ResponseEntity<String> addDish(@RequestBody Dish dish){
-    service.addDish(dish);
-    return ResponseEntity.ok("Plato agregado éxitosamente");
+  public ResponseEntity<String> addDish(@RequestBody DishRequestDTO dishRequestDTO){
+    try {
+      Menu menu = menuService.getMenuById(dishRequestDTO.getMenuId())
+        .orElseThrow(() -> new RuntimeException("Menú no encontrado"));
+
+      service.addDish(DtoDishConverter.toDish(dishRequestDTO, menu));
+      return ResponseEntity.ok("Plato agregado exitosamente");
+    } catch (RuntimeException e) {
+      return ResponseEntity.notFound().build();
+    }
   }
 
   @GetMapping("/{id}")

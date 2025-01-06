@@ -27,15 +27,23 @@ public class Client {
   @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
   private List<Order> orders;
 
-  public Client(Long id, String name, String email, Boolean frequent) {
+  public Client(Long id, String name, String email) {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.frequent = frequent;
+    this.frequent = false;
+    this.orders = new ArrayList<>();
+  }
+
+  public Client(String name, String email) {
+    this.name = name;
+    this.email = email;
+    this.frequent = false;
     this.orders = new ArrayList<>();
   }
 
   public Client() {
+    this.frequent = false;
     this.orders = new ArrayList<>();
   }
 }

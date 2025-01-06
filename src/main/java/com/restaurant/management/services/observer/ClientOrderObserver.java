@@ -22,7 +22,7 @@ public class ClientOrderObserver implements IOrderObserver {
   @Override
   public void updateOrder(Client client, Dish dish) {
     int orderCount = orderRepository.countByClient(client);
-    if (orderCount >= 10 && !client.getFrequent()){
+    if (orderCount >= 10 && Boolean.TRUE.equals(!client.getFrequent())){
       client.setFrequent(true);
       clientRepository.save(client);
     }

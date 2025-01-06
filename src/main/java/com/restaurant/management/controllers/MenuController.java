@@ -1,5 +1,6 @@
 package com.restaurant.management.controllers;
 
+import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Menu;
 import com.restaurant.management.services.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,22 @@ public class MenuController {
     service.deleteMenu(id);
     return ResponseEntity.noContent().build();
   }
-  
+
+  @PostMapping("/{id}/dishes")
+  public ResponseEntity<String> addDishToMenu(@PathVariable Long id, @RequestBody Dish dish){
+    try{
+      Menu menu = service.addDishToMenu(id, dish);
+      return ResponseEntity.ok("Se ha agregado el plato exitosamente a el menú.");
+    }catch (RuntimeException e){
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @DeleteMapping("/{id}/dishes/{dishId}")
+  public ResponseEntity<String> removeDishFromMenu(@PathVariable Long id, @PathVariable Long dishId){
+    service.removeDishFromMenu(id, dishId);
+    return ResponseEntity.noContent().build();
+  }
+
+
 }

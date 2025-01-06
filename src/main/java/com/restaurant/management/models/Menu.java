@@ -1,5 +1,6 @@
 package com.restaurant.management.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,13 +18,20 @@ public class Menu {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String name;
 
-  @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
   private Set<Dish> dishes;
 
   public Menu(Long id, String name) {
     this.id = id;
+    this.name = name;
+    this.dishes = new HashSet<>();
+  }
+
+  public Menu(String name) {
     this.name = name;
     this.dishes = new HashSet<>();
   }

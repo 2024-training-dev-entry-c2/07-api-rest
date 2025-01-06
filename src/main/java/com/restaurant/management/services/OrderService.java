@@ -2,6 +2,7 @@ package com.restaurant.management.services;
 
 import com.restaurant.management.chain.DiscountHandler;
 import com.restaurant.management.chain.FrequentClientDiscounttHandler;
+import com.restaurant.management.chain.NormalClientHandler;
 import com.restaurant.management.chain.PopularDishPriceAdjustmentHandler;
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Order;
@@ -53,11 +54,13 @@ public class OrderService implements IObservable {
   }
 
   public void applyDiscounts(Order order){
+    DiscountHandler normalHandler = new NormalClientHandler();
     DiscountHandler frequentHandler = new FrequentClientDiscounttHandler();
     DiscountHandler popularHandler = new PopularDishPriceAdjustmentHandler();
 
+    normalHandler.setNextHandler(frequentHandler);
     frequentHandler.setNextHandler(popularHandler);
-    order.setTotal(frequentHandler.applyDiscount(order));
+    order.setTotal(normalHandler.applyDiscount(order));
   }
 
   @Override

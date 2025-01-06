@@ -1,7 +1,10 @@
 package com.restaurant.management.controllers;
 
 import com.restaurant.management.models.Client;
+import com.restaurant.management.models.dto.ClientRequestDTO;
+import com.restaurant.management.models.dto.ClientResponseDTO;
 import com.restaurant.management.services.ClientService;
+import com.restaurant.management.utils.DtoClientConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +29,8 @@ public class ClientController {
   }
 
   @PostMapping
-  public ResponseEntity<String> addClient(@RequestBody Client client){
+  public ResponseEntity<String> addClient(@RequestBody ClientRequestDTO clientRequest){
+    Client client = DtoClientConverter.toClient(clientRequest);
     service.addClient(client);
     return ResponseEntity.ok("Cliente agregado éxitosamente");
   }
@@ -44,10 +48,10 @@ public class ClientController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateClient(@PathVariable Long id, @RequestBody Client client){
+  public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable Long id, @RequestBody ClientRequestDTO clientRequest){
     try{
-      Client updatedClient = service.updateClient(id, client);
-      return ResponseEntity.ok("Se ha actualizado exitosamente el cliente");
+      Client updatedClient = service.updateClient(id, DtoClientConverter.toClient(clientRequest));
+      return ResponseEntity.ok(DtoClientConverter.toClientResponseDTO(updatedClient));
     } catch (RuntimeException e){
       return ResponseEntity.notFound().build();
     }
