@@ -1,16 +1,14 @@
 package com.example.restaurant.services.dish.commands;
 
 import com.example.restaurant.repositories.DishRepository;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class DeleteDishCommand {
 
   private final DishRepository dishRepository;
-
-  public DeleteDishCommand(DishRepository dishRepository) {
-    this.dishRepository = dishRepository;
-  }
 
   public void execute(Long dishId) {
     if (!dishRepository.existsById(dishId)) {

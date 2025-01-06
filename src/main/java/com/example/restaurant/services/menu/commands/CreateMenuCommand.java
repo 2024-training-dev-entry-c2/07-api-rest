@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor //anotacion lombok para inyeccion de dependencias del cosntructor
 public class CreateMenuCommand {
 
   private final MenuRepository menuRepository;

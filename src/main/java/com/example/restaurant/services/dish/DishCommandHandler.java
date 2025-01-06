@@ -6,13 +6,13 @@ import com.example.restaurant.services.dish.commands.DeleteDishCommand;
 import com.example.restaurant.services.dish.commands.GetDishByIdCommand;
 import com.example.restaurant.services.dish.commands.ListDishesCommand;
 import com.example.restaurant.services.dish.commands.UpdateDishCommand;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DishCommandHandler {
 
   private final CreateDishCommand createDishCommand;
@@ -26,8 +26,8 @@ public class DishCommandHandler {
     return createDishCommand.execute(dishDTO);
   }
 
-  public DishDTO updateCustomer(DishDTO dishDTO) {
-    return updateDishCommand.execute(dishDTO);
+  public DishDTO updateCustomer(Long id, DishDTO dishDTO) {
+    return updateDishCommand.execute(id, dishDTO);
   }
 
   public void deleteCustomer(Long customerId) {

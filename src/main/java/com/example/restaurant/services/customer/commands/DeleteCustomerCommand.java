@@ -1,16 +1,14 @@
 package com.example.restaurant.services.customer.commands;
 
 import com.example.restaurant.repositories.CustomerRepository;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class DeleteCustomerCommand {
 
   private final CustomerRepository customerRepository;
-
-  public DeleteCustomerCommand(CustomerRepository customerRepository) {
-    this.customerRepository = customerRepository;
-  }
 
   public void execute(Long customerId) {
     if (!customerRepository.existsById(customerId)) {

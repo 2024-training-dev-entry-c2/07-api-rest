@@ -6,13 +6,13 @@ import com.example.restaurant.services.menu.commands.CreateMenuCommand;
 import com.example.restaurant.services.menu.commands.DeleteMenuCommand;
 import com.example.restaurant.services.menu.commands.GetMenuByIdCommand;
 import com.example.restaurant.services.menu.commands.UpdateMenuCommand;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MenuCommandHandler {
 
   private final CreateMenuCommand createMenuCommand;
@@ -22,23 +22,24 @@ public class MenuCommandHandler {
   private final ListMenusCommand listOrdersCommand;
 
 
-  public MenuDTO createCustomer(MenuDTO orderDTO) {
+  public MenuDTO createMenu(MenuDTO orderDTO) {
     return createMenuCommand.execute(orderDTO);
   }
 
-  public MenuDTO updateCustomer(MenuDTO orderDTO) {
-    return updateMenuCommand.execute(orderDTO.getId(), orderDTO);
+  public MenuDTO updateMenu(Long id, MenuDTO orderDTO) {
+    return updateMenuCommand.execute(id, orderDTO);
   }
 
-  public void deleteCustomer(Long orderId) {
+  public void deleteMenu(Long orderId) {
     deleteMenuCommand.execute(orderId);
   }
 
-  public MenuDTO getCustomerById(Long orderId) {
+  public MenuDTO getMenuById(Long orderId) {
     return getMenuByIdCommand.execute(orderId);
   }
 
-  public List<MenuDTO> listCustomers() {
+
+  public List<MenuDTO> listMenus() {
     return listOrdersCommand.execute();
   }
 }

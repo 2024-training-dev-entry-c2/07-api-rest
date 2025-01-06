@@ -6,11 +6,14 @@ import com.example.restaurant.services.customer.commands.DeleteCustomerCommand;
 import com.example.restaurant.services.customer.commands.GetCustomerByIdCommand;
 import com.example.restaurant.services.customer.commands.ListCustomersCommand;
 import com.example.restaurant.services.customer.commands.UpdateCustomerCommand;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+//Recordar que es una anotacion de lombok para inyectar todas las dependencias necesarias por constructor
 public class CustomerCommandHandler {
 
   private final CreateCustomerCommand createCustomerCommand;
@@ -19,26 +22,12 @@ public class CustomerCommandHandler {
   private final GetCustomerByIdCommand getCustomerByIdCommand;
   private final ListCustomersCommand listCustomersCommand;
 
-  public CustomerCommandHandler(
-          CreateCustomerCommand createCustomerCommand,
-          UpdateCustomerCommand updateCustomerCommand,
-          DeleteCustomerCommand deleteCustomerCommand,
-          GetCustomerByIdCommand getCustomerByIdCommand,
-          ListCustomersCommand listCustomersCommand
-  ) {
-    this.createCustomerCommand = createCustomerCommand;
-    this.updateCustomerCommand = updateCustomerCommand;
-    this.deleteCustomerCommand = deleteCustomerCommand;
-    this.getCustomerByIdCommand = getCustomerByIdCommand;
-    this.listCustomersCommand = listCustomersCommand;
-  }
-
   public CustomerDTO createCustomer(CustomerDTO customerDTO) {
     return createCustomerCommand.execute(customerDTO);
   }
 
-  public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
-    return updateCustomerCommand.execute(customerDTO);
+  public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO) {
+    return updateCustomerCommand.execute(id, customerDTO);
   }
 
   public void deleteCustomer(Long customerId) {

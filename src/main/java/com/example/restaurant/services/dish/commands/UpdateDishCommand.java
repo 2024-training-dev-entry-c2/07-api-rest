@@ -1,28 +1,26 @@
 package com.example.restaurant.services.dish.commands;
 
 import com.example.restaurant.models.dto.DishDTO;
-import com.example.restaurant.mapper.DishMapper;
+import com.example.restaurant.mappers.DishMapper;
 import com.example.restaurant.models.Dish;
 import com.example.restaurant.repositories.DishRepository;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class UpdateDishCommand {
 
   private final DishRepository dishRepository;
   private final DishMapper dishMapper;
 
-  public UpdateDishCommand(DishRepository dishRepository, DishMapper dishMapper) {
-    this.dishRepository = dishRepository;
-    this.dishMapper = dishMapper;
-  }
 
-  public DishDTO execute(DishDTO dishDTO) {
-    Optional<Dish> optionalDish = dishRepository.findById(dishDTO.getId());
+  public DishDTO execute(Long id, DishDTO dishDTO) {
+    Optional<Dish> optionalDish = dishRepository.findById(id);
     if (optionalDish.isEmpty()) {
-      throw new IllegalArgumentException("No se encontró plato con ID: " + dishDTO.getId());
+      throw new IllegalArgumentException("No se encontró plato con ID: " + id);
     }
     Dish dishToUpdate = optionalDish.get();
     dishToUpdate.setName(dishDTO.getName());
