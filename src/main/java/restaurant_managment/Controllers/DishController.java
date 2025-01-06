@@ -3,6 +3,7 @@ package restaurant_managment.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import restaurant_managment.Proxy.DishServiceProxy;
 import restaurant_managment.Utils.Dto.Dish.DishRequestDTO;
 import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 import restaurant_managment.Utils.Dto.Dish.DishDTOConverter;
@@ -21,6 +22,9 @@ public class DishController {
   private DishService dishService;
 
   @Autowired
+  private DishServiceProxy dishServiceProxy;
+
+  @Autowired
   private DishDTOConverter dishDTOConverter;
 
   @PostMapping
@@ -33,7 +37,7 @@ public class DishController {
 
   @GetMapping("/{id}")
   public ResponseEntity<DishResponseDTO> getDishById(@PathVariable Long id) {
-    Optional<DishModel> dishModel = dishService.getDishById(id);
+    Optional<DishModel> dishModel = dishServiceProxy.getDishById(id);
     return dishModel.map(dish -> ResponseEntity.ok(dishDTOConverter.toDishResponseDTO(dish)))
       .orElseGet(() -> ResponseEntity.notFound().build());
   }

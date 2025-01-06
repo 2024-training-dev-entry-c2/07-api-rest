@@ -4,7 +4,6 @@ import restaurant_managment.Repositories.DishRepository;
 import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 import restaurant_managment.Models.DishModel;
 import restaurant_managment.Models.MenuModel;
-import restaurant_managment.Repositories.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +12,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class MenuDTOConverter {
-
-  @Autowired
-  private MenuRepository menuRepository;
 
   @Autowired
   private DishRepository dishRepository;
