@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,7 +40,7 @@ public class Dishfood {
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
     @ManyToMany(mappedBy = "dishfoods")
-    private List<Order> orderList;
+    private List<Order> orderList = new ArrayList<>();
 
     public Dishfood(String name, Double price, Menu menu) {
         this.name = name;

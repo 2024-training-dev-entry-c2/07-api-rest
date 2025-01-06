@@ -4,6 +4,7 @@ import com.example.demo.DTO.MenuRequestDTO;
 import com.example.demo.DTO.MenuResponseDTO;
 import com.example.demo.models.Menu;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class MenuConverter {
@@ -18,7 +19,8 @@ public class MenuConverter {
         return MenuResponseDTO.builder()
                 .id(menu.getId())
                 .name(menu.getName())
-                .dishfoods(menu.getDishfoods().stream()
+                .dishfoods(menu.getDishfoods() == null ? Collections.emptyList() : menu.getDishfoods()
+                        .stream()
                         .map(DishfoodConverter::toResponseDTO) // Reutilizamos DishfoodMapper
                         .collect(Collectors.toList()))
                 .build();

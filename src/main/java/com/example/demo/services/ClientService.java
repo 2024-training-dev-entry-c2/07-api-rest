@@ -5,6 +5,7 @@ import com.example.demo.DTO.ClientResponseDTO;
 import com.example.demo.DTO.converterDTO.ClientConverter;
 import com.example.demo.models.Client;
 import com.example.demo.repositories.ClientRepository;
+import com.example.demo.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,21 @@ import java.util.stream.Collectors;
 public class ClientService {
 
     @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
+    @Autowired
+    private final OrderRepository orderRepository;
+
+    public ClientService(ClientRepository clientRepository, OrderRepository orderRepository) {
+        this.clientRepository = clientRepository;
+        this.orderRepository = orderRepository;
+    }
 
     // Crear un nuevo cliente
     public ClientResponseDTO createClient(ClientRequestDTO clientRequestDTO) {
         Client client = ClientConverter.toEntity(clientRequestDTO);
+        if (client.getIsOften() == null) {
+            client.setIsOften(false);
+        }
         Client savedClient = clientRepository.save(client);
         return ClientConverter.toResponseDTO(savedClient);
     }
@@ -44,7 +55,7 @@ public class ClientService {
 
         existingClient.setName(clientRequestDTO.getName());
         existingClient.setEmail(clientRequestDTO.getEmail());
-        existingClient.setIsOften(clientRequestDTO.getIsOften());
+
 
         Client updatedClient = clientRepository.save(existingClient);
         return ClientConverter.toResponseDTO(updatedClient);
@@ -56,5 +67,8 @@ public class ClientService {
             throw new RuntimeException("Client not found");
         }
         clientRepository.deleteById(id);
+    }
+    public long getOrderCountForClient(Long clientId) {
+        return orderRepository.countByClient_Id(clientId);
     }
 }

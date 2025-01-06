@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,10 +38,10 @@ public class MenuController {
         return ResponseEntity.ok(menuService.getAllMenus());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<MenuResponseDTO> updateMenu(@PathVariable Long id, @RequestBody MenuRequestDTO dto) {
-        return ResponseEntity.ok(menuService.updateMenu(id, dto));
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<MenuResponseDTO> updateMenu(@PathVariable Long id, @RequestBody MenuRequestDTO dto) {
+//        return ResponseEntity.ok(menuService.updateMenu(id, dto));
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<MenuResponseDTO> removeMenu(@PathVariable Long id) {

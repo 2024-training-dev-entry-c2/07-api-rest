@@ -5,6 +5,7 @@ import com.example.demo.DTO.ClientResponseDTO;
 import com.example.demo.models.Client;
 import com.example.demo.models.Order;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class ClientConverter {
@@ -19,7 +20,8 @@ public class ClientConverter {
                 .name(client.getName())
                 .email(client.getEmail())
                 .isOften(client.getIsOften())
-                .orderIds(client.getOrderList().stream().map(Order::getId).collect(Collectors.toList())) // Solo IDs
+                .orderIds(client.getOrderList() == null ? Collections.emptyList() : client.getOrderList()
+                        .stream().map(Order::getId).collect(Collectors.toList())) // Solo IDs
                 .build();
     }
 
@@ -31,7 +33,7 @@ public class ClientConverter {
         return Client.builder()
                 .name(clientRequestDTO.getName())
                 .email(clientRequestDTO.getEmail())
-                .isOften(clientRequestDTO.getIsOften())
                 .build();
     }
+
 }

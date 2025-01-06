@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -34,7 +35,7 @@ public class Client {
     @Column(nullable = false)
     private Boolean isOften;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Order> orderList;
+    private List<Order> orderList = new ArrayList<>();
 
     public Client(String name, String email) {
         this.name = name;

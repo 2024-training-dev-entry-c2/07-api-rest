@@ -6,17 +6,17 @@ import java.util.List;
 public class Subject {
     private final List<Observer> observers = new ArrayList<>();
 
-    public void addObserver(Observer observador) {
-        observers.add(observador);
+    public void addObserver(Observer observer) {
+        observers.add(observer);
     }
 
-    public void removeObserver(Observer observador) {
-        observers.remove(observador);
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
     }
 
-    protected void notifyObserver() {
-        for (Observer observador : observers) {
-            observador.update();
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
         }
     }
 }
