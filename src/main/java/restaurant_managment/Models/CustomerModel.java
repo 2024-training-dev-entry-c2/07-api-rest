@@ -7,11 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
 
 @Entity
 @Data
@@ -31,16 +29,18 @@ public class CustomerModel {
   private String email;
   private String phone;
 
-  @Transient
-  private Integer totalOrders;
-
   public void updateFrecuency(EntityManager entityManager) {
-    totalOrders = entityManager.createQuery("SELECT COUNT(o) FROM OrderModel o WHERE o.reservation.customer.id = :customerId", Long.class)
-      .setParameter("customerId", this.id)
-      .getSingleResult().intValue();
+    Integer totalOrders;
 
-    if (totalOrders >= 10 && !this.isFrequent) {
-      setIsFrequent(true);
+    if (!this.isFrequent)
+    {
+      totalOrders = entityManager.createQuery("SELECT COUNT(o) FROM OrderModel o WHERE o.reservation.customer.id = :customerId", Long.class)
+        .setParameter("customerId", this.id)
+        .getSingleResult().intValue();
+
+      if (totalOrders >= 10) {
+        setIsFrequent(true);
+      }
     }
   }
 }
