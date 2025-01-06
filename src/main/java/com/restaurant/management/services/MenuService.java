@@ -12,12 +12,10 @@ import java.util.Optional;
 @Service
 public class MenuService {
   private final MenuRepository repository;
-  private final DishService dishService;
 
   @Autowired
-  public MenuService(MenuRepository repository, DishService dishService) {
+  public MenuService(MenuRepository repository) {
     this.repository = repository;
-    this.dishService = dishService;
   }
 
   public void addMenu(Menu menu){
@@ -42,28 +40,5 @@ public class MenuService {
 
   public void deleteMenu(Long id){
     repository.deleteById(id);
-  }
-
-  public Menu addDishToMenu(Long menuId, Dish dish) {
-    return repository.findById(menuId).map(menu -> {
-      dish.setMenu(menu);
-      dishService.addDish(dish);
-      menu.getDishes().add(dish);
-      return repository.save(menu);
-    }).orElseThrow(() -> new RuntimeException("Menú con id " + menuId + " no encontrado."));
-  }
-
-  public Menu removeDishFromMenu(Long menuId, Long dishId) {
-    return repository.findById(menuId).map(menu -> {
-      Dish dishToRemove = menu.getDishes().stream()
-        .filter(dish -> dish.getId().equals(dishId))
-        .findFirst()
-        .orElseThrow(() -> new RuntimeException("Plato con id " + dishId + " no encontrado en el menú."));
-
-      menu.getDishes().remove(dishToRemove);
-      dishToRemove.setMenu(null);
-      dishService.deleteDish(dishId);
-      return repository.save(menu);
-    }).orElseThrow(() -> new RuntimeException("Menú con id " + menuId + " no encontrado."));
   }
 }

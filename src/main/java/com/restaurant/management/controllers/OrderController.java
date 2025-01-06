@@ -1,7 +1,14 @@
 package com.restaurant.management.controllers;
 
+import com.restaurant.management.models.Client;
+import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Order;
+import com.restaurant.management.models.dto.OrderRequestDTO;
+import com.restaurant.management.models.dto.OrderResponseDTO;
+import com.restaurant.management.services.ClientService;
+import com.restaurant.management.services.DishService;
 import com.restaurant.management.services.OrderService;
+import com.restaurant.management.utils.DtoOrderConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,44 +26,67 @@ import java.util.List;
 @RequestMapping("api/pedidos")
 public class OrderController {
   private final OrderService service;
+  private final DishService dishService;
+  private final ClientService clientService;
   
   @Autowired
-  public OrderController(OrderService service) {
+  public OrderController(OrderService service, DishService dishService, ClientService clientService) {
     this.service = service;
+    this.dishService = dishService;
+    this.clientService = clientService;
   }
 
   @PostMapping
-  public ResponseEntity<String> addOrder(@RequestBody Order order){
-    service.addOrder(order);
-    service.applyDiscounts(order);
-    return ResponseEntity.ok("Pedido agregado éxitosamente con descuentos aplicados.");
+  public ResponseEntity<String> addOrder(@RequestBody OrderRequestDTO orderRequestDTO){
+    try {
+      Client client = clientService.getClientById(orderRequestDTO.getClientId())
+        .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+
+      List<Dish> dishes = dishService.getDishesByIds(orderRequestDTO.getDishIds());
+
+      Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, dishes);
+      service.addOrder(order);
+      service.applyDiscounts(order);
+      return ResponseEntity.ok("Pedido agregado éxitosamente con descuentos aplicados.");
+    }catch (RuntimeException e){
+      return ResponseEntity.badRequest().body("Error al agregar el pedido: " + e.getMessage());
+    }
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Order> getOrder(@PathVariable Long id){
+  public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable Long id){
     return service.getOrderById(id)
-      .map(ResponseEntity::ok)
+      .map(order -> ResponseEntity.ok(DtoOrderConverter.toOrderResponseDTO(order)))
       .orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping
-  public ResponseEntity<List<Order>> getOrders(){
-    return ResponseEntity.ok(service.getOrders());
+  public ResponseEntity<List<OrderResponseDTO>> getOrders(){
+    List<OrderResponseDTO> orders = service.getOrders().stream()
+      .map(DtoOrderConverter::toOrderResponseDTO)
+      .toList();
+    return ResponseEntity.ok(orders);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateOrder(@PathVariable Long id, @RequestBody Order order){
+  public ResponseEntity<String> updateOrder(@PathVariable Long id, @RequestBody OrderRequestDTO orderRequestDTO){
     try{
+      Client client = clientService.getClientById(orderRequestDTO.getClientId())
+        .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+
+      List<Dish> dishes = dishService.getDishesByIds(orderRequestDTO.getDishIds());
+
+      Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, dishes);
       Order updatedOrder = service.updateOrder(id, order);
       service.applyDiscounts(updatedOrder);
       return ResponseEntity.ok("Se ha actualizado exitosamente el pedido con descuentos aplicados.");
     } catch (RuntimeException e){
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.badRequest().body("Error al actualizar el pedido: " + e.getMessage());
     }
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteOrder(@PathVariable Long id){
+  public ResponseEntity<Void> deleteOrder(@PathVariable Long id){
     service.deleteOrder(id);
     return ResponseEntity.noContent().build();
   }

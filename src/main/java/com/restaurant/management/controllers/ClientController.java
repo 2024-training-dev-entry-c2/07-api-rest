@@ -36,15 +36,18 @@ public class ClientController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Client> getClient(@PathVariable Long id){
+  public ResponseEntity<ClientResponseDTO> getClient(@PathVariable Long id){
     return service.getClientById(id)
-      .map(ResponseEntity::ok)
+      .map(client -> ResponseEntity.ok(DtoClientConverter.toClientResponseDTO(client)))
       .orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping
-  public ResponseEntity<List<Client>> getClients(){
-    return ResponseEntity.ok(service.getClients());
+  public ResponseEntity<List<ClientResponseDTO>> getClients(){
+    List<ClientResponseDTO> clients = service.getClients().stream()
+      .map(DtoClientConverter::toClientResponseDTO)
+      .toList();
+    return ResponseEntity.ok(clients);
   }
 
   @PutMapping("/{id}")
@@ -58,7 +61,7 @@ public class ClientController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteClient(@PathVariable Long id){
+  public ResponseEntity<Void> deleteClient(@PathVariable Long id){
     service.deleteClient(id);
     return ResponseEntity.noContent().build();
   }

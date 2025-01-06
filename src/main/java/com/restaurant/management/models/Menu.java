@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@Table(name = "MENUS")
 public class Menu {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

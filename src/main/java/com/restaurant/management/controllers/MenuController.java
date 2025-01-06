@@ -2,7 +2,10 @@ package com.restaurant.management.controllers;
 
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Menu;
+import com.restaurant.management.models.dto.MenuRequestDTO;
+import com.restaurant.management.models.dto.MenuResponseDTO;
 import com.restaurant.management.services.MenuService;
+import com.restaurant.management.utils.DtoMenuConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,27 +30,30 @@ public class MenuController {
   }
   
   @PostMapping
-  public ResponseEntity<String> addMenu(@RequestBody Menu menu){
-    service.addMenu(menu);
+  public ResponseEntity<String> addMenu(@RequestBody MenuRequestDTO menuRequestDTO){
+    service.addMenu(DtoMenuConverter.toMenu(menuRequestDTO));
     return ResponseEntity.ok("Menú agregado éxitosamente");
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Menu> getMenu(@PathVariable Long id){
+  public ResponseEntity<MenuResponseDTO> getMenu(@PathVariable Long id){
     return service.getMenuById(id)
-      .map(ResponseEntity::ok)
+      .map(menu -> ResponseEntity.ok(DtoMenuConverter.toMenuResponseDTO(menu)))
       .orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping
-  public ResponseEntity<List<Menu>> getMenus(){
-    return ResponseEntity.ok(service.getMenus());
+  public ResponseEntity<List<MenuResponseDTO>> getMenus(){
+    List<MenuResponseDTO> menus = service.getMenus().stream()
+      .map(DtoMenuConverter::toMenuResponseDTO)
+      .toList();
+    return ResponseEntity.ok(menus);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateMenu(@PathVariable Long id, @RequestBody Menu menu){
+  public ResponseEntity<String> updateMenu(@PathVariable Long id, @RequestBody MenuRequestDTO menuRequestDTO){
     try{
-      Menu updatedMenu = service.updateMenu(id, menu);
+      Menu updatedMenu = service.updateMenu(id, DtoMenuConverter.toMenu(menuRequestDTO));
       return ResponseEntity.ok("Se ha actualizado exitosamente el menú.");
     } catch (RuntimeException e){
       return ResponseEntity.notFound().build();
@@ -55,24 +61,8 @@ public class MenuController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteMenu(@PathVariable Long id){
+  public ResponseEntity<Void> deleteMenu(@PathVariable Long id){
     service.deleteMenu(id);
-    return ResponseEntity.noContent().build();
-  }
-
-  @PostMapping("/{id}/dishes")
-  public ResponseEntity<String> addDishToMenu(@PathVariable Long id, @RequestBody Dish dish){
-    try{
-      Menu menu = service.addDishToMenu(id, dish);
-      return ResponseEntity.ok("Se ha agregado el plato exitosamente a el menú.");
-    }catch (RuntimeException e){
-      return ResponseEntity.notFound().build();
-    }
-  }
-
-  @DeleteMapping("/{id}/dishes/{dishId}")
-  public ResponseEntity<String> removeDishFromMenu(@PathVariable Long id, @PathVariable Long dishId){
-    service.removeDishFromMenu(id, dishId);
     return ResponseEntity.noContent().build();
   }
 

@@ -18,7 +18,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "orders")
+@Table(name = "ORDERS")
 public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class Order {
 
   @ManyToMany
   @JoinTable(
-    name = "order_dish",
+    name = "ORDER_INCLUDES_DISH",
     joinColumns = @JoinColumn(name = "order_id"),
     inverseJoinColumns = @JoinColumn(name = "dish_id")
   )

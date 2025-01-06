@@ -3,6 +3,7 @@ package com.restaurant.management.controllers;
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Menu;
 import com.restaurant.management.models.dto.DishRequestDTO;
+import com.restaurant.management.models.dto.DishResponseDTO;
 import com.restaurant.management.services.DishService;
 import com.restaurant.management.services.MenuService;
 import com.restaurant.management.utils.DtoDishConverter;
@@ -24,7 +25,7 @@ import java.util.List;
 public class DishController {
   private final DishService service;
   private final MenuService menuService;
-  
+
   @Autowired
   public DishController(DishService service, MenuService menuService) {
     this.service = service;
@@ -40,34 +41,39 @@ public class DishController {
       service.addDish(DtoDishConverter.toDish(dishRequestDTO, menu));
       return ResponseEntity.ok("Plato agregado exitosamente");
     } catch (RuntimeException e) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.badRequest().body("Error al agregar el plato: " + e.getMessage());
     }
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Dish> getDish(@PathVariable Long id){
+  public ResponseEntity<DishResponseDTO> getDish(@PathVariable Long id){
     return service.getDishById(id)
-      .map(ResponseEntity::ok)
+      .map(dish -> ResponseEntity.ok(DtoDishConverter.toDishResponseDTO(dish)))
       .orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping
-  public ResponseEntity<List<Dish>> getDishes(){
-    return ResponseEntity.ok(service.getDishes());
+  public ResponseEntity<List<DishResponseDTO>> getDishes(){
+    List<DishResponseDTO> dishes = service.getDishes().stream()
+      .map(DtoDishConverter::toDishResponseDTO)
+      .toList();
+    return ResponseEntity.ok(dishes);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateDish(@PathVariable Long id, @RequestBody Dish dish){
+  public ResponseEntity<String> updateDish(@PathVariable Long id, @RequestBody DishRequestDTO dishRequestDTO){
     try{
-      Dish updatedDish = service.updateDish(id, dish);
+      Menu menu = menuService.getMenuById(dishRequestDTO.getMenuId())
+        .orElseThrow(() -> new RuntimeException("Menú no encontrado"));
+      Dish updatedDish = service.updateDish(id, DtoDishConverter.toDish(dishRequestDTO, menu));
       return ResponseEntity.ok("Se ha actualizado exitosamente el plato.");
     } catch (RuntimeException e){
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.badRequest().body("Error al actualizar el plato: " + e.getMessage());
     }
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteDish(@PathVariable Long id){
+  public ResponseEntity<Void> deleteDish(@PathVariable Long id){
     service.deleteDish(id);
     return ResponseEntity.noContent().build();
   }
