@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class OrderResponseDTO {
   private Long id;
   private ClientResponseDTO client;
-  private DishResponseDTO[] dishes;
+  private DishOrderResponseDTO[] dishes;
   private LocalDate date;
   private Float total;
 }

@@ -5,6 +5,7 @@ import com.restaurant.management.chain.FrequentClientDiscounttHandler;
 import com.restaurant.management.chain.NormalClientHandler;
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Order;
+import com.restaurant.management.models.OrderDish;
 import com.restaurant.management.observer.IObservable;
 import com.restaurant.management.observer.IOrderObserver;
 import com.restaurant.management.repositories.OrderRepository;
@@ -26,6 +27,9 @@ public class OrderService implements IObservable {
   }
 
   public void addOrder(Order order){
+    for (OrderDish orderDish : order.getOrderDishes()) {
+      orderDish.setOrder(order);
+    }
     order.calculateTotal();
     repository.save(order);
     notifyObservers(order);
@@ -42,7 +46,14 @@ public class OrderService implements IObservable {
   public Order updateOrder(Long id, Order updatedOrder){
     return repository.findById(id).map(o ->{
       o.setClient(updatedOrder.getClient());
-      o.setDishes(updatedOrder.getDishes());
+
+      o.getOrderDishes().clear();
+
+      for (OrderDish orderDish : updatedOrder.getOrderDishes()) {
+        orderDish.setOrder(o);
+        o.getOrderDishes().add(orderDish);
+      }
+
       o.calculateTotal();
       return repository.save(o);
     }).orElseThrow(()-> new RuntimeException("Pedido con id " + id + " no se pudo actualizar."));
@@ -73,7 +84,8 @@ public class OrderService implements IObservable {
   @Override
   public void notifyObservers(Order order) {
     for(IOrderObserver observer : observers){
-      for(Dish dish : order.getDishes()){
+      for (OrderDish orderDish : order.getOrderDishes()) {
+        Dish dish = orderDish.getDish();
         observer.updateOrder(order.getClient(), dish);
       }
     }

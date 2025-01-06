@@ -3,6 +3,8 @@ package com.restaurant.management.controllers;
 import com.restaurant.management.models.Client;
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Order;
+import com.restaurant.management.models.OrderDish;
+import com.restaurant.management.models.dto.DishOrderRequestDTO;
 import com.restaurant.management.models.dto.OrderRequestDTO;
 import com.restaurant.management.models.dto.OrderResponseDTO;
 import com.restaurant.management.services.ClientService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,9 +45,15 @@ public class OrderController {
       Client client = clientService.getClientById(orderRequestDTO.getClientId())
         .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-      List<Dish> dishes = dishService.getDishesByIds(orderRequestDTO.getDishIds());
+      List<OrderDish> orderDishes = new ArrayList<>();
+      for (DishOrderRequestDTO dishOrderRequestDTO : orderRequestDTO.getDishes()) {
+        Dish dish = dishService.getDishById(dishOrderRequestDTO.getDishId())
+          .orElseThrow(() -> new RuntimeException("Plato no encontrado"));
 
-      Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, dishes);
+        orderDishes.add(new OrderDish( dish, dishOrderRequestDTO.getQuantity()));
+      }
+
+      Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, orderDishes);
       service.addOrder(order);
       service.applyDiscounts(order);
       return ResponseEntity.ok("Pedido agregado éxitosamente con descuentos aplicados.");
@@ -74,9 +83,15 @@ public class OrderController {
       Client client = clientService.getClientById(orderRequestDTO.getClientId())
         .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-      List<Dish> dishes = dishService.getDishesByIds(orderRequestDTO.getDishIds());
+      List<OrderDish> orderDishes = new ArrayList<>();
+      for (DishOrderRequestDTO dishOrderRequestDTO : orderRequestDTO.getDishes()) {
+        Dish dish = dishService.getDishById(dishOrderRequestDTO.getDishId())
+          .orElseThrow(() -> new RuntimeException("Plato no encontrado"));
 
-      Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, dishes);
+        orderDishes.add(new OrderDish( dish, dishOrderRequestDTO.getQuantity()));
+      }
+
+      Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, orderDishes);
       Order updatedOrder = service.updateOrder(id, order);
       service.applyDiscounts(updatedOrder);
       return ResponseEntity.ok("Se ha actualizado exitosamente el pedido con descuentos aplicados.");

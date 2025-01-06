@@ -6,6 +6,7 @@ import com.restaurant.management.constants.DishStateEnum;
 import com.restaurant.management.state.DishState;
 import com.restaurant.management.state.NormalDishState;
 import com.restaurant.management.state.PopularDishState;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -15,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
@@ -44,9 +46,9 @@ public class Dish {
   @JsonBackReference
   private Menu menu;
 
-  @ManyToMany(mappedBy = "dishes")
+  @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
-  private List<Order> orders;
+  private List<OrderDish> orderDishes;
 
   @Transient
   private static final Map<DishStateEnum, DishState> stateBehaviors = Map.of(
@@ -60,7 +62,7 @@ public class Dish {
     this.description = description;
     this.price = price;
     this.menu = menu;
-    this.orders = new ArrayList<>();
+    this.orderDishes = new ArrayList<>();
     this.state = DishStateEnum.NORMAL;
   }
 
@@ -69,12 +71,12 @@ public class Dish {
     this.description = description;
     this.price = price;
     this.menu = menu;
-    this.orders = new ArrayList<>();
+    this.orderDishes = new ArrayList<>();
     this.state = DishStateEnum.NORMAL;
   }
 
   public Dish() {
-    this.orders = new ArrayList<>();
+    this.orderDishes = new ArrayList<>();
     this.state = DishStateEnum.NORMAL;
   }
 

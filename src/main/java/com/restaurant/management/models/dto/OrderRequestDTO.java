@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 public class OrderRequestDTO {
   private Long clientId;
-  private List<Long> dishIds;
+  private List<DishOrderRequestDTO> dishes;
   private LocalDate date;
 }
