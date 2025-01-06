@@ -35,10 +35,9 @@ public class DishController {
   @PostMapping
   public ResponseEntity<String> addDish(@RequestBody DishRequestDTO dishRequestDTO){
     try {
-      Menu menu = menuService.getMenuById(dishRequestDTO.getMenuId())
-        .orElseThrow(() -> new RuntimeException("Menú no encontrado"));
-
-      service.addDish(DtoDishConverter.toDish(dishRequestDTO, menu));
+      Dish dish = DtoDishConverter.toDish(dishRequestDTO, null);
+      menuService.addDishToMenu(dishRequestDTO.getMenuId(), dish);
+      service.addDish(dish);
       return ResponseEntity.ok("Plato agregado exitosamente");
     } catch (RuntimeException e) {
       return ResponseEntity.badRequest().body("Error al agregar el plato: " + e.getMessage());

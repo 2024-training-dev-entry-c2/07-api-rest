@@ -1,6 +1,7 @@
 package com.restaurant.management.services;
 
 import com.restaurant.management.models.Dish;
+import com.restaurant.management.models.Menu;
 import com.restaurant.management.repositories.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,11 @@ public class DishService {
   }
 
   public void deleteDish(Long id){
+    Dish dish = repository.findById(id).orElseThrow(() -> new RuntimeException("Plato no encontrado"));
+    Menu menu = dish.getMenu();
+    if (menu != null) {
+      menu.removeDish(dish);
+    }
     repository.deleteById(id);
   }
 }

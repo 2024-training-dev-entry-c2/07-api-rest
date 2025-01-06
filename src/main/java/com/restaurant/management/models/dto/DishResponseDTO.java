@@ -11,5 +11,4 @@ public class DishResponseDTO {
   private String description;
   private Float price;
   private String state;
-  private Long menuId;
 }

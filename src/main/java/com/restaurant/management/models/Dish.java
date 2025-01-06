@@ -1,6 +1,7 @@
 package com.restaurant.management.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.restaurant.management.constants.DishStateEnum;
 import com.restaurant.management.state.DishState;
 import com.restaurant.management.state.NormalDishState;
@@ -21,6 +22,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -43,6 +45,7 @@ public class Dish {
   private Menu menu;
 
   @ManyToMany(mappedBy = "dishes")
+  @JsonIgnore
   private List<Order> orders;
 
   @Transient
@@ -78,4 +81,5 @@ public class Dish {
   public float getPrice() {
     return stateBehaviors.get(state).getPrice(price);
   }
+
 }

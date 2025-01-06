@@ -4,6 +4,7 @@ import com.restaurant.management.models.Menu;
 import com.restaurant.management.models.dto.MenuRequestDTO;
 import com.restaurant.management.models.dto.MenuResponseDTO;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class DtoMenuConverter {
@@ -17,9 +18,9 @@ public class DtoMenuConverter {
     MenuResponseDTO menuResponseDTO = new MenuResponseDTO();
     menuResponseDTO.setId(menu.getId());
     menuResponseDTO.setName(menu.getName());
-    menuResponseDTO.setDishes(menu.getDishes().stream()
+    menuResponseDTO.setDishes(menu.getDishes()!= null ? menu.getDishes().stream()
       .map(DtoDishConverter::toDishResponseDTO)
-      .collect(Collectors.toSet()));
+      .collect(Collectors.toList()) : new ArrayList<>());
     return menuResponseDTO;
   }
 }

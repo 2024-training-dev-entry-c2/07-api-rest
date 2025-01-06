@@ -21,7 +21,7 @@ public class DtoDishConverter {
     dishResponseDTO.setName(dish.getName());
     dishResponseDTO.setDescription(dish.getDescription());
     dishResponseDTO.setPrice(dish.getPrice());
-    dishResponseDTO.setMenuId(dish.getMenu() != null ? dish.getMenu().getId() : null);
+    dishResponseDTO.setState(dish.getState().name());
     return dishResponseDTO;
   }
 }
