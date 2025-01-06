@@ -1,41 +1,57 @@
-## API REST
+# 🍱 Restaurant Management
+[![GitHub last commit](https://img.shields.io/github/last-commit/KJRM20/07-api-rest)](#)<br><br>
 
-Es una interfaz de programación de aplicaciones (API) que sigue los principios de la arquitectura REST (Representational State Transfer).
+## Descripción
+**Restaurant Management** es una aplicación interactiva diseñada para gestionar información de restaurantes y sus platos, además de permitir realizar pedidos con sus respectivos platos. La aplicación se basa en la arquitectura de la API REST y se utiliza una base de datos en memoria para almacenar los datos.
 
-Es un conjunto de reglas que permite a sistemas interactuar entre sí utilizando métodos estándar del protocolo HTTP, como GET, POST, PUT, DELETE, etc.
-El término "API REST" se usa para referirse a una API que implementa parcialmente o completamente las restricciones definidas por REST.
+## Características
+1. **Gestión de menús:**
+    - **Registro:** añadir nuevos menús especificando nombre.
+    - **c:** posibilidad de actualizar información.
+    - **Eliminación:** facilita la eliminación de menús obsoletos o irrelevantes.
+2. **Gestión de platos:**
+    - **Registro:** agrega platos a cada menú con detalles como nombre, descripción y precio.
+    - **Edición:** permite modificar información de los platos existentes.
+    - **Eliminación:** elimina platos que ya no están disponibles o que han sido reemplazados.
+3. **Gestión de clientes:**
+    - **Registro:** añadir nuevos clientes especificando nombre, correo electrónico y opcionalmente un valor booleano para indicar si es un cliente frecuente
+    - **Edición:** edita la información de los clientes existentes.
+    - **Eliminación:** elimina clientes que ya no están en uso o que han sido reemplazados.
+4. **Sistema de pedidos:**
+    - **Realizar pedido:** se crea un pedido con los platos seleccionados y el cliente que realiza el pedido.
+    - **Visualización de pedidos:** muestra los pedidos realizados y sus detalles.
+    - **Edición de pedidos:** permite modificar los detalles del pedido.
+    - **Eliminación de pedidos:** elimina pedidos que ya no están en uso o que han sido reemplazados.
 
-## RESTful
+## Tecnologías
+- **Java JDK 17**
+- **Gradle**: Herramienta para la construcción y gestión del proyecto.
+- **Spring Boot**: Framework para la construcción de aplicaciones Java.
+- **Spring Data JPA**: Herramienta para la gestión de bases de datos relacionales.
+- **Spring MVC**: Framework para la construcción de aplicaciones web.
+- **MySQL**: Base de datos relacional.
+- **Sqlyog**: Herramienta para la gestión de bases de datos relacionales.
 
-Es un adjetivo que describe una API que cumple completamente con los principios de REST.
+## Instalación y Configuración
+1. **Clona el Repositorio:**
+   ```bash
+   git clone https://github.com/KJRM20/07-api-rest.git
+   ```
+2. **Compila y ejecuta el proyecto:**
+    - Abre el proyecto en tu IDE y en la terminal ejecuta el comando:
+   ```bash
+      ./gradlew buid
+      ```
+    - A continuación, desde la línea de comandos ejecuta el comando:
+   ```bash
+      ./gradlew bootRun
+      ```
+3. **Interactúa con el sistema:**
+   - Haz uso de Insomnia ó Postman para interactuar con el API REST.
 
-Una API es RESTful si sigue estrictamente los siguientes principios:
-- Arquitectura cliente-servidor: Separación entre cliente (interfaz) y servidor (datos y lógica).
+## Arquitectura y Funcionalidad
+El proyecto está organizado en una estructura simple basada en POO que emplea una base de datos con MySQL.
 
-- Stateless: Cada solicitud del cliente al servidor debe contener toda la información necesaria para entenderla.
 
-- Caché: Las respuestas deben ser cacheables cuando sea posible para mejorar el rendimiento.
-
-- Interfaz uniforme: Uso consistente de métodos HTTP, URIs, y representaciones de recursos.
-
-- Sistema en capas: Posibilidad de usar capas intermedias entre cliente y servidor.
-
-## A que nos referimos con Stateless
-
-En el contexto de REST, el término stateless (sin estado) significa que cada solicitud del cliente al servidor debe ser independiente y contener toda la información necesaria para que el servidor pueda procesarla, sin depender del estado de solicitudes anteriores.
-
-## Que haremos en este repositorio...
-
-Vamos a estructurar un API Restful para la heladería. Usaremos Java 17 con Gradle y organizaremos el proyecto de manera que sea fácil de extender. Nos enfocaremos en el inventario, que incluirá funcionalidades para gestionar productos, como agregar, actualizar, eliminar y listar.
-
-Para empezar, estructuraremos el proyecto con estas consideraciones:
-
-- Controladores: Gestionarán las rutas del API.
-- Servicios: Contendrán la lógica del negocio.
-- Modelos: Representarán las entidades de dominio (como "Producto").
-- Repositorios en memoria: Simularán la interacción con la base de datos, usando colecciones como Map, Set y LinkedList.
-
-Patrones de diseño:
-
-- Singleton para manejar el repositorio.
-- DTO para separar las entidades de dominio de los datos de respuesta o petición.
+## Contacto
+Para preguntas, problemas o colaboraciones, por favor, contáctame.
