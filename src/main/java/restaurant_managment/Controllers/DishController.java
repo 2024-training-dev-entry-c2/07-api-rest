@@ -3,7 +3,6 @@ package restaurant_managment.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import restaurant_managment.Proxy.DishServiceProxy;
 import restaurant_managment.Utils.Dto.Dish.DishRequestDTO;
 import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 import restaurant_managment.Utils.Dto.Dish.DishDTOConverter;
@@ -22,14 +21,11 @@ public class DishController {
   private DishService dishService;
 
   @Autowired
-  private DishServiceProxy dishServiceProxy;
-
-  @Autowired
   private DishDTOConverter dishDTOConverter;
 
   @PostMapping
   public ResponseEntity<DishResponseDTO> createDish(@RequestBody DishRequestDTO dishRequestDTO) {
-    DishModel dishModel = DishDTOConverter.toDish(dishRequestDTO);
+    DishModel dishModel = dishDTOConverter.toDish(dishRequestDTO);
     DishModel createdDish = dishService.saveDish(dishModel);
     DishResponseDTO responseDTO = dishDTOConverter.toDishResponseDTO(createdDish);
     return ResponseEntity.ok(responseDTO);
@@ -37,7 +33,7 @@ public class DishController {
 
   @GetMapping("/{id}")
   public ResponseEntity<DishResponseDTO> getDishById(@PathVariable Long id) {
-    Optional<DishModel> dishModel = dishServiceProxy.getDishById(id);
+    Optional<DishModel> dishModel = dishService.getDishById(id);
     return dishModel.map(dish -> ResponseEntity.ok(dishDTOConverter.toDishResponseDTO(dish)))
       .orElseGet(() -> ResponseEntity.notFound().build());
   }
@@ -53,8 +49,8 @@ public class DishController {
 
   @PutMapping("/{id}")
   public ResponseEntity<DishResponseDTO> updateDish(@PathVariable Long id, @RequestBody DishRequestDTO dishRequestDTO) {
-    DishModel updatedDishModel = DishDTOConverter.toDish(dishRequestDTO);
-    DishModel updatedDish = dishService.updateCustomer(id, updatedDishModel);
+    DishModel updatedDishModel = dishDTOConverter.toDish(dishRequestDTO);
+    DishModel updatedDish = dishService.updateDish(id, updatedDishModel);
     DishResponseDTO responseDTO = dishDTOConverter.toDishResponseDTO(updatedDish);
     return ResponseEntity.ok(responseDTO);
   }

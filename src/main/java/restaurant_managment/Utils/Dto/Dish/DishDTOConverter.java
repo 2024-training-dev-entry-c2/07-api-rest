@@ -20,6 +20,7 @@ public class DishDTOConverter {
     DishResponseDTO dto = new DishResponseDTO();
     dto.setId(dish.getId());
     dto.setName(dish.getName());
+    dto.setIsPopular(dish.getIsPopular());
     dto.setDescription(dish.getDescription());
     dto.setPrice(dish.getPrice());
     return dto;

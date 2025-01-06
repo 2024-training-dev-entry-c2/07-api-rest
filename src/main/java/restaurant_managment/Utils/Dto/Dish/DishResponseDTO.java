@@ -9,6 +9,7 @@ public class DishResponseDTO {
   private Long id;
   private String name;
   private String description;
+  private Boolean isPopular;
   private Double price;
 
 }

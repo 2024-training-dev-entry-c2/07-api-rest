@@ -1,5 +1,7 @@
 package restaurant_managment.Services;
 
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurant_managment.Models.DishModel;
@@ -12,17 +14,33 @@ import java.util.Optional;
 @Service
 public class DishService implements IDishService {
 
-  @Autowired
-  private DishRepository dishRepository;
+  private final DishRepository dishRepository;
+  private final EntityManager entityManager;
 
-  public List<DishModel> getAllDishes() { return dishRepository.findAll(); }
+  @Autowired
+  public DishService(DishRepository dishRepository, EntityManager entityManager) {
+    this.dishRepository = dishRepository;
+    this.entityManager = entityManager;
+  }
+
+  public List<DishModel> getAllDishes() {
+    return dishRepository.findAll();
+  }
 
   @Override
-  public Optional<DishModel> getDishById(Long id) { return dishRepository.findById(id); }
+  public Optional<DishModel> getDishById(Long id) {
+    return dishRepository.findById(id);
+  }
 
-  public DishModel saveDish(DishModel dish) { return dishRepository.save(dish); }
+  @Transactional
+  public DishModel saveDish(DishModel dish) {
+    DishModel savedDish = dishRepository.save(dish);
+    updateDishPopularity(savedDish);
+    return savedDish;
+  }
 
-  public DishModel updateCustomer(Long id, DishModel newDish) {
+  @Transactional
+  public DishModel updateDish(Long id, DishModel newDish) {
     return dishRepository.findById(id)
       .map(dish -> {
         dish.setName(newDish.getName());
@@ -30,10 +48,21 @@ public class DishService implements IDishService {
         dish.setIsPopular(newDish.getIsPopular());
         dish.setDescription(newDish.getDescription());
         dish.setIsAvailable(newDish.getIsAvailable());
-        return dishRepository.save(dish);
+
+        DishModel updatedDish = dishRepository.save(dish);
+
+        updateDishPopularity(updatedDish);
+
+        return updatedDish;
       })
       .orElseThrow(() -> new RuntimeException("Dish not found"));
   }
 
-  public void deleteDish(Long id) { dishRepository.deleteById(id); }
+  public void deleteDish(Long id) {
+    dishRepository.deleteById(id);
+  }
+
+  private void updateDishPopularity(DishModel dish) {
+    dish.updatePopularity(entityManager);
+  }
 }

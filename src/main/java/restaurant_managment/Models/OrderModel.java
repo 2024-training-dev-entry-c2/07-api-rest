@@ -35,11 +35,14 @@ public class OrderModel {
   private Double totalPrice;
 
   public Double getTotalPrice() {
-    Double total = 0.0;
-    for (DishModel dish : dishes) {
-      total += dish.getPrice();
+    if (totalPrice == null) {
+      Double total = 0.0;
+      for (DishModel dish : dishes) {
+        total += dish.getPrice();
+      }
+      setTotalPrice(total);
+      return total;
     }
-    setTotalPrice(total);
-    return total;
+    return totalPrice;
   }
 }

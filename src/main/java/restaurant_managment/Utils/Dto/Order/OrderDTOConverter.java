@@ -49,6 +49,7 @@ public class OrderDTOConverter {
         DishResponseDTO dishResponse = new DishResponseDTO();
         dishResponse.setId(dish.getId());
         dishResponse.setName(dish.getName());
+        dishResponse.setIsPopular(dish.getIsPopular());
         dishResponse.setDescription(dish.getDescription());
         dishResponse.setPrice(dish.getPrice());
         return dishResponse;
