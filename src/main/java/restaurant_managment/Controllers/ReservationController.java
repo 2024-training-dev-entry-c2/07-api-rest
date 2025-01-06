@@ -9,7 +9,6 @@ import restaurant_managment.Utils.Dto.Reservation.ReservationResponseDTO;
 import restaurant_managment.Utils.Dto.Reservation.ReservationDTOConverter;
 import restaurant_managment.Models.ReservationModel;
 import restaurant_managment.Services.ReservationService;
-import restaurant_managment.interfaces.IReservationService;
 
 import java.util.List;
 import java.util.Optional;
