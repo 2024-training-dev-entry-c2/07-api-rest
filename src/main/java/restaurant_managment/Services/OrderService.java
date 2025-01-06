@@ -5,9 +5,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import restaurant_managment.Models.CustomerModel;
-import restaurant_managment.Models.DishModel;
 import restaurant_managment.Models.OrderModel;
+import restaurant_managment.Observer.ClientObserver;
+import restaurant_managment.Observer.DishObserver;
+import restaurant_managment.Observer.Subject;
 import restaurant_managment.Repositories.OrderRepository;
 import restaurant_managment.Utils.Handlers.FinalPriceHandler;
 import restaurant_managment.Utils.Handlers.FrequentCustomerDiscountHandler;
@@ -19,14 +20,15 @@ import java.util.Optional;
 
 @Service
 public class OrderService implements IOrderService {
-
   private final OrderRepository orderRepository;
   private final EntityManager entityManager;
+  private final Subject subject;
 
   @Autowired
   public OrderService(OrderRepository orderRepository, EntityManager entityManager) {
     this.orderRepository = orderRepository;
     this.entityManager = entityManager;
+    this.subject = new Subject();
   }
 
   public List<OrderModel> getAllOrders() {
@@ -43,8 +45,10 @@ public class OrderService implements IOrderService {
     Double totalPrice = calculateTotalPrice(order);
     order.setTotalPrice(totalPrice);
     OrderModel createdOrder = orderRepository.save(order);
-    updateCustomerFrequency(createdOrder);
-    updateDishPopularity(createdOrder);
+
+    registerObservers(createdOrder);
+    subject.notifyObservers();
+
     return createdOrder;
   }
 
@@ -58,15 +62,21 @@ public class OrderService implements IOrderService {
         Double totalPrice = calculateTotalPrice(order);
         order.setTotalPrice(totalPrice);
         OrderModel savedOrder = orderRepository.save(order);
-        updateCustomerFrequency(savedOrder);
-        updateDishPopularity(savedOrder);
+
+        registerObservers(savedOrder);
+        subject.notifyObservers();
+
         return savedOrder;
       })
       .orElseThrow(() -> new RuntimeException("Order not found"));
   }
 
   public void deleteOrder(Long id) {
-    orderRepository.deleteById(id);
+    orderRepository.findById(id)
+      .ifPresent(order -> {
+        unregisterObservers(order);
+        orderRepository.deleteById(id);
+      });
   }
 
   public Double calculateTotalPrice(OrderModel order) {
@@ -78,14 +88,19 @@ public class OrderService implements IOrderService {
     return frequentCustomerHandler.handle(order);
   }
 
-  private void updateCustomerFrequency(OrderModel order) {
-    CustomerModel customer = order.getReservation().getCustomer();
-    customer.updateFrecuency(entityManager);
+  private void registerObservers(OrderModel order) {
+    ClientObserver clientObserver = new ClientObserver(order.getReservation().getCustomer(), entityManager);
+    subject.addObserver(clientObserver);
+
+    DishObserver dishObserver = new DishObserver(order.getDishes(), entityManager);
+    subject.addObserver(dishObserver);
   }
 
-  private void updateDishPopularity(OrderModel order) {
-    for (DishModel dish : order.getDishes()) {
-      dish.updatePopularity(entityManager);
-    }
+  private void unregisterObservers(OrderModel order) {
+    ClientObserver clientObserver = new ClientObserver(order.getReservation().getCustomer(), entityManager);
+    subject.removeObserver(clientObserver);
+
+    DishObserver dishObserver = new DishObserver(order.getDishes(), entityManager);
+    subject.removeObserver(dishObserver);
   }
 }

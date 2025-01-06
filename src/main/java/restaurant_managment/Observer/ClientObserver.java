@@ -15,5 +15,8 @@ public class ClientObserver implements IObserver {
   @Override
   public void update() {
     customer.updateFrecuency(entityManager);
+    if (customer.getIsFrequent()) {
+    System.out.println("El cliente " + customer.getFirstName() + " " + customer.getLastName() + " es cliente frecuente!!");
+    };
   }
 }

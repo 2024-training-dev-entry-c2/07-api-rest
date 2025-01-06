@@ -18,6 +18,9 @@ public class DishObserver implements IObserver {
   public void update() {
     for (DishModel dish : dishes) {
       dish.updatePopularity(entityManager);
+      if (dish.getIsPopular()) {
+        System.out.println("El plato " + dish.getName() + " es popular!!");
+      }
     }
   }
 }
