@@ -16,35 +16,35 @@ public class DishfoodController {
     @Autowired
     private DishFoodService dishfoodService;
 
-    // Crear un nuevo platillo
+    // Crear un nuevo plato
     @PostMapping
     public ResponseEntity<DishfoodResponseDTO> createDishfood(@RequestBody DishfoodRequestDTO dishfoodRequestDTO) {
         DishfoodResponseDTO responseDTO = dishfoodService.createDishFood(dishfoodRequestDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
-    // Obtener todos los platillos
+    // Obtener todos los platos
     @GetMapping
     public ResponseEntity<List<DishfoodResponseDTO>> getAllDishfoods() {
         List<DishfoodResponseDTO> dishfoods = dishfoodService.getAllDishfoods();
         return ResponseEntity.ok(dishfoods);
     }
 
-    // Obtener platillo por ID
+    // Obtener plato por ID
     @GetMapping("/{id}")
     public ResponseEntity<DishfoodResponseDTO> getDishfoodById(@PathVariable Long id) {
         DishfoodResponseDTO responseDTO = dishfoodService.getDishfoodById(id);
         return ResponseEntity.ok(responseDTO);
     }
 
-    // Actualizar un platillo
+    // Actualizar un plato
     @PutMapping("/{id}")
     public ResponseEntity<DishfoodResponseDTO> updateDishfood(@PathVariable Long id, @RequestBody DishfoodRequestDTO dishfoodRequestDTO) {
         DishfoodResponseDTO updatedDishfood = dishfoodService.updateDishfood(id, dishfoodRequestDTO);
         return ResponseEntity.ok(updatedDishfood);
     }
 
-    // Eliminar un platillo
+    // Eliminar un plato
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDishfood(@PathVariable Long id) {
         dishfoodService.deleteDishfood(id);

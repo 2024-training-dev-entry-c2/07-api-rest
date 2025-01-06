@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class ClientConverter {
 
-    // Convierte entidad a ResponseDTO
+
     public static ClientResponseDTO toResponseDTO(Client client) {
         if (client == null) {
             return null;
@@ -25,7 +25,7 @@ public class ClientConverter {
                 .build();
     }
 
-    // Convierte RequestDTO a entidad
+
     public static Client toEntity(ClientRequestDTO clientRequestDTO) {
         if (clientRequestDTO == null) {
             return null;

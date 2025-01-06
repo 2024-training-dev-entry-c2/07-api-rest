@@ -12,5 +12,5 @@ public class ClientResponseDTO {
     private String name;
     private String email;
     private boolean isOften;
-    private List<Long> orderIds; // Contendrá datos más simplificados de las órdenes
+    private List<Long> orderIds;
 }

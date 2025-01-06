@@ -10,9 +10,6 @@ public class Subject {
         observers.add(observer);
     }
 
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
 
     public void notifyObservers(String message) {
         for (Observer observer : observers) {

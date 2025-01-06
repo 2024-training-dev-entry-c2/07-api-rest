@@ -12,9 +12,12 @@ import com.example.demo.observer.Subject;
 import com.example.demo.repositories.ClientRepository;
 import com.example.demo.repositories.DishfoodRepository;
 import com.example.demo.repositories.OrderRepository;
+import com.example.demo.rules.FrequentClientDiscountHandler;
+import com.example.demo.rules.PopularDishPriceIncreaseHandler;
+import com.example.demo.strategy.FrequentClientPricingStrategy;
+import com.example.demo.strategy.PopularDishPricingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,9 +47,18 @@ public class OrderService {
         Client client = clientRepository.findById(orderDTO.getClientId()).orElseThrow(() -> new RuntimeException("Client not found"));
         List<Dishfood> dishfoods = dishfoodRepository.findAllById(orderDTO.getDishfoodIds());
         if (dishfoods.isEmpty())  throw new RuntimeException("Dishfoods not found");
-        Order order = OrderConverter.toEntity(orderDTO, client, dishfoods);
+        double total = dishfoods.stream().mapToDouble(Dishfood::getPrice).sum();
+        Order order = OrderConverter.toEntity(orderDTO, client, dishfoods,total);
         checkClient(client);
         checkDishFood(dishfoods);
+        FrequentClientDiscountHandler frequentHandler =
+                new FrequentClientDiscountHandler(new FrequentClientPricingStrategy());
+        PopularDishPriceIncreaseHandler popularHandler =
+                new PopularDishPriceIncreaseHandler(new PopularDishPricingStrategy());
+
+        frequentHandler.setNextHandler(popularHandler);
+
+        frequentHandler.applyRule(order);
         return OrderConverter.toResponseDTO(repository.save(order));
     }
 
@@ -91,6 +103,7 @@ public class OrderService {
             subject.notifyObservers("El cliente " + client.getName() + " ahora es un cliente frecuente.");
         }
     }
+
     private void  checkDishFood(List<Dishfood> dishfoods){
         for (Dishfood dish : dishfoods) {
             long dishCount = repository.countByDishfoods_Id(dish.getId());

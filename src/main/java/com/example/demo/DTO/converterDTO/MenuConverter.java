@@ -21,7 +21,7 @@ public class MenuConverter {
                 .name(menu.getName())
                 .dishfoods(menu.getDishfoods() == null ? Collections.emptyList() : menu.getDishfoods()
                         .stream()
-                        .map(DishfoodConverter::toResponseDTO) // Reutilizamos DishfoodMapper
+                        .map(DishfoodConverter::toResponseDTO)
                         .collect(Collectors.toList()))
                 .build();
     }

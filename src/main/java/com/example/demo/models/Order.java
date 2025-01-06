@@ -42,6 +42,7 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "dishfood_id")
     )
     private List<Dishfood> dishfoods;
+    private double total;
 
     public Order(Client client, LocalDate localDate, List<Dishfood> dishfoods) {
         this.client = client;

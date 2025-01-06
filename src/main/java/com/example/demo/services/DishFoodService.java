@@ -27,7 +27,7 @@ public class DishFoodService {
         this.dishfoodRepository = dishfoodRepository;
         this.menuRepository = menuRepository;
     }
-    // Crear un nuevo platillo
+    // Crear un nuevo plato
     public  DishfoodResponseDTO createDishFood(DishfoodRequestDTO dto){
         Menu menu = menuRepository.findById(dto.getMenuId())
                 .orElseThrow(()-> new RuntimeException("Producto no pudo ser actualizado"));
@@ -36,7 +36,7 @@ public class DishFoodService {
 
     }
 
-    // Obtener todos los platillos
+    // Obtener todos los platos
     public List<DishfoodResponseDTO> getAllDishfoods() {
         return dishfoodRepository.findAll()
                 .stream()
@@ -44,13 +44,13 @@ public class DishFoodService {
                 .collect(Collectors.toList());
     }
 
-    // Obtener platillo por ID
+    // Obtener plato por ID
     public DishfoodResponseDTO getDishfoodById(Long id) {
         Dishfood dishfood = dishfoodRepository.findById(id).orElseThrow(() -> new RuntimeException("Dishfood not found"));
         return DishfoodConverter.toResponseDTO(dishfood);
     }
 
-    // Actualizar un platillo
+    // Actualizar un plato
     public DishfoodResponseDTO updateDishfood(Long id, DishfoodRequestDTO dishfoodRequestDTO) {
         Dishfood existingDishfood = dishfoodRepository.findById(id).orElseThrow(() -> new RuntimeException("Dishfood not found"));
         Menu menu = menuRepository.findById(dishfoodRequestDTO.getMenuId())
@@ -63,7 +63,7 @@ public class DishFoodService {
         return DishfoodConverter.toResponseDTO(dishfoodRepository.save(existingDishfood));
     }
 
-    // Eliminar un platillo
+    // Eliminar un plato
     public void deleteDishfood(Long id) {
         if (!dishfoodRepository.existsById(id)) {
             throw new RuntimeException("Dishfood not found");

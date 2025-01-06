@@ -12,6 +12,6 @@ public class DishfoodResponseDTO {
     private String name;
     private Double price;
     private Boolean isPopular;
-    private String menu; // Menú completo como DTO
-    private List<OrderResponseDTO> orderList; // Lista de órdenes asociadas
+    private String menu;
+    private List<OrderResponseDTO> orderList;
 }

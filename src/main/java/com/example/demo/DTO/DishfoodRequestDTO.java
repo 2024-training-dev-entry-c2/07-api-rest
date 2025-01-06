@@ -10,5 +10,5 @@ public class DishfoodRequestDTO {
     private String name;
     private Double price;
     private Boolean isPopular;
-    private Long menuId; // Solo el ID del menú asociado
+    private Long menuId;
 }
