@@ -38,3 +38,8 @@ El proyecto se estructura con las siguientes consideraciones:
 Patrones de diseño:
 
 - DTO para separar las entidades de dominio de los datos de respuesta o petición.
+- El patrón Observer para notificar cambios en los datos.
+- El patrón Chain of Responsibility para implementar flujo de reglas.
+
+### Diagrama Relacional
+![](./images/diagrama_relacional.png)
