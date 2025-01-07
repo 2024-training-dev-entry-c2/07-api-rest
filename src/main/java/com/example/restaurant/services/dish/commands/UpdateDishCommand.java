@@ -24,6 +24,7 @@ public class UpdateDishCommand {
       throw new RuntimeException("No se encontró plato con ID: " + dishId);
     }
     Dish dishToUpdate = dishMapper.toEntity(dishDTO);
+    dishToUpdate.setId(dishId);
     Dish updatedDish = dishRepository.save(dishToUpdate);
     return dishMapper.toDTO(updatedDish);
   }
