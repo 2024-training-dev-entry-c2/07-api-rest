@@ -55,7 +55,6 @@ public class OrderController {
 
       Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, orderDishes);
       service.addOrder(order);
-      service.applyDiscounts(order);
       return ResponseEntity.ok("Pedido agregado éxitosamente con descuentos aplicados.");
     }catch (RuntimeException e){
       return ResponseEntity.badRequest().body("Error al agregar el pedido: " + e.getMessage());
@@ -93,7 +92,6 @@ public class OrderController {
 
       Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, orderDishes);
       Order updatedOrder = service.updateOrder(id, order);
-      service.applyDiscounts(updatedOrder);
       return ResponseEntity.ok("Se ha actualizado exitosamente el pedido con descuentos aplicados.");
     } catch (RuntimeException e){
       return ResponseEntity.badRequest().body("Error al actualizar el pedido: " + e.getMessage());

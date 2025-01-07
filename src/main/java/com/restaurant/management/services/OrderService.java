@@ -39,6 +39,7 @@ public class OrderService implements IObservable {
       orderDish.setOrder(order);
     }
     order.calculateTotal();
+    applyDiscounts(order);
     repository.save(order);
     notifyObservers(order);
   }
@@ -63,6 +64,7 @@ public class OrderService implements IObservable {
       }
 
       o.calculateTotal();
+      applyDiscounts(o);
       return repository.save(o);
     }).orElseThrow(()-> new RuntimeException("Pedido con id " + id + " no se pudo actualizar."));
   }
