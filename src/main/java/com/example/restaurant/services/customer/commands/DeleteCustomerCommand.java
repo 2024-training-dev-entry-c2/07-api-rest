@@ -12,7 +12,7 @@ public class DeleteCustomerCommand {
 
   public void execute(Long customerId) {
     if (!customerRepository.existsById(customerId)) {
-      throw new IllegalArgumentException("No se encontró cliente con ID: " + customerId);
+      throw new RuntimeException("No se encontró cliente con ID: " + customerId);
     }
     customerRepository.deleteById(customerId);
   }

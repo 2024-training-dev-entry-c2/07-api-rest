@@ -1,6 +1,7 @@
 package com.example.restaurant.services.customer;
 
-import com.example.restaurant.models.dto.CustomerDTO;
+import com.example.restaurant.models.dto.customer.CustomerRequestDTO;
+import com.example.restaurant.models.dto.customer.CustomerResponseDTO;
 import com.example.restaurant.services.customer.commands.CreateCustomerCommand;
 import com.example.restaurant.services.customer.commands.DeleteCustomerCommand;
 import com.example.restaurant.services.customer.commands.GetCustomerByIdCommand;
@@ -22,11 +23,11 @@ public class CustomerCommandHandler {
   private final GetCustomerByIdCommand getCustomerByIdCommand;
   private final ListCustomersCommand listCustomersCommand;
 
-  public CustomerDTO createCustomer(CustomerDTO customerDTO) {
+  public CustomerResponseDTO createCustomer(CustomerRequestDTO customerDTO) {
     return createCustomerCommand.execute(customerDTO);
   }
 
-  public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO) {
+  public CustomerResponseDTO updateCustomer(Long id, CustomerRequestDTO customerDTO) {
     return updateCustomerCommand.execute(id, customerDTO);
   }
 
@@ -34,11 +35,11 @@ public class CustomerCommandHandler {
     deleteCustomerCommand.execute(customerId);
   }
 
-  public CustomerDTO getCustomerById(Long customerId) {
+  public CustomerResponseDTO getCustomerById(Long customerId) {
     return getCustomerByIdCommand.execute(customerId);
   }
 
-  public List<CustomerDTO> listCustomers() {
+  public List<CustomerResponseDTO> listCustomers() {
     return listCustomersCommand.execute();
   }
 }
