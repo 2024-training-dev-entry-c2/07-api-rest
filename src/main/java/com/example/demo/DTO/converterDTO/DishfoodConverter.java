@@ -4,7 +4,11 @@ import com.example.demo.DTO.DishfoodRequestDTO;
 import com.example.demo.DTO.DishfoodResponseDTO;
 import com.example.demo.models.Dishfood;
 import com.example.demo.models.Menu;
+import com.example.demo.models.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Component
 public class DishfoodConverter {
@@ -24,12 +28,8 @@ public class DishfoodConverter {
                 .price(dishfood.getPrice())
                 .isPopular(dishfood.getIsPopular())
                 .menu(dishfood.getMenu().getName())
-//                .orderList(dishfood.getOrderList() == null ? Collections.emptyList() : dishfood.getOrderList().stream()
-//                        .map(order -> OrderResponseDTO.builder()
-//                                .id(order.getId())
-//                                .client(ClientConverter.toResponseDTO(order.getClient()))
-//                                .build())
-//                        .collect(Collectors.toList()))
-                .build();
+                .orderList(dishfood.getOrderList() == null ? Collections.emptyList() : dishfood.getOrderList().stream()
+                        .map(Order::getId).collect(Collectors.toList()))
+                        .build();
     }
 }

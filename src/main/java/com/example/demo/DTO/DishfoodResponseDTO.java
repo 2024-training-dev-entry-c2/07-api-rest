@@ -13,5 +13,5 @@ public class DishfoodResponseDTO {
     private Double price;
     private Boolean isPopular;
     private String menu;
-    private List<OrderResponseDTO> orderList;
+    private List<Long> orderList;
 }
