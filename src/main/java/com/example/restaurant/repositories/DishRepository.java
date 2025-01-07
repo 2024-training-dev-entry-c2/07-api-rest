@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Long> {
+
+    long countOrdersByDishId(Long dishId);
 }
