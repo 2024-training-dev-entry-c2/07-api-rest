@@ -1,7 +1,9 @@
 package com.restaurant.restaurant.factories;
 
 import com.restaurant.restaurant.models.DishModel;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DishFactoryImpl implements DishFactory {
   @Override
   public DishModel createDish(String name, Double price) {

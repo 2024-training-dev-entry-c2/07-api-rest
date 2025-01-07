@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface OrderRepository extends JpaRepository<OrderModel, Long> {
 
-  @Query("SELECT COUNT(o) FROM orders o WHERE o.client.id = :clientId")
+  @Query("SELECT COUNT(o) FROM OrderModel o WHERE o.client.id = :clientId")
   Integer countOrdersByClientId(@Param("clientId") Long clientId);
 }

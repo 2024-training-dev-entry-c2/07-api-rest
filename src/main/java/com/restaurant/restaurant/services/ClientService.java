@@ -16,9 +16,8 @@ public class ClientService {
   @Autowired
   private ClientFactory clientFactory;
 
-  public ClientModel createClient(String name, String email){
-    ClientModel client = clientFactory.createClient(name, email);
-    return clientRepository.save(client);
+  public ClientModel createClient(ClientModel clientModel){
+    return clientRepository.save(clientModel);
   }
 
   public List<ClientModel> getClients(){

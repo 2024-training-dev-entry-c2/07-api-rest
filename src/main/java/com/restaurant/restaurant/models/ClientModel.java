@@ -33,7 +33,7 @@ public class ClientModel {
   @Column(nullable = false)
   private Boolean isFrecuent = false;
 
-  @OneToMany(mappedBy = "clients", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
   private List<OrderModel> orders = new ArrayList<>();
 
 }

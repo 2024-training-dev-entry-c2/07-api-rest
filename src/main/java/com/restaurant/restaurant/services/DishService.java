@@ -16,9 +16,8 @@ public class DishService {
   @Autowired
   private DishFactory dishFactory;
 
-  public DishModel createDish(String name, Double price){
-    DishModel dish = dishFactory.createDish(name, price);
-    return dishRepository.save(dish);
+  public DishModel createDish(DishModel dishModel){
+    return dishRepository.save(dishModel);
   }
 
   public List<DishModel> getDishes(){
