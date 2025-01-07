@@ -2,6 +2,7 @@ package com.example.restaurant.models;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -37,11 +38,11 @@ public class Order {
   @JoinColumn(name = "customer_id")
   private Customer customer;
 
-  @ManyToMany(targetEntity = Dish.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @ManyToMany(fetch = FetchType.EAGER, targetEntity = Dish.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
           name = "order_dish",
-          joinColumns = @JoinColumn(name = "order_id"),
-          inverseJoinColumns = @JoinColumn(name = "dish_id")
+          joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+          inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id")
   )
   private List<Dish> dishes;
 

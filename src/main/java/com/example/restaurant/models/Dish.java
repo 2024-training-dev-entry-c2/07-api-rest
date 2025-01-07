@@ -2,14 +2,15 @@ package com.example.restaurant.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -27,7 +28,11 @@ public class Dish {
   @Column(nullable = false)
   private Float price;
 
-  @ManyToOne(targetEntity = Menu.class, fetch = FetchType.LAZY)
-  private Menu menu;
+  @ManyToMany(mappedBy = "dishes")
+  private List<Order> orders;
 
+  public Dish(String name, Float price) {
+    this.name = name;
+    this.price = price;
+  }
 }
