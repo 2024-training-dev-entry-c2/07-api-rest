@@ -19,7 +19,6 @@ public class DtoOrderConverter {
     orderResponseDTO.setId(order.getId());
     orderResponseDTO.setOrderDateTime(order.getOrderDateTime());
     orderResponseDTO.setStatus(order.getStatus());
-    orderResponseDTO.setDiscount(order.getDiscount());
     orderResponseDTO.setTotal(order.getTotal());
     orderResponseDTO.setClient(order.getClient());
     orderResponseDTO.setOrderDetails(order.getOrderDetails());

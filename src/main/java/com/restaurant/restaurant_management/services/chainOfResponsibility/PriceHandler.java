@@ -1,4 +1,4 @@
-package com.restaurant.restaurant_management.services.ChainOfResponsibility;
+package com.restaurant.restaurant_management.services.chainOfResponsibility;
 
 import com.restaurant.restaurant_management.models.ClientOrder;
 

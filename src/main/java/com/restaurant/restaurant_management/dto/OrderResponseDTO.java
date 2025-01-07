@@ -16,7 +16,6 @@ public class OrderResponseDTO {
   private Long id;
   private LocalDateTime orderDateTime;
   private OrderStatus status;
-  private Double discount;
   private Double total;
   private Client client;
   private List<OrderDetail> orderDetails = new ArrayList<>();

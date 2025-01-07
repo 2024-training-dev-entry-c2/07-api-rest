@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,20 +36,6 @@ public class OrderDetailController {
     this.orderService = orderService;
   }
 
-  @PostMapping
-  public ResponseEntity<String> saveOrderDetail(@RequestBody OrderDetailRequestDTO orderDetailRequestDTO) {
-    try {
-      Dish dish = dishService.getDish(orderDetailRequestDTO.getDishId()).orElseThrow();
-      ClientOrder order = orderService.getOrder(orderDetailRequestDTO.getOrderId()).orElseThrow();
-      OrderDetail orderDetail = DtoOrderDetailConverter.convertToOrderDetail(orderDetailRequestDTO, order, dish);
-      orderDetailService.saveOrderDetail(orderDetail);
-      return ResponseEntity.ok("Detalle de pedido creado con éxito");
-    }
-    catch (RuntimeException e) {
-      return ResponseEntity.badRequest().body("No se pudo crear el detalle de pedido");
-    }
-  }
-
   @GetMapping("/{id}")
   public ResponseEntity<OrderDetailResponseDTO> getOrderDetail(@PathVariable Long id){
     return orderDetailService.getOrderDetail(id)
@@ -65,12 +52,29 @@ public class OrderDetailController {
     return ResponseEntity.ok(response);
   }
 
+
+  @PostMapping
+  public ResponseEntity<String> saveOrderDetail(@RequestBody OrderDetailRequestDTO orderDetailRequestDTO) {
+    try {
+      Dish dish = dishService.getDish(orderDetailRequestDTO.getDishId()).orElseThrow();
+      ClientOrder order = orderService.getOrder(orderDetailRequestDTO.getOrderId()).orElseThrow();
+      OrderDetail orderDetail = DtoOrderDetailConverter.convertToOrderDetail(orderDetailRequestDTO, order, dish);
+      orderDetailService.saveOrderDetail(orderDetail);
+      orderService.updateTotalOrder(order.getId());
+      return ResponseEntity.ok("Detalle de pedido creado con éxito");
+    }
+    catch (RuntimeException e) {
+      return ResponseEntity.badRequest().body("No se pudo crear el detalle de pedido");
+    }
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<OrderDetailResponseDTO> updateOrderDetail(@PathVariable Long id, @RequestBody OrderDetailRequestDTO orderDetailRequestDTO){
     try {
       Dish dish = dishService.getDish(orderDetailRequestDTO.getDishId()).orElseThrow();
       ClientOrder order = orderService.getOrder(orderDetailRequestDTO.getOrderId()).orElseThrow();
       OrderDetail updated = orderDetailService.updateOrderDetail(id, DtoOrderDetailConverter.convertToOrderDetail(orderDetailRequestDTO, order, dish));
+      orderService.updateTotalOrder(order.getId());
       return ResponseEntity.ok(DtoOrderDetailConverter.convertToResponseDTO(updated));
     } catch (RuntimeException e) {
       return ResponseEntity.notFound().build();
@@ -78,8 +82,9 @@ public class OrderDetailController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteOrderDetail(@PathVariable Long id){
+  public ResponseEntity<Void> deleteOrderDetail(@PathVariable Long id, @RequestParam("orderId") Long orderId){
     orderDetailService.deleteOrderDetail(id);
+    orderService.updateTotalOrder(orderId);
     return ResponseEntity.noContent().build();
   }
 

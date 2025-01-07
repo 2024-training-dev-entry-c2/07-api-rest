@@ -3,9 +3,9 @@ package com.restaurant.restaurant_management.services;
 import com.restaurant.restaurant_management.models.ClientOrder;
 import com.restaurant.restaurant_management.repositories.ClientRepository;
 import com.restaurant.restaurant_management.repositories.OrderRepository;
-import com.restaurant.restaurant_management.services.ChainOfResponsibility.FrequentClientDiscountHandler;
-import com.restaurant.restaurant_management.services.ChainOfResponsibility.PriceHandler;
-import com.restaurant.restaurant_management.services.ChainOfResponsibility.SumOrderDetailsHandler;
+import com.restaurant.restaurant_management.services.chainOfResponsibility.FrequentClientDiscountHandler;
+import com.restaurant.restaurant_management.services.chainOfResponsibility.PriceHandler;
+import com.restaurant.restaurant_management.services.chainOfResponsibility.SumOrderDetailsHandler;
 import com.restaurant.restaurant_management.services.observer.EventManager;
 import com.restaurant.restaurant_management.services.observer.FrequentClientObserver;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class OrderService {
 
   public ClientOrder saveOrder(ClientOrder order) {
     order.setOrderDateTime(LocalDateTime.now());
-    order.setDiscount(0.0);
     order.setTotal(0.0);
     ClientOrder newOrder = orderRepository.saveAndFlush(order);
     eventManager.notify("NewOrder", newOrder.getClient());

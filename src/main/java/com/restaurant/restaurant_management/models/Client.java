@@ -42,6 +42,10 @@ public class Client {
   @Column(nullable = false)
   private Boolean isFrequent = false;
 
+  @OneToMany(targetEntity = Booking.class, mappedBy = "client", cascade = CascadeType.REMOVE)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private List<Booking> bookings = new ArrayList<>();
+
   @OneToMany(targetEntity = ClientOrder.class,mappedBy = "client", cascade = CascadeType.REMOVE)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<ClientOrder> orders = new ArrayList<>();
