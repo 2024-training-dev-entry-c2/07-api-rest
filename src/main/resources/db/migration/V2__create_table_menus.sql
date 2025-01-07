@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS `restaurant`.`MENUS` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(32) NULL,
+  `schedule` VARCHAR(16) NULL,
+  `created_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`));
