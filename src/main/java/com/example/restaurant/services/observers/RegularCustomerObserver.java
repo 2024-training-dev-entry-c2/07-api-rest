@@ -14,8 +14,7 @@ public class RegularCustomerObserver implements OrderObserver {
   @Override
   public void onOrderCreated(Order order) {
     Long orderQuantity =  orderRepository.countByCustomerId(order.getCustomer().getId());
-    if (orderQuantity >= 10) {
-      //cliente frecuente, cadena de responsabilidad o logica de descuento
-    }
+    Boolean isRegularCustomer = orderQuantity >= 10;
+    System.out.println(isRegularCustomer + order.getCustomer().getName() + " es cliente regular (ha ordenado más de 10 veces): ");
   }
 }
