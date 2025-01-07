@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeleteMenuCommand {
 
-    private final MenuRepository menuRepository;
+  private final MenuRepository menuRepository;
 
-    public void execute(Long menuId) {
-        if (!menuRepository.existsById(menuId)) {
-            throw new IllegalArgumentException("No se encontró menú con ID: " + menuId);
-        }
-        menuRepository.deleteById(menuId);
+  public void execute(Long menuId) {
+    if (!menuRepository.existsById(menuId)) {
+      throw new RuntimeException("No se encontró menú con ID: " + menuId);
     }
+    menuRepository.deleteById(menuId);
+  }
 }

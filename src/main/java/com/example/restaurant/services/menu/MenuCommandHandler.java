@@ -1,6 +1,8 @@
 package com.example.restaurant.services.menu;
 
 import com.example.restaurant.models.dto.MenuDTO;
+import com.example.restaurant.models.dto.menu.MenuRequestDTO;
+import com.example.restaurant.models.dto.menu.MenuResponseDTO;
 import com.example.restaurant.services.menu.commands.ListMenusCommand;
 import com.example.restaurant.services.menu.commands.CreateMenuCommand;
 import com.example.restaurant.services.menu.commands.DeleteMenuCommand;
@@ -22,11 +24,11 @@ public class MenuCommandHandler {
   private final ListMenusCommand listOrdersCommand;
 
 
-  public MenuDTO createMenu(MenuDTO orderDTO) {
+  public MenuResponseDTO createMenu(MenuRequestDTO orderDTO) {
     return createMenuCommand.execute(orderDTO);
   }
 
-  public MenuDTO updateMenu(Long id, MenuDTO orderDTO) {
+  public MenuResponseDTO updateMenu(Long id, MenuRequestDTO orderDTO) {
     return updateMenuCommand.execute(id, orderDTO);
   }
 
@@ -34,12 +36,12 @@ public class MenuCommandHandler {
     deleteMenuCommand.execute(orderId);
   }
 
-  public MenuDTO getMenuById(Long orderId) {
+  public MenuResponseDTO getMenuById(Long orderId) {
     return getMenuByIdCommand.execute(orderId);
   }
 
 
-  public List<MenuDTO> listMenus() {
+  public List<MenuResponseDTO> listMenus() {
     return listOrdersCommand.execute();
   }
 }
