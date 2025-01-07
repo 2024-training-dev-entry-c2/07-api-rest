@@ -42,11 +42,6 @@ public class Dishfood {
     @ManyToMany(mappedBy = "dishfoods")
     private List<Order> orderList = new ArrayList<>();
 
-    public Dishfood(String name, Double price, Menu menu) {
-        this.name = name;
-        this.price = price;
-        this.menu = menu;
-    }
 
 
 }

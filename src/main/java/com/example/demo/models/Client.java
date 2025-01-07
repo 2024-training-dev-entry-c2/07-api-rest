@@ -37,9 +37,6 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Order> orderList = new ArrayList<>();
 
-    public Client(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
+
 
 }

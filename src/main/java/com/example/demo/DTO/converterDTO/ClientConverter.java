@@ -1,7 +1,7 @@
 package com.example.demo.DTO.converterDTO;
 
-import com.example.demo.DTO.ClientRequestDTO;
-import com.example.demo.DTO.ClientResponseDTO;
+import com.example.demo.DTO.client.ClientRequestDTO;
+import com.example.demo.DTO.client.ClientResponseDTO;
 import com.example.demo.models.Client;
 import com.example.demo.models.Order;
 

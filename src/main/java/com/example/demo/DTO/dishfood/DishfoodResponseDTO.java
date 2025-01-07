@@ -1,4 +1,4 @@
-package com.example.demo.DTO;
+package com.example.demo.DTO.dishfood;
 
 import lombok.Builder;
 import lombok.Data;

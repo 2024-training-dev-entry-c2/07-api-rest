@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTO.ClientRequestDTO;
-import com.example.demo.DTO.ClientResponseDTO;
+import com.example.demo.DTO.client.ClientRequestDTO;
+import com.example.demo.DTO.client.ClientResponseDTO;
 import com.example.demo.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

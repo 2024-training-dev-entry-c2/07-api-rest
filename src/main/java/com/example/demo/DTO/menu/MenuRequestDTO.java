@@ -1,4 +1,4 @@
-package com.example.demo.DTO;
+package com.example.demo.DTO.menu;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

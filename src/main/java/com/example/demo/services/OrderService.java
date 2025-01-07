@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.DTO.OrderRequestDTO;
-import com.example.demo.DTO.OrderResponseDTO;
+import com.example.demo.DTO.order.OrderRequestDTO;
+import com.example.demo.DTO.order.OrderResponseDTO;
 import com.example.demo.DTO.converterDTO.OrderConverter;
 import com.example.demo.models.Client;
 import com.example.demo.models.Dishfood;

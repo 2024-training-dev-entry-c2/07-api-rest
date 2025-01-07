@@ -1,7 +1,7 @@
 package com.example.demo.DTO.converterDTO;
 
-import com.example.demo.DTO.MenuRequestDTO;
-import com.example.demo.DTO.MenuResponseDTO;
+import com.example.demo.DTO.menu.MenuRequestDTO;
+import com.example.demo.DTO.menu.MenuResponseDTO;
 import com.example.demo.models.Menu;
 
 import java.util.Collections;

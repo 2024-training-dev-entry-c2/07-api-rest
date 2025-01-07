@@ -1,4 +1,4 @@
-package com.example.demo.DTO;
+package com.example.demo.DTO.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,11 +10,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-public class OrderResponseDTO {
-    private Long id;
-    private ClientResponseDTO client;
+public class OrderRequestDTO {
+
+    private Long clientId;
     private LocalDate localDate;
     private List<Long> dishfoodIds;
-    private double total;
 
 }

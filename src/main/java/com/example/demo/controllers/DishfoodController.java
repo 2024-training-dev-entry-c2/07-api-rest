@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTO.DishfoodRequestDTO;
-import com.example.demo.DTO.DishfoodResponseDTO;
+import com.example.demo.DTO.dishfood.DishfoodRequestDTO;
+import com.example.demo.DTO.dishfood.DishfoodResponseDTO;
 import com.example.demo.services.DishFoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

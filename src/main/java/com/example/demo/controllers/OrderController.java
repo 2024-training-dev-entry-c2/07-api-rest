@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTO.OrderRequestDTO;
-import com.example.demo.DTO.OrderResponseDTO;
+import com.example.demo.DTO.order.OrderRequestDTO;
+import com.example.demo.DTO.order.OrderResponseDTO;
 import com.example.demo.services.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

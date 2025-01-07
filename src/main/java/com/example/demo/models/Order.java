@@ -44,10 +44,6 @@ public class Order {
     private List<Dishfood> dishfoods;
     private double total;
 
-    public Order(Client client, LocalDate localDate, List<Dishfood> dishfoods) {
-        this.client = client;
-        this.localDate = localDate;
-        this.dishfoods = dishfoods;
-    }
+
 
 }

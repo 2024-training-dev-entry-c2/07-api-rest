@@ -1,4 +1,4 @@
-package com.example.demo.DTO;
+package com.example.demo.DTO.client;
 
 import lombok.Builder;
 import lombok.Data;
