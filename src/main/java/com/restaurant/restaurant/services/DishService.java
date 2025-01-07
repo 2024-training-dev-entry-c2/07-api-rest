@@ -1,5 +1,6 @@
 package com.restaurant.restaurant.services;
 
+import com.restaurant.restaurant.factories.DishFactory;
 import com.restaurant.restaurant.models.DishModel;
 import com.restaurant.restaurant.repositories.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,11 @@ public class DishService {
   @Autowired
   private DishRepository dishRepository;
 
-  public DishModel createDish(DishModel dish){
+  @Autowired
+  private DishFactory dishFactory;
+
+  public DishModel createDish(String name, Double price){
+    DishModel dish = dishFactory.createDish(name, price);
     return dishRepository.save(dish);
   }
 

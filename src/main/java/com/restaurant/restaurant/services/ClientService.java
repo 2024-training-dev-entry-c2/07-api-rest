@@ -1,5 +1,6 @@
 package com.restaurant.restaurant.services;
 
+import com.restaurant.restaurant.factories.ClientFactory;
 import com.restaurant.restaurant.models.ClientModel;
 import com.restaurant.restaurant.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,11 @@ public class ClientService {
   @Autowired
   private ClientRepository clientRepository;
 
-  public ClientModel createClient(ClientModel client){
+  @Autowired
+  private ClientFactory clientFactory;
+
+  public ClientModel createClient(String name, String email){
+    ClientModel client = clientFactory.createClient(name, email);
     return clientRepository.save(client);
   }
 
