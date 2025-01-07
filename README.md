@@ -20,22 +20,26 @@ Una API es RESTful si sigue estrictamente los siguientes principios:
 
 - Sistema en capas: Posibilidad de usar capas intermedias entre cliente y servidor.
 
-## A que nos referimos con Stateless
+## Stateless
 
 En el contexto de REST, el término stateless (sin estado) significa que cada solicitud del cliente al servidor debe ser independiente y contener toda la información necesaria para que el servidor pueda procesarla, sin depender del estado de solicitudes anteriores.
 
-## Que haremos en este repositorio...
+## Que hay en este repositorio...
 
-Vamos a estructurar un API Restful para la heladería. Usaremos Java 17 con Gradle y organizaremos el proyecto de manera que sea fácil de extender. Nos enfocaremos en el inventario, que incluirá funcionalidades para gestionar productos, como agregar, actualizar, eliminar y listar.
+Se estructura un API Restful para la administración de un restaurante. Se usa Java 17 con Gradle. El proyecto se enfoca en la gestión de pedidos, para lo cual adicionalmente se gestionan menús, platos y clientes.
 
-Para empezar, estructuraremos el proyecto con estas consideraciones:
+El proyecto se estructura con las siguientes consideraciones:
 
-- Controladores: Gestionarán las rutas del API.
-- Servicios: Contendrán la lógica del negocio.
-- Modelos: Representarán las entidades de dominio (como "Producto").
-- Repositorios en memoria: Simularán la interacción con la base de datos, usando colecciones como Map, Set y LinkedList.
+- Controladores: Gestionan las rutas del API.
+- Servicios: Contienen la lógica del negocio.
+- Modelos: Representan las entidades de dominio.
+- Repositorios: Gestionan la interacción con la base de datos.
 
 Patrones de diseño:
 
-- Singleton para manejar el repositorio.
 - DTO para separar las entidades de dominio de los datos de respuesta o petición.
+- El patrón Observer para notificar cambios en los datos.
+- El patrón Chain of Responsibility para implementar flujo de reglas.
+
+### Diagrama Relacional
+![](./images/diagrama_relacional.png)
