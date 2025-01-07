@@ -1,5 +1,6 @@
 package com.restaurante.restaurante.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,21 +30,22 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
 
     private String dateOrder;
-    private Integer totalPrice;
+    private Double totalPrice = 0.0;
     @ManyToMany
-    @JoinTable(
-            name = "order_dish",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "dish_id")
-    )
+//    @JoinTable(
+//            name = "order_dish",
+//            joinColumns = @JoinColumn(name = "order_id"),
+//            inverseJoinColumns = @JoinColumn(name = "dish_id")
+//    )
     private List<Dish> dishes = new ArrayList<>();
 
-    public Orders(Long id, Client client, String dateOrder, Integer totalPrice, List<Dish> dishes) {
+    public Orders(Long id, Client client, String dateOrder, Double totalPrice, List<Dish> dishes) {
         this.id = id;
         this.client = client;
         this.dateOrder = dateOrder;

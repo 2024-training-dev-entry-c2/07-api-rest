@@ -2,6 +2,8 @@ package com.restaurante.restaurante.mapper;
 
 import com.restaurante.restaurante.dto.OrderDTO;
 import com.restaurante.restaurante.models.Orders;
+import com.restaurante.restaurante.repositories.DishRepository;
+import com.restaurante.restaurante.utils.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +13,15 @@ import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
-    private final ClientMapper clientMapper;
+
     private final DishMapper dishMapper;
 
+
     @Autowired
-    public OrderMapper(ClientMapper clientMapper, DishMapper dishMapper) {
-        this.clientMapper = clientMapper;
+    public OrderMapper( DishMapper dishMapper) {
+
         this.dishMapper = dishMapper;
+
     }
 
     public OrderDTO toDTO(Orders order) {
@@ -33,7 +37,6 @@ public class OrderMapper {
         // Convertir cliente a DTO
         if (order.getClient() != null) {
             dto.setClientId(order.getClient().getId());
-            dto.setClientDTO(clientMapper.toDTO(order.getClient()));
         }
 
         // Convertir platos a DTOs
@@ -54,7 +57,7 @@ public class OrderMapper {
         order.setDateOrder(dto.getOrderDate());
         order.setTotalPrice(dto.getTotalPrice());
 
-        // El cliente y los platos se deben setear desde el servicio
+        // El cliente y los platos se manejarán en el servicio
         return order;
     }
 
@@ -66,5 +69,4 @@ public class OrderMapper {
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
-
 }

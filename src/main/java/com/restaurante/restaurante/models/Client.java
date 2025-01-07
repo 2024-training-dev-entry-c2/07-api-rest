@@ -1,5 +1,6 @@
 package com.restaurante.restaurante.models;
 
+import com.restaurante.restaurante.utils.UserType;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -24,13 +25,15 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Orders> orders;
 
-    private String userType;
+    private String userType = String.valueOf(UserType.REGULAR);
+    private Integer totalOrders = 0;
 
-    public Client(Long id, String name, String email, List<Orders> orders, String userType) {
+    public Client(Long id, String name, String email, List<Orders> orders, String userType, Integer totalOrders) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.orders = orders;
+        this.totalOrders = totalOrders;
         this.userType = userType;
     }
 

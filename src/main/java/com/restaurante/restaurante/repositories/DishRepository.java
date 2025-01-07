@@ -3,7 +3,9 @@ package com.restaurante.restaurante.repositories;
 import com.restaurante.restaurante.models.Dish;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DishRepository extends JpaRepository<Dish, Long> {
+import java.util.Optional;
 
-//    long countByOrderItemsDishId(Long dishId);
+public interface DishRepository extends JpaRepository<Dish, Long> {
+    Optional<Dish> findByName(String name);
+//    long countOrdersForDishId(Long dishId);
 }

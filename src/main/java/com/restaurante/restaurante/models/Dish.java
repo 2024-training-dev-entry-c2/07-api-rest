@@ -24,13 +24,15 @@ public class Dish {
     @JsonIgnore
     private Menu menu;
     private String dishType;
+    private Integer totalOrdered = 0;
 
 
-    public Dish(Long id, String name, Double price, String dishType) {
+    public Dish(Long id, String name, Double price, String dishType, Integer totalOrdered) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.dishType = dishType;
+        this.totalOrdered = totalOrdered;
     }
 
     public Dish() {

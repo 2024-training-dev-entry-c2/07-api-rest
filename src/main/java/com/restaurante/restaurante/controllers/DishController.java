@@ -2,9 +2,7 @@ package com.restaurante.restaurante.controllers;
 
 
 import com.restaurante.restaurante.dto.DishDTO;
-import com.restaurante.restaurante.models.Dish;
-import com.restaurante.restaurante.repositories.DishRepository;
-import com.restaurante.restaurante.services.DishService;
+import com.restaurante.restaurante.services.IDishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,37 +22,38 @@ import java.util.List;
 public class DishController {
 
 
-    private final DishService dishService;
+    private final IDishService IDishService;
 
     @Autowired
-    public DishController(DishService dishService){
-        this.dishService = dishService;
+    public DishController(IDishService IDishService){
+        this.IDishService = IDishService;
     }
 
 
     @PostMapping
-    public ResponseEntity<Dish> addDish(@RequestBody DishDTO dishDTO){
-        return ResponseEntity.ok(dishService.addDish(dishDTO));
+    public ResponseEntity<DishDTO> addDish(@RequestBody DishDTO dishDTO){
+
+        return ResponseEntity.ok(IDishService.addDish(dishDTO));
     }
 
     @GetMapping("/{id}")
-    public Dish getDish(@PathVariable Long id){
-        return dishService.getDish(id).orElseThrow();
+    public DishDTO getDish(@PathVariable Long id){
+        return IDishService.getDish(id).orElseThrow();
     }
 
     @GetMapping
-    public List<Dish> getDishes(){
-        return dishService.getDishes();
+    public List<DishDTO> getDishes(){
+        return IDishService.getDishes();
     }
 
     @PutMapping("/{id}")
-    public Dish updateDish(@PathVariable Long id, @RequestBody Dish dish){
-        return dishService.updateDish(id, dish);
+    public DishDTO updateDish(@PathVariable Long id, @RequestBody DishDTO dishDTO){
+        return IDishService.updateDish(id, dishDTO);
     }
 
     @DeleteMapping("/{id}")
     public void deleteDish(@PathVariable Long id){
-        dishService.deleteDish(id);
+        IDishService.deleteDish(id);
     }
 
 

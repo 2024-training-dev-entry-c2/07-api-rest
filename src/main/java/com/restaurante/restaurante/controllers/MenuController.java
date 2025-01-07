@@ -2,8 +2,7 @@ package com.restaurante.restaurante.controllers;
 
 
 import com.restaurante.restaurante.dto.MenuDTO;
-import com.restaurante.restaurante.models.Menu;
-import com.restaurante.restaurante.services.MenuService;
+import com.restaurante.restaurante.services.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,35 +20,35 @@ import java.util.List;
 @RequestMapping("/api/menus")
 public class MenuController {
 
-    private final MenuService menuService;
+    private final IMenuService IMenuService;
 
     @Autowired
-    public MenuController(MenuService menuService){
-        this.menuService = menuService;
+    public MenuController(IMenuService IMenuService){
+        this.IMenuService = IMenuService;
     }
 
 
 
     @PostMapping
     public ResponseEntity<String> addMenu(@RequestBody MenuDTO menuDTO){
-        menuService.addMenu(menuDTO);
+        IMenuService.addMenu(menuDTO);
         return ResponseEntity.ok("Menu agregado exitosamente");
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Menu> getMenu(@PathVariable Long id){
-        return ResponseEntity.ok(menuService.getMenu(id).orElseThrow());
+    public ResponseEntity<MenuDTO> getMenu(@PathVariable Long id){
+        return ResponseEntity.ok(IMenuService.getMenu(id).orElseThrow());
     }
 
     @GetMapping
-    public ResponseEntity<List<Menu>> getMenus(){
-        return ResponseEntity.ok(menuService.getMenus());
+    public ResponseEntity<List<MenuDTO>> getMenus(){
+        return ResponseEntity.ok(IMenuService.getMenus());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateMenu(@PathVariable Long id, @RequestBody Menu menu){
+    public ResponseEntity<String> updateMenu(@PathVariable Long id, @RequestBody MenuDTO menuDTO){
         try{
-            Menu menuUpdated = menuService.updateMenu(id, menu);
+            MenuDTO menuUpdated = IMenuService.updateMenu(id, menuDTO);
             return ResponseEntity.ok("Se ha actualizado exitosamente el menu");
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -58,7 +57,7 @@ public class MenuController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMenu(@PathVariable Long id){
-        menuService.deleteMenu(id);
+        IMenuService.deleteMenu(id);
         return ResponseEntity.noContent().build();
     }
 

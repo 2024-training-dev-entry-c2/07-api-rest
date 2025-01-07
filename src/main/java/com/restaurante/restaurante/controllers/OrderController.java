@@ -1,66 +1,60 @@
 package com.restaurante.restaurante.controllers;
 
-
-import com.restaurante.restaurante.models.Orders;
-import com.restaurante.restaurante.services.OrderService;
+import com.restaurante.restaurante.dto.OrderDTO;
+import com.restaurante.restaurante.services.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
-
 public class OrderController {
 
-    private final OrderService orderService;
+    private final IOrderService IOrderService;
 
     @Autowired
-    public OrderController(OrderService orderService){
-        this.orderService = orderService;
+    public OrderController(IOrderService IOrderService) {
+        this.IOrderService = IOrderService;
     }
 
     @PostMapping
-    public ResponseEntity<String> addOrder(@RequestBody Orders order){
-        orderService.addOrder(order);
-        return ResponseEntity.ok("Order agregado exitosamente");
+    public ResponseEntity<OrderDTO> addOrder(@RequestBody OrderDTO orderDTO) {
+        OrderDTO createdOrder = IOrderService.addOrder(orderDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Orders> getOrder(@PathVariable Long id){
-        return ResponseEntity.ok(orderService.getOrder(id).orElseThrow());
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
+        return IOrderService.getOrder(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+
     @GetMapping
-    public ResponseEntity<List<Orders>> getOrders(){
-        return ResponseEntity.ok(orderService.getOrders());
+    public ResponseEntity<List<OrderDTO>> getOrders() {
+        List<OrderDTO> orders = IOrderService.getOrders();
+        return orders.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(orders);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateOrder(@PathVariable Long id, @RequestBody Orders order){
-        try{
-            Orders orderUpdated = orderService.updateOrder(id, order);
-            return ResponseEntity.ok("Se ha actualizado exitosamente el order");
+    public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
+        try {
+            OrderDTO updated = IOrderService.updateOrder(id, orderDTO);
+            return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id){
-        orderService.deleteOrder(id);
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        IOrderService.deleteOrder(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
 }

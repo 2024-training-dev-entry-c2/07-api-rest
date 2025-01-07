@@ -12,20 +12,16 @@ import java.util.stream.Collectors;
 @Component
 public class DishMapper {
 
-    public DishDTO toDTO(Dish dish) {
-        if (dish == null) {
-            return null;
-        }
+    public static DishDTO toDTO(Dish dish) {
 
         DishDTO dto = new DishDTO();
-
+        dto.setId(dish.getId());
         dto.setName(dish.getName());
         dto.setPrice(dish.getPrice());
+        dto.setTotalOrdered(dish.getTotalOrdered());
         dto.setDishType(dish.getDishType());
-        // Si el plato pertenece a un menú, solo incluimos el ID del menú
-        if (dish.getMenu() != null) {
-            dto.setMenuId(dish.getMenu().getId());
-        }
+        dto.setMenuId(dish.getMenu().getId());
+
         return dto;
     }
 
@@ -35,14 +31,14 @@ public class DishMapper {
         }
 
         Dish dish = new Dish();
-
         dish.setName(dto.getName());
         dish.setPrice(dto.getPrice());
         dish.setDishType(dto.getDishType());
+
         Menu menu = new Menu();
         menu.setId(dto.getMenuId());
         dish.setMenu(menu);
-        // El menú se debe setear desde el servicio
+
         return dish;
     }
 
@@ -51,9 +47,7 @@ public class DishMapper {
             return Collections.emptyList();
         }
         return dishes.stream()
-
-                .map(this::toDTO)
+                .map(DishMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }
-

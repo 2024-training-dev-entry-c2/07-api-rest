@@ -25,10 +25,10 @@ public class MenuMapper {
         }
 
         MenuDTO dto = new MenuDTO();
-
+        dto.setId(menu.getId());
         dto.setName(menu.getName());
         dto.setDescription(menu.getDescription());
-        // Convertir la lista de platos a DTOs
+        dto.setDishes(dishMapper.toDTOList(menu.getDishes()));
 
         return dto;
     }
