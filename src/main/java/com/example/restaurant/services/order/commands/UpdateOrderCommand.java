@@ -1,9 +1,13 @@
 package com.example.restaurant.services.order.commands;
 
 import com.example.restaurant.models.Order;
-import com.example.restaurant.models.dto.OrderDTO;
+import com.example.restaurant.models.dto.order.OrderRequestDTO;
+import com.example.restaurant.models.dto.order.OrderResponseDTO;
+import com.example.restaurant.repositories.CustomerRepository;
+import com.example.restaurant.repositories.DishRepository;
 import com.example.restaurant.repositories.OrderRepository;
 import com.example.restaurant.mappers.OrderMapper;
+import com.example.restaurant.services.handlers.RegularCustomerDiscountHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +16,17 @@ import org.springframework.stereotype.Service;
 public class UpdateOrderCommand {
 
   private final OrderRepository orderRepository;
+  private final CustomerRepository customerRepository;
+  private final DishRepository dishRepository;
+  private final RegularCustomerDiscountHandler regularCustomerDiscountHandler;
   private final OrderMapper orderMapper;
 
-  public OrderDTO execute(Long orderId, OrderDTO orderDTO) {
+  public OrderResponseDTO execute(Long orderId, OrderRequestDTO orderDTO) {
     Order existingOrder = orderRepository.findById(orderId)
-            .orElseThrow(() -> new IllegalArgumentException("No se encontró la orden con ID: " + orderId));
+            .orElseThrow(() -> new RuntimeException("No se encontró la orden con ID: " + orderId));
 
-    // Actualizar los atributos relevantes de la orden
-    existingOrder.setTotal(orderDTO.getTotal());
-    existingOrder.setDate(orderDTO.getDate());
-    existingOrder.setDishes(orderMapper.toEntity(orderDTO).getDishes());
-
-    existingOrder = orderRepository.save(existingOrder);
-    return orderMapper.toDTO(existingOrder);
+    Order updatedOrder = orderMapper.toEntity(orderDTO);
+    Order savedOrder = orderRepository.save(updatedOrder);
+    return orderMapper.toDTO(savedOrder);
   }
 }

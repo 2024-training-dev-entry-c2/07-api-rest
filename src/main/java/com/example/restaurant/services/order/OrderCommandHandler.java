@@ -1,6 +1,7 @@
 package com.example.restaurant.services.order;
 
-import com.example.restaurant.models.dto.OrderDTO;
+import com.example.restaurant.models.dto.order.OrderRequestDTO;
+import com.example.restaurant.models.dto.order.OrderResponseDTO;
 import com.example.restaurant.services.order.commands.CreateOrderCommand;
 import com.example.restaurant.services.order.commands.DeleteOrderCommand;
 import com.example.restaurant.services.order.commands.GetOrderByIdCommand;
@@ -22,11 +23,11 @@ public class OrderCommandHandler {
   private final ListOrdersCommand listOrdersCommand;
 
 
-  public OrderDTO createOrder(OrderDTO orderDTO) {
+  public OrderResponseDTO createOrder(com.example.restaurant.models.dto.order.OrderRequestDTO orderDTO) {
     return createOrderCommand.execute(orderDTO);
   }
 
-  public OrderDTO updateOrder(Long id, OrderDTO orderDTO) {
+  public OrderResponseDTO updateOrder(Long id, OrderRequestDTO orderDTO) {
     return updateOrderCommand.execute(id, orderDTO);
   }
 
@@ -34,11 +35,11 @@ public class OrderCommandHandler {
     deleteOrderCommand.execute(orderId);
   }
 
-  public OrderDTO getOrderById(Long orderId) {
+  public OrderResponseDTO getOrderById(Long orderId) {
     return getOrderByIdCommand.execute(orderId);
   }
 
-  public List<OrderDTO> listOrders() {
+  public List<OrderResponseDTO> listOrders() {
     return listOrdersCommand.execute();
   }
 }
