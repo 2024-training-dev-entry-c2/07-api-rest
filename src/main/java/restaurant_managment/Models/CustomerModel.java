@@ -37,10 +37,13 @@ public class CustomerModel {
       totalOrders = entityManager.createQuery("SELECT COUNT(o) FROM OrderModel o WHERE o.reservation.customer.id = :customerId", Long.class)
         .setParameter("customerId", this.id)
         .getSingleResult().intValue();
+      verifyTotalOrders(totalOrders);
+    }
+  }
 
-      if (totalOrders >= 10) {
-        setIsFrequent(true);
-      }
+  public void verifyTotalOrders(Integer totalOrders) {
+    if (totalOrders >= 10) {
+      setIsFrequent(true);
     }
   }
 }

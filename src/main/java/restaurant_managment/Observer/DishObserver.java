@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DishObserver implements IObserver {
   private List<DishModel> dishes;
-  private EntityManager entityManager;
+  private final EntityManager entityManager;
 
   public DishObserver(List<DishModel> dishes, EntityManager entityManager) {
     this.dishes = dishes;

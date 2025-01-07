@@ -34,9 +34,13 @@ public class DishModel {
       .setParameter("dishId", this.id)
       .getSingleResult().intValue();
 
-    if (totalOrders >= 100) {
-      this.isPopular = true;
+    verifyTotalOrders(totalOrders);
     }
+  }
+
+  public void verifyTotalOrders(Integer totalOrders) {
+    if (totalOrders >= 10) {
+      setIsPopular(true);
     }
   }
 }
