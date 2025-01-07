@@ -20,10 +20,13 @@ public class PopularDishHandler implements DishHandler {
         this.nextHandler = handler;
     }
 
+    @Override
     public void handle(Dish dish) {
         long orderCount = orderRepository.countByDishId(dish.getId());
         if (orderCount > 100) {
             dish.setSpecialDish(true);
+        } else {
+            dish.setSpecialDish(false);
         }
         if (nextHandler != null) {
             nextHandler.handle(dish);

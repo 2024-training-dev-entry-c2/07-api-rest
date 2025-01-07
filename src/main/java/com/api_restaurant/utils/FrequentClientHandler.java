@@ -25,6 +25,8 @@ public class FrequentClientHandler implements ClientHandler {
         long orderCount = orderRepository.countByClientId(client.getId());
         if (orderCount >= 10) {
             client.setFrequent(true);
+        } else {
+            client.setFrequent(false);
         }
         if (nextClientHandler != null) {
             nextClientHandler.handle(client);
