@@ -58,7 +58,9 @@ public class OrderController {
         Dish dish = dishService.getDish(detail.getDishId()).orElseThrow();
         orderDetails.add(DtoOrderDetailConverter.convertToOrderDetail(detail, newOrder, dish));
       }
-      orderDetailService.saveOrderDetails(orderDetails);
+      newOrder.setOrderDetails(orderDetailService.saveOrderDetails(orderDetails));
+
+      orderService.updateTotalOrder(newOrder.getId());
       return ResponseEntity.ok("Orden creada con éxito");
     }catch (RuntimeException e){
       return ResponseEntity.badRequest().body("No se pudo crear el pedido");

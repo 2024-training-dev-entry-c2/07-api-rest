@@ -28,11 +28,12 @@ public class OrderDetailService {
     return orderDetailRepository.findById(id);
   }
 
-  public void saveOrderDetails(List<OrderDetail> orderDetails) {
-    orderDetailRepository.saveAllAndFlush(orderDetails);
+  public List<OrderDetail> saveOrderDetails(List<OrderDetail> orderDetails) {
+    List<OrderDetail> newDetails = orderDetailRepository.saveAllAndFlush(orderDetails);
     for (OrderDetail detail : orderDetails) {
       eventManager.notify("DishOrdered", detail.getDish());
     }
+    return newDetails;
   }
 
   public List<OrderDetail> listOrderDetailsByOrderId(Long orderId) {
