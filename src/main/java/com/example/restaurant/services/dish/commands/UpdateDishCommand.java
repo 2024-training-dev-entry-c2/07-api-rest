@@ -1,8 +1,9 @@
 package com.example.restaurant.services.dish.commands;
 
-import com.example.restaurant.models.dto.DishDTO;
 import com.example.restaurant.mappers.DishMapper;
 import com.example.restaurant.models.Dish;
+import com.example.restaurant.models.dto.dish.DishRequestDTO;
+import com.example.restaurant.models.dto.dish.DishResponseDTO;
 import com.example.restaurant.repositories.DishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,12 @@ public class UpdateDishCommand {
   private final DishMapper dishMapper;
 
 
-  public DishDTO execute(Long id, DishDTO dishDTO) {
-    Optional<Dish> optionalDish = dishRepository.findById(id);
-    if (optionalDish.isEmpty()) {
-      throw new IllegalArgumentException("No se encontró plato con ID: " + id);
+  public DishResponseDTO execute(Long dishId, DishRequestDTO dishDTO) {
+    Optional<Dish> existingDish = dishRepository.findById(dishId);
+    if (existingDish.isEmpty()) {
+      throw new RuntimeException("No se encontró plato con ID: " + dishId);
     }
-    Dish dishToUpdate = optionalDish.get();
-    dishToUpdate.setName(dishDTO.getName());
-    dishToUpdate.setPrice(dishDTO.getPrice());
+    Dish dishToUpdate = dishMapper.toEntity(dishDTO);
     Dish updatedDish = dishRepository.save(dishToUpdate);
     return dishMapper.toDTO(updatedDish);
   }

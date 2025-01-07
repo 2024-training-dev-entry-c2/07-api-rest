@@ -1,6 +1,7 @@
 package com.example.restaurant.services.dish;
 
-import com.example.restaurant.models.dto.DishDTO;
+import com.example.restaurant.models.dto.dish.DishRequestDTO;
+import com.example.restaurant.models.dto.dish.DishResponseDTO;
 import com.example.restaurant.services.dish.commands.CreateDishCommand;
 import com.example.restaurant.services.dish.commands.DeleteDishCommand;
 import com.example.restaurant.services.dish.commands.GetDishByIdCommand;
@@ -22,23 +23,23 @@ public class DishCommandHandler {
   private final ListDishesCommand listDishesCommand;
 
 
-  public DishDTO createCustomer(DishDTO dishDTO) {
+  public DishResponseDTO createDish(DishRequestDTO dishDTO) {
     return createDishCommand.execute(dishDTO);
   }
 
-  public DishDTO updateCustomer(Long id, DishDTO dishDTO) {
+  public DishResponseDTO updateDish(Long id, DishRequestDTO dishDTO) {
     return updateDishCommand.execute(id, dishDTO);
   }
 
-  public void deleteCustomer(Long customerId) {
-    deleteDishCommand.execute(customerId);
+  public void deleteDish(Long dishId) {
+    deleteDishCommand.execute(dishId);
   }
 
-  public DishDTO getCustomerById(Long customerId) {
-    return getDishByIdCommand.execute(customerId);
+  public DishResponseDTO getDishById(Long dishId) {
+    return getDishByIdCommand.execute(dishId);
   }
 
-  public List<DishDTO> listCustomers() {
+  public List<DishResponseDTO> listDishes() {
     return listDishesCommand.execute();
   }
 }

@@ -12,7 +12,7 @@ public class DeleteDishCommand {
 
   public void execute(Long dishId) {
     if (!dishRepository.existsById(dishId)) {
-      throw new IllegalArgumentException("No se encontró plato con ID: " + dishId);
+      throw new RuntimeException("No se encontró plato con ID: " + dishId);
     }
     dishRepository.deleteById(dishId);
   }
