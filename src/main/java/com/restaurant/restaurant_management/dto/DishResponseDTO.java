@@ -12,4 +12,5 @@ public class DishResponseDTO {
   private Integer basePrice;
   private Float price;
   private Boolean isPopular;
+  private Boolean active;
 }

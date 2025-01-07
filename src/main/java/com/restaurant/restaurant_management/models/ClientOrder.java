@@ -1,8 +1,11 @@
 package com.restaurant.restaurant_management.models;
 
+import com.restaurant.restaurant_management.constants.OrderStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,6 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -28,13 +32,19 @@ public class ClientOrder {
   @Column(nullable = false)
   private LocalDateTime orderDateTime;
 
+  @Enumerated(EnumType.STRING)
+  private OrderStatus status;
+
+  @Column(nullable = false)
+  private Double discount;
+
   @Column(nullable = false)
   private Double total;
 
-  @ManyToOne
+  @ManyToOne(targetEntity = Client.class)
   @JoinColumn(name = "client_id", nullable = false)
   private Client client;
 
-  @OneToMany(mappedBy = "clientOrder", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<OrderDetail> orderDetails;
+  @OneToMany(targetEntity = OrderDetail.class, mappedBy = "clientOrder", cascade = CascadeType.REMOVE)
+  private List<OrderDetail> orderDetails = new ArrayList<>();
 }

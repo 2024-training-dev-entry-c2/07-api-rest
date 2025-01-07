@@ -9,4 +9,5 @@ public class MenuResponseDTO {
   private Integer id;
   private String menuName;
   private String description;
+  private Boolean active;
 }

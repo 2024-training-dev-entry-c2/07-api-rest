@@ -10,6 +10,7 @@ public class DtoMenuConverter {
     Menu menu = new Menu();
     menu.setMenuName(menuRequestDTO.getMenuName());
     menu.setDescription(menuRequestDTO.getDescription());
+    menu.setActive(menuRequestDTO.getActive());
     return menu;
   }
 
@@ -18,6 +19,7 @@ public class DtoMenuConverter {
     menuResponseDTO.setId(menu.getId());
     menuResponseDTO.setMenuName(menu.getMenuName());
     menuResponseDTO.setDescription(menu.getDescription());
+    menuResponseDTO.setActive(menu.getActive());
     return menuResponseDTO;
   }
 

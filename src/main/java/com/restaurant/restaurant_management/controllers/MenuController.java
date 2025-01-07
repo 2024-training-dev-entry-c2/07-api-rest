@@ -48,6 +48,15 @@ public class MenuController {
     return ResponseEntity.ok(response);
   }
 
+  @GetMapping("/active")
+  public ResponseEntity<List<MenuResponseDTO>> getActiveMenus() {
+    List<Menu> menus = menuService.listActiveMenus();
+    List<MenuResponseDTO> response = menus.stream()
+      .map(DtoMenuConverter::convertToResponseDTO)
+      .toList();
+    return ResponseEntity.ok(response);
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<MenuResponseDTO> updateMenu(@PathVariable Integer id, @RequestBody MenuRequestDTO menuRequestDTO) {
     try {

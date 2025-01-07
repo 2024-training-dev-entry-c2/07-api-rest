@@ -39,4 +39,8 @@ public class ClientService {
     }).orElseThrow(()-> new RuntimeException("Client con el id "+id+" no pudo ser actualizado"));
   }
 
+  public void deleteClient(Long id) {
+    clientRepository.deleteById(id);
+  }
+
 }

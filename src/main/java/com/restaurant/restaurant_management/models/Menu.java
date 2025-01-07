@@ -29,6 +29,8 @@ public class Menu {
   @Column(length = 200)
   private String description;
 
+  private Boolean active;
+
   @OneToMany(targetEntity = Dish.class, mappedBy = "menu")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<Dish> dishes = new ArrayList<>();

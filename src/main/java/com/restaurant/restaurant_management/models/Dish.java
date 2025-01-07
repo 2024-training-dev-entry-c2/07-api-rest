@@ -31,7 +31,9 @@ public class Dish {
   private Integer basePrice;
 
   @Column(nullable = false)
-  private Boolean isPopular = false;
+  private Boolean isPopular;
+
+  private Boolean active;
 
   @ManyToOne(targetEntity = Menu.class)
   @JoinColumn(name = "menu_id")

@@ -6,6 +6,7 @@ import com.restaurant.restaurant_management.models.Client;
 import com.restaurant.restaurant_management.services.ClientService;
 import com.restaurant.restaurant_management.utils.DtoClientConverter;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,6 +57,12 @@ public class ClientController {
     } catch (RuntimeException e) {
       return ResponseEntity.notFound().build();
     }
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteClient(@PathVariable Long id){
+    clientService.deleteClient(id);
+    return ResponseEntity.noContent().build();
   }
 
 }

@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Integer> {
-  @Query("SELECT d FROM Dish d WHERE d.menu.id = :menuId")
-  List<Dish> findByMenuId(@Param("menuId") Integer menuId);
+  @Query("SELECT d FROM Dish d WHERE d.menu.id = :menuId AND d.active = true")
+  List<Dish> findByMenuIdAndActiveTrue(@Param("menuId") Integer menuId);
 }

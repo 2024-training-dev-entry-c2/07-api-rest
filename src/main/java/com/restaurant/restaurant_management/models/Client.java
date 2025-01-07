@@ -1,6 +1,7 @@
 package com.restaurant.restaurant_management.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -40,7 +42,7 @@ public class Client {
   @Column(nullable = false)
   private Boolean isFrequent = false;
 
-  @OneToMany(targetEntity = ClientOrder.class,mappedBy = "client")
+  @OneToMany(targetEntity = ClientOrder.class,mappedBy = "client", cascade = CascadeType.REMOVE)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private List<ClientOrder> orders;
+  private List<ClientOrder> orders = new ArrayList<>();
 }

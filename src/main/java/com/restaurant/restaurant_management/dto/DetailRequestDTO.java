@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MenuRequestDTO {
-  private String menuName;
-  private String description;
-  private Boolean active;
+public class DetailRequestDTO {
+  private Integer quantity;
+  private Integer dishId;
 }

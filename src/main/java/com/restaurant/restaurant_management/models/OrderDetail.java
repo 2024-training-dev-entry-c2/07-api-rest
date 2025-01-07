@@ -1,5 +1,7 @@
 package com.restaurant.restaurant_management.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.restaurant.restaurant_management.constants.AppConstants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +19,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "ORDER_DETAIL")
 public class OrderDetail {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -26,11 +30,23 @@ public class OrderDetail {
   @Column(nullable = false)
   private Double subtotal;
 
-  @ManyToOne
+  @ManyToOne(targetEntity = ClientOrder.class)
   @JoinColumn(name = "order_id", nullable = false)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private ClientOrder clientOrder;
 
-  @ManyToOne
+  @ManyToOne(targetEntity = Dish.class)
   @JoinColumn(name = "dish_id", nullable = false)
   private Dish dish;
+
+
+  @PrePersist
+  public void calculateSubtotal() {
+    if(Boolean.TRUE.equals(this.dish.getIsPopular())){
+      this.subtotal = this.quantity * this.dish.getBasePrice() * AppConstants.INCREASE;
+    }
+    else {
+      this.subtotal = (double) (this.quantity * this.dish.getBasePrice());
+    }
+  }
 }

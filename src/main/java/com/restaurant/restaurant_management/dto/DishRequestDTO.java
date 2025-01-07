@@ -11,4 +11,5 @@ public class DishRequestDTO {
   private Integer basePrice;
   private Boolean isPopular;
   private Integer menuId;
+  private Boolean active;
 }

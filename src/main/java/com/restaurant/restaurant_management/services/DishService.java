@@ -27,8 +27,8 @@ public class DishService {
     return dishRepository.findAll();
   }
 
-  public List<Dish> listDishesByMenuId(Integer menuId) {
-    return dishRepository.findByMenuId(menuId);
+  public List<Dish> listDishesByMenuIdAndActive(Integer menuId) {
+    return dishRepository.findByMenuIdAndActiveTrue(menuId);
   }
 
   public Dish updateDish(Integer id, Dish dish) {
@@ -37,6 +37,8 @@ public class DishService {
       x.setDescription(dish.getDescription());
       x.setBasePrice(dish.getBasePrice());
       x.setIsPopular(dish.getIsPopular());
+      x.setMenu(dish.getMenu());
+      x.setActive(dish.getActive());
       return dishRepository.save(x);
     }).orElseThrow(()-> new RuntimeException("Dish con el id "+id+" no pudo ser actualizado"));
   }

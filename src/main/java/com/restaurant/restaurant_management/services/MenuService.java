@@ -27,16 +27,17 @@ public class MenuService {
     return menuRepository.findAll();
   }
 
+  public List<Menu> listActiveMenus() {
+    return menuRepository.findByActiveTrue();
+  }
+
   public Menu updateMenu(Integer id, Menu menu) {
     return menuRepository.findById(id).map( x ->{
       x.setMenuName(menu.getMenuName());
       x.setDescription(menu.getDescription());
+      x.setActive(menu.getActive());
       return menuRepository.save(x);
     }).orElseThrow(()-> new RuntimeException("Menu con el id "+id+" no pudo ser actualizado"));
-  }
-
-  public void deleteMenu(Integer id) {
-    menuRepository.deleteById(id);
   }
 
 }

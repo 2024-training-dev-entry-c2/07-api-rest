@@ -58,8 +58,8 @@ public class DishController {
   }
 
   @GetMapping("/menu/{menuId}")
-  public ResponseEntity<List<DishResponseDTO>> getDishesByMenuId(@PathVariable Integer menuId) {
-    List<Dish> dishes = dishService.listDishesByMenuId(menuId);
+  public ResponseEntity<List<DishResponseDTO>> getDishesByMenuIdAndActive(@PathVariable Integer menuId) {
+    List<Dish> dishes = dishService.listDishesByMenuIdAndActive(menuId);
     List<DishResponseDTO> response = dishes.stream()
         .map(DtoDishConverter::convertToResponseDTO)
         .toList();
@@ -69,7 +69,8 @@ public class DishController {
   @PutMapping("/{id}")
   public ResponseEntity<DishResponseDTO> updateDish(@PathVariable Integer id, @RequestBody DishRequestDTO dishRequestDTO) {
     try {
-      Dish updated = dishService.updateDish(id, DtoDishConverter.convertToDish(dishRequestDTO, null));
+      Menu menu = menuService.getMenu(dishRequestDTO.getMenuId()).orElseThrow();
+      Dish updated = dishService.updateDish(id, DtoDishConverter.convertToDish(dishRequestDTO, menu));
       return ResponseEntity.ok(DtoDishConverter.convertToResponseDTO(updated));
     } catch (RuntimeException e) {
       return ResponseEntity.notFound().build();
