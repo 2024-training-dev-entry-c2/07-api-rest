@@ -38,15 +38,24 @@ public class DishService {
     }
 
     public Dish updateDish(Long id, Dish dish) {
-        return dishRepository.findById(id).map(x -> {
-            x.setName(dish.getName());
-            x.setPrice(dish.getPrice());
-            x.setDescription(dish.getDescription());
-            x.setSpecialDish(dish.getSpecialDish());
-            return dishRepository.save(x);
+        return dishRepository.findById(id).map(existingDish -> {
+            existingDish.setName(dish.getName());
+            existingDish.setPrice(dish.getPrice());
+            existingDish.setDescription(dish.getDescription());
+            existingDish.setSpecialDish(dish.getSpecialDish());
+
+            checkMenu(dish, existingDish);
+
+            return dishRepository.save(existingDish);
         }).orElseThrow(() -> {
             return new RuntimeException("Dish with id " + id + " could not be updated");
         });
+    }
+
+    private static void checkMenu(Dish dish, Dish existingDish) {
+        if (dish.getMenu() != null) {
+            existingDish.setMenu(dish.getMenu());
+        }
     }
 
     public void deleteDish(Long id) {
