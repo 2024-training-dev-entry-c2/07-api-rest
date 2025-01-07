@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,10 +38,16 @@ public class Customer {
   @OneToMany(
           targetEntity = Order.class,
           fetch = FetchType.LAZY,
-          mappedBy = "customer",
-          orphanRemoval = false
+          mappedBy = "customer"
   )
   private List<Order> orders;
 
+  public Customer(String name, String lastName, String email, String phone) {
+    this.name = name;
+    this.lastName = lastName;
+    this.email = email;
+    this.phone = phone;
+    this.orders = new ArrayList<>();
+  }
 
 }
