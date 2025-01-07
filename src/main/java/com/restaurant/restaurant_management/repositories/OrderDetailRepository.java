@@ -10,6 +10,9 @@ import java.util.List;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
+
   @Query("SELECT d FROM OrderDetail d WHERE d.clientOrder.id = :orderId")
   List<OrderDetail> findByOrderId(@Param("orderId") Long orderId);
+
+  Long countByDishId(Integer dishId);
 }

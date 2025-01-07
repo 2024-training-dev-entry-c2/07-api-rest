@@ -10,7 +10,6 @@ public class DishResponseDTO {
   private String dishName;
   private String description;
   private Integer basePrice;
-  private Float price;
   private Boolean isPopular;
   private Boolean active;
 }

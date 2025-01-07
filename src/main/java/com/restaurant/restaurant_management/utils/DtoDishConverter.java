@@ -1,6 +1,5 @@
 package com.restaurant.restaurant_management.utils;
 
-import com.restaurant.restaurant_management.constants.AppConstants;
 import com.restaurant.restaurant_management.dto.DishRequestDTO;
 import com.restaurant.restaurant_management.dto.DishResponseDTO;
 import com.restaurant.restaurant_management.models.Dish;
@@ -25,11 +24,6 @@ public class DtoDishConverter {
     dishResponseDTO.setDishName(dish.getDishName());
     dishResponseDTO.setDescription(dish.getDescription());
     dishResponseDTO.setBasePrice(dish.getBasePrice());
-    if(Boolean.TRUE.equals(dish.getIsPopular())){
-      dishResponseDTO.setPrice((float) (dish.getBasePrice()* AppConstants.INCREASE));
-    }else{
-      dishResponseDTO.setPrice(Float.valueOf((dish.getBasePrice())));
-    }
     dishResponseDTO.setIsPopular(dish.getIsPopular());
     dishResponseDTO.setActive(dish.getActive());
     return dishResponseDTO;

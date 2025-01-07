@@ -1,7 +1,6 @@
 package com.restaurant.restaurant_management.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.restaurant.restaurant_management.constants.AppConstants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,11 +41,6 @@ public class OrderDetail {
 
   @PrePersist
   public void calculateSubtotal() {
-    if(Boolean.TRUE.equals(this.dish.getIsPopular())){
-      this.subtotal = this.quantity * this.dish.getBasePrice() * AppConstants.INCREASE;
-    }
-    else {
-      this.subtotal = (double) (this.quantity * this.dish.getBasePrice());
-    }
+    this.subtotal = (double) (this.quantity * this.dish.getBasePrice());
   }
 }

@@ -1,7 +1,10 @@
 package com.restaurant.restaurant_management.services;
 
 import com.restaurant.restaurant_management.models.OrderDetail;
+import com.restaurant.restaurant_management.repositories.DishRepository;
 import com.restaurant.restaurant_management.repositories.OrderDetailRepository;
+import com.restaurant.restaurant_management.services.observer.EventManager;
+import com.restaurant.restaurant_management.services.observer.PopularDishObserver;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +13,11 @@ import java.util.Optional;
 @Service
 public class OrderDetailService {
   private final OrderDetailRepository orderDetailRepository;
+  private final EventManager eventManager =  new EventManager("NewOrder", "DishOrdered");
 
-  public OrderDetailService(OrderDetailRepository orderDetailRepository) {
+  public OrderDetailService(OrderDetailRepository orderDetailRepository, DishRepository dishRepository) {
     this.orderDetailRepository = orderDetailRepository;
+    eventManager.subscribe("DishOrdered", new PopularDishObserver(dishRepository, orderDetailRepository));
   }
 
   public void saveOrderDetail(OrderDetail orderDetail) {
@@ -24,7 +29,10 @@ public class OrderDetailService {
   }
 
   public void saveOrderDetails(List<OrderDetail> orderDetails) {
-    orderDetailRepository.saveAll(orderDetails);
+    orderDetailRepository.saveAllAndFlush(orderDetails);
+    for (OrderDetail detail : orderDetails) {
+      eventManager.notify("DishOrdered", detail.getDish());
+    }
   }
 
   public List<OrderDetail> listOrderDetailsByOrderId(Long orderId) {

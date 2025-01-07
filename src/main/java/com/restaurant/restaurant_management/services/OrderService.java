@@ -1,7 +1,10 @@
 package com.restaurant.restaurant_management.services;
 
 import com.restaurant.restaurant_management.models.ClientOrder;
+import com.restaurant.restaurant_management.repositories.ClientRepository;
 import com.restaurant.restaurant_management.repositories.OrderRepository;
+import com.restaurant.restaurant_management.services.observer.EventManager;
+import com.restaurant.restaurant_management.services.observer.FrequentClientObserver;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,16 +16,20 @@ import java.util.Optional;
 @Service
 public class OrderService {
   private final OrderRepository orderRepository;
+  private final EventManager eventManager =  new EventManager("NewOrder", "DishOrdered");
 
-  public OrderService(OrderRepository orderRepository) {
+  public OrderService(OrderRepository orderRepository, ClientRepository clientRepository) {
     this.orderRepository = orderRepository;
+    eventManager.subscribe("NewOrder", new FrequentClientObserver(clientRepository));
   }
 
   public ClientOrder saveOrder(ClientOrder order) {
     order.setOrderDateTime(LocalDateTime.now());
     order.setDiscount(0.0);
     order.setTotal(0.0);
-    return orderRepository.save(order);
+    ClientOrder newOrder = orderRepository.saveAndFlush(order);
+    eventManager.notify("NewOrder", newOrder.getClient());
+    return newOrder;
   }
 
   public Optional<ClientOrder> getOrder(Long id) {
