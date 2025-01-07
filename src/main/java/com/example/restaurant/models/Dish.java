@@ -31,6 +31,8 @@ public class Dish {
   @ManyToMany(mappedBy = "dishes")
   private List<Order> orders;
 
+  private Long menu;
+
   public Dish(String name, Float price) {
     this.name = name;
     this.price = price;
