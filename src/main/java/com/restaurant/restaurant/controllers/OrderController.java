@@ -2,6 +2,7 @@ package com.restaurant.restaurant.controllers;
 
 import com.restaurant.restaurant.dtos.OrderDTO;
 import com.restaurant.restaurant.models.OrderModel;
+import com.restaurant.restaurant.services.OrderProcessingService;
 import com.restaurant.restaurant.services.OrderService;
 import com.restaurant.restaurant.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,12 @@ import java.util.stream.Collectors;
 public class OrderController {
   @Autowired
   private OrderService orderService;
+
+  private final OrderProcessingService orderProcessingService;
+
+  public OrderController(){
+    this.orderProcessingService = new OrderProcessingService();
+  }
 
   @PostMapping
   public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO){
