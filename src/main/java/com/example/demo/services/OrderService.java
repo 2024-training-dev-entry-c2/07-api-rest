@@ -107,7 +107,7 @@ public class OrderService {
     private void  checkDishFood(List<Dishfood> dishfoods){
         for (Dishfood dish : dishfoods) {
             long dishCount = repository.countByDishfoods_Id(dish.getId());
-            if (dishCount > 10 && !dish.getIsPopular()) {//100?
+            if (dishCount > 11 && !dish.getIsPopular()) {//100?
                 dish.setIsPopular(true);
                 dishfoodRepository.save(dish);
                 subject.notifyObservers("El plato " + dish.getName() + " ahora es popular.");
