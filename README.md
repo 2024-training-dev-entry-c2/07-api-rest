@@ -1,41 +1,117 @@
-## API REST
+# Restaurant Management Application
 
-Es una interfaz de programación de aplicaciones (API) que sigue los principios de la arquitectura REST (Representational State Transfer).
+## Descripción General
+Esta aplicación es un sistema de gestión de restaurantes desarrollado en Java utilizando Spring Boot. Proporciona la capacidad de administrar clientes, menús, platos y órdenes, con un diseño basado en buenas prácticas de programación y arquitecturas modernas.
 
-Es un conjunto de reglas que permite a sistemas interactuar entre sí utilizando métodos estándar del protocolo HTTP, como GET, POST, PUT, DELETE, etc.
-El término "API REST" se usa para referirse a una API que implementa parcialmente o completamente las restricciones definidas por REST.
+---
 
-## RESTful
+## Características Principales
 
-Es un adjetivo que describe una API que cumple completamente con los principios de REST.
+### 1. Entidades
+- **Client**: Representa a los clientes con datos personales y su tipo (común o frecuente).
+- **Menu**: Contiene los menús disponibles, cada uno asociado con una lista de platos.
+- **Dish**: Representa los platos con detalles como nombre, descripción, precio y tipo (común o popular).
+- **Order**: Registra las órdenes de los clientes, cada una con una lista de platos seleccionados.
 
-Una API es RESTful si sigue estrictamente los siguientes principios:
-- Arquitectura cliente-servidor: Separación entre cliente (interfaz) y servidor (datos y lógica).
+### 2. Relaciones
+- Un cliente puede realizar múltiples órdenes.
+- Una órden debe contener al menos un plato.
+- Los platos están asociados a un menú.
+- Una relación muchos-a-muchos entre platos y órdenes.
 
-- Stateless: Cada solicitud del cliente al servidor debe contener toda la información necesaria para entenderla.
+### 3. Características Técnicas
+- **API RESTful** para todas las entidades.
+- Validación de datos con `Jakarta Validation`.
+- Gestor de base de datos: MySQL.
+- Hibernate para persistencia de datos.
 
-- Caché: Las respuestas deben ser cacheables cuando sea posible para mejorar el rendimiento.
+---
 
-- Interfaz uniforme: Uso consistente de métodos HTTP, URIs, y representaciones de recursos.
+## Instalación y Ejecución
 
-- Sistema en capas: Posibilidad de usar capas intermedias entre cliente y servidor.
+### 1. Prerrequisitos
+- **Java 17** o superior.
+- **Gradle**.
+- **MySQL**.
 
-## A que nos referimos con Stateless
+### 2. Configuración de la Base de Datos
+Crea una base de datos llamada `restaurant_management`. Asegúrate de actualizar las credenciales de acceso en el archivo `application.properties`:
 
-En el contexto de REST, el término stateless (sin estado) significa que cada solicitud del cliente al servidor debe ser independiente y contener toda la información necesaria para que el servidor pueda procesarla, sin depender del estado de solicitudes anteriores.
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/restaurant_management
+spring.datasource.username=tu_usuario
+spring.datasource.password=tu_contraseña
+```
 
-## Que haremos en este repositorio...
+### 3. Compilación y Ejecución
+Ejecuta los siguientes comandos:
 
-Vamos a estructurar un API Restful para la heladería. Usaremos Java 17 con Gradle y organizaremos el proyecto de manera que sea fácil de extender. Nos enfocaremos en el inventario, que incluirá funcionalidades para gestionar productos, como agregar, actualizar, eliminar y listar.
+```bash
+./gradlew clean build
+./gradlew bootRun
+```
+La aplicación estará disponible en: [http://localhost:8080/api/v1](http://localhost:8080/api/v1)
 
-Para empezar, estructuraremos el proyecto con estas consideraciones:
+---
 
-- Controladores: Gestionarán las rutas del API.
-- Servicios: Contendrán la lógica del negocio.
-- Modelos: Representarán las entidades de dominio (como "Producto").
-- Repositorios en memoria: Simularán la interacción con la base de datos, usando colecciones como Map, Set y LinkedList.
+## Endpoints Principales
 
-Patrones de diseño:
+### Client
+- **GET** `/clients`: Obtiene todos los clientes.
+- **POST** `/clients`: Crea un nuevo cliente.
+- **GET** `/clients/{id}`: Obtiene un cliente por su ID.
+- **PUT** `/clients/{id}`: Actualiza un cliente.
+- **DELETE** `/clients/{id}`: Elimina un cliente.
 
-- Singleton para manejar el repositorio.
-- DTO para separar las entidades de dominio de los datos de respuesta o petición.
+### Menu
+- **GET** `/menus`: Obtiene todos los menús.
+- **POST** `/menus`: Crea un nuevo menú.
+- **GET** `/menus/{id}`: Obtiene un menú por su ID.
+- **PUT** `/menus/{id}`: Actualiza un menú.
+- **DELETE** `/menus/{id}`: Elimina un menú.
+
+### Dish
+- **GET** `/dishes`: Obtiene todos los platos.
+- **POST** `/dishes`: Crea un nuevo plato.
+- **GET** `/dishes/{id}`: Obtiene un plato por su ID.
+- **PUT** `/dishes/{id}`: Actualiza un plato.
+- **DELETE** `/dishes/{id}`: Elimina un plato.
+
+### Order
+- **GET** `/orders`: Obtiene todas las órdenes.
+- **POST** `/orders`: Crea una nueva órden.
+- **GET** `/orders/{id}`: Obtiene una órden por su ID.
+- **PUT** `/orders/{id}`: Actualiza una órden.
+- **DELETE** `/orders/{id}`: Elimina una órden.
+
+---
+
+## Diagrama de Clases
+
+![image](https://github.com/user-attachments/assets/3ea543e7-8874-4aca-bf64-5317a3106ac8)
+
+El sistema cuenta con un diagrama UML que describe las relaciones entre las entidades:
+- Asociaciones: `1..*`, `0..*` según los requisitos del negocio.
+- Tipos de relaciones: composición y agregación.
+
+---
+
+## Diagrama Relacional
+
+![image](https://github.com/user-attachments/assets/34293338-0d98-4ee2-a3d6-13aec99d0efb)
+
+El diagrama relacional representa las relaciones entre las tablas de la base de datos utilizadas en el sistema de gestión de restaurantes. 
+Este modelo incluye las claves primarias, claves foráneas y las relaciones (1:1, 1:N, N:M) entre las tablas.
+
+### Relación entre las tablas
+
+- **Client**: Relacionado con **Order** (1 Cliente puede tener 0 o más Órdenes).
+- **Order**: Relacionado con **Dish** (N:M) y con **Client** (N:1).
+- **Dish**: Relacionado con **Menu** (N:1) y **Order** (N:M).
+- **Menu**: Relacionado con **Dish** (1:N).
+
+---
+
+## Autor
+Proyecto desarrollado por Nahu Lemes.
+
