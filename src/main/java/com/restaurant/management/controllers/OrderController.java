@@ -12,6 +12,7 @@ import com.restaurant.management.services.DishService;
 import com.restaurant.management.services.OrderService;
 import com.restaurant.management.utils.DtoOrderConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,8 @@ public class OrderController {
   }
 
   @PostMapping
-  public ResponseEntity<String> addOrder(@RequestBody OrderRequestDTO orderRequestDTO){
+  @ResponseStatus(HttpStatus.CREATED)
+  public OrderResponseDTO addOrder(@RequestBody OrderRequestDTO orderRequestDTO){
     try {
       Client client = clientService.getClientById(orderRequestDTO.getClientId())
         .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
@@ -54,10 +58,10 @@ public class OrderController {
       }
 
       Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, orderDishes);
-      service.addOrder(order);
-      return ResponseEntity.ok("Pedido agregado éxitosamente con descuentos aplicados.");
+
+      return DtoOrderConverter.toOrderResponseDTO(service.addOrder(order));
     }catch (RuntimeException e){
-      return ResponseEntity.badRequest().body("Error al agregar el pedido: " + e.getMessage());
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
   }
 
@@ -77,7 +81,7 @@ public class OrderController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateOrder(@PathVariable Long id, @RequestBody OrderRequestDTO orderRequestDTO){
+  public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody OrderRequestDTO orderRequestDTO){
     try{
       Client client = clientService.getClientById(orderRequestDTO.getClientId())
         .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
@@ -92,9 +96,9 @@ public class OrderController {
 
       Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, orderDishes);
       Order updatedOrder = service.updateOrder(id, order);
-      return ResponseEntity.ok("Se ha actualizado exitosamente el pedido con descuentos aplicados.");
+      return ResponseEntity.ok(DtoOrderConverter.toOrderResponseDTO(updatedOrder));
     } catch (RuntimeException e){
-      return ResponseEntity.badRequest().body("Error al actualizar el pedido: " + e.getMessage());
+      return ResponseEntity.notFound().build();
     }
   }
 

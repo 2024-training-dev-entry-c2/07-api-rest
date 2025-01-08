@@ -6,6 +6,7 @@ import com.restaurant.management.models.dto.MenuResponseDTO;
 import com.restaurant.management.services.MenuService;
 import com.restaurant.management.utils.DtoMenuConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,9 +31,10 @@ public class MenuController {
   }
   
   @PostMapping
-  public ResponseEntity<String> addMenu(@RequestBody MenuRequestDTO menuRequestDTO){
-    service.addMenu(DtoMenuConverter.toMenu(menuRequestDTO));
-    return ResponseEntity.ok("Menú agregado éxitosamente");
+  @ResponseStatus(HttpStatus.CREATED)
+  public MenuResponseDTO addMenu(@RequestBody MenuRequestDTO menuRequestDTO){
+    Menu menu = service.addMenu(DtoMenuConverter.toMenu(menuRequestDTO));
+    return DtoMenuConverter.toMenuResponseDTO(menu);
   }
 
   @GetMapping("/{id}")
@@ -50,10 +53,10 @@ public class MenuController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateMenu(@PathVariable Long id, @RequestBody MenuRequestDTO menuRequestDTO){
+  public ResponseEntity<MenuResponseDTO> updateMenu(@PathVariable Long id, @RequestBody MenuRequestDTO menuRequestDTO){
     try{
       Menu updatedMenu = service.updateMenu(id, DtoMenuConverter.toMenu(menuRequestDTO));
-      return ResponseEntity.ok("Se ha actualizado exitosamente el menú.");
+      return ResponseEntity.ok(DtoMenuConverter.toMenuResponseDTO(updatedMenu));
     } catch (RuntimeException e){
       return ResponseEntity.notFound().build();
     }

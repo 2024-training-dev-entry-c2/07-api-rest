@@ -18,8 +18,8 @@ public class DishService {
     this.repository = repository;
   }
 
-  public void addDish(Dish dish){
-    repository.save(dish);
+  public Dish addDish(Dish dish){
+    return repository.save(dish);
   }
 
   public Optional<Dish> getDishById(Long id){

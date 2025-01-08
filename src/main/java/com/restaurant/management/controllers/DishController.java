@@ -8,6 +8,7 @@ import com.restaurant.management.services.DishService;
 import com.restaurant.management.services.MenuService;
 import com.restaurant.management.utils.DtoDishConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,14 +36,14 @@ public class DishController {
   }
 
   @PostMapping
-  public ResponseEntity<String> addDish(@RequestBody DishRequestDTO dishRequestDTO){
+  @ResponseStatus(HttpStatus.CREATED)
+  public DishResponseDTO addDish(@RequestBody DishRequestDTO dishRequestDTO){
     try {
       Dish dish = DtoDishConverter.toDish(dishRequestDTO, null);
       menuService.addDishToMenu(dishRequestDTO.getMenuId(), dish);
-      service.addDish(dish);
-      return ResponseEntity.ok("Plato agregado exitosamente");
-    } catch (RuntimeException e) {
-      return ResponseEntity.badRequest().body("Error al agregar el plato: " + e.getMessage());
+      return DtoDishConverter.toDishResponseDTO(service.addDish(dish));
+    } catch (RuntimeException e){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
   }
 
@@ -60,14 +63,14 @@ public class DishController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateDish(@PathVariable Long id, @RequestBody DishRequestDTO dishRequestDTO){
+  public ResponseEntity<DishResponseDTO> updateDish(@PathVariable Long id, @RequestBody DishRequestDTO dishRequestDTO){
     try{
       Menu menu = menuService.getMenuById(dishRequestDTO.getMenuId())
         .orElseThrow(() -> new RuntimeException("Menú no encontrado"));
       Dish updatedDish = service.updateDish(id, DtoDishConverter.toDish(dishRequestDTO, menu));
-      return ResponseEntity.ok("Se ha actualizado exitosamente el plato.");
+      return ResponseEntity.ok(DtoDishConverter.toDishResponseDTO(updatedDish));
     } catch (RuntimeException e){
-      return ResponseEntity.badRequest().body("Error al actualizar el plato: " + e.getMessage());
+      return ResponseEntity.notFound().build();
     }
   }
 

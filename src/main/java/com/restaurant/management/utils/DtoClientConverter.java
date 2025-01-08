@@ -6,10 +6,10 @@ import com.restaurant.management.models.dto.ClientResponseDTO;
 
 public class DtoClientConverter {
   public static Client toClient(ClientRequestDTO clientRequestDTO){
-    return new Client(
-      clientRequestDTO.getName(),
-      clientRequestDTO.getEmail()
-    );
+    Client client = new Client();
+    client.setName(clientRequestDTO.getName());
+    client.setEmail(clientRequestDTO.getEmail());
+    return client;
   }
 
   public static ClientResponseDTO toClientResponseDTO(Client client){

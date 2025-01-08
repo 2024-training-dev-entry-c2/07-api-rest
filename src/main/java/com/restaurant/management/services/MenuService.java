@@ -18,20 +18,20 @@ public class MenuService {
     this.repository = repository;
   }
 
-  public void addMenu(Menu menu){
+  public Menu addMenu(Menu menu){
     if (menu.getDishes() != null) {
       for (Dish dish : menu.getDishes()) {
         dish.setMenu(menu);
       }
     }
-    repository.save(menu);
+    return repository.save(menu);
   }
 
-  public void addDishToMenu(Long menuId, Dish dish) {
+  public Dish addDishToMenu(Long menuId, Dish dish) {
     Menu menu = repository.findById(menuId)
       .orElseThrow(() -> new RuntimeException("Menú no encontrado"));
 
-    menu.addDish(dish);
+    return menu.addDish(dish);
   }
 
   public Optional<Menu> getMenuById(Long id){

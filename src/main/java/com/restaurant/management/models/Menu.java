@@ -44,9 +44,10 @@ public class Menu {
     this.dishes = new ArrayList<>();
   }
 
-  public void addDish(Dish dish) {
+  public Dish addDish(Dish dish) {
     dishes.add(dish);
     dish.setMenu(this);
+    return dish;
   }
 
   public void removeDish(Dish dish) {

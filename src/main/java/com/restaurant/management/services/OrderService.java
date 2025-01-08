@@ -34,14 +34,14 @@ public class OrderService implements IObservable {
     addObserver(new DishOrderObserver(orderDishRepository, dishRepository));
   }
 
-  public void addOrder(Order order){
+  public Order addOrder(Order order){
     for (OrderDish orderDish : order.getOrderDishes()) {
       orderDish.setOrder(order);
     }
     order.calculateTotal();
     applyDiscounts(order);
-    repository.save(order);
     notifyObservers(order);
+    return repository.save(order);
   }
 
   public Optional<Order> getOrderById(Long id){
