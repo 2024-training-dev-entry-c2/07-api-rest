@@ -19,8 +19,8 @@ public class ProductoService {
     }
 
     //En esta clase se deberia de hacer la logica adicional al manejo del repo
-    public void agregarProducto(Producto producto){
-        repositorio.save(producto);
+    public Producto agregarProducto(Producto producto){
+        return repositorio.save(producto);
     }
 
     public Optional<Producto> obtenerProducto(Long id){
