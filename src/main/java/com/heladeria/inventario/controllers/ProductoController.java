@@ -6,6 +6,7 @@ import com.heladeria.inventario.models.Producto;
 import com.heladeria.inventario.services.ProductoService;
 import com.heladeria.inventario.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,14 +25,15 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<String> agregarProducto(@RequestBody ProductoRequestDTO productoRequest){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductoResponseDTO agregarProducto(@RequestBody ProductoRequestDTO productoRequest){
         Producto producto = new Producto(
                 productoRequest.getNombre(),
                 productoRequest.getCategoria(),
                 productoRequest.getCantidad()
         );
-        servicio.agregarProducto(producto);
-        return ResponseEntity.ok("Producto agregado exitosamente.");
+        return DtoConverter.convertToResponseDTO(servicio.agregarProducto(producto));
+
     }
 
     @GetMapping("/{id}")
