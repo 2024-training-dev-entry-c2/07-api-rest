@@ -1,5 +1,6 @@
 package com.restaurant.management.services;
 
+import com.restaurant.management.constants.DishStateEnum;
 import com.restaurant.management.models.Client;
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Menu;
@@ -72,6 +73,52 @@ class OrderServiceTest {
     assertEquals(order.getDate(), actualOrder.getDate());
     verify(clientObserver).updateOrder(eq(client), eq(dish));
     verify(dishObserver).updateOrder(eq(client), eq(dish));
+    verify(orderRepository).save(order);
+  }
+
+  @Test
+  @DisplayName("Agregar pedido con cantidad mayor a 100 y cambiar estado a POPULAR")
+  void addOrderAndSetDishPopular() {
+    Client client = mock(Client.class);
+    Dish dish = new Dish(1L, "Pizza", "Deliciosa pizza", 15f, null);
+
+    Order order = new Order(1L, client, LocalDate.now());
+    order.setOrderDishes(List.of(new OrderDish(dish, 120)));
+
+    when(orderRepository.save(eq(order))).thenReturn(order);
+    when(orderDishRepository.sumQuantityByDish(eq(dish))).thenReturn(120);
+
+    Order actualOrder = orderService.addOrder(order);
+
+    assertEquals(order.getId(), actualOrder.getId());
+    assertEquals(DishStateEnum.POPULAR, actualOrder.getOrderDishes().get(0).getDish().getState());
+
+    float expectedPrice = 15f * 1.0573f;
+    assertEquals(expectedPrice, dish.getPrice(), 0.0001f);
+
+    verify(dishObserver).updateOrder(eq(client), eq(dish));
+    verify(orderRepository).save(order);
+    verify(dishRepository).save(dish);
+  }
+
+  @Test
+  @DisplayName("Agregar pedido y marcar cliente como frecuente")
+  void addOrderAndSetClientFrequent() {
+    Client client = new Client(1L, "John Doe", "john.doe@example.com");
+    Dish dish = mock(Dish.class);
+
+    Order order = new Order(client, LocalDate.now());
+    order.setOrderDishes(List.of(new OrderDish(dish, 1)));
+
+    when(orderRepository.save(eq(order))).thenReturn(order);
+    when(orderRepository.countByClient(eq(client))).thenReturn(10);
+
+    orderService.addOrder(order);
+
+    assertTrue(client.getFrequent());
+
+    verify(clientRepository).save(eq(client));
+    verify(clientObserver).updateOrder(eq(client), eq(dish));
     verify(orderRepository).save(order);
   }
 

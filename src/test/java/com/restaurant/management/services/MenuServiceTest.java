@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -110,6 +112,19 @@ class MenuServiceTest {
   }
 
   @Test
+  @DisplayName("Actualizar menú no encontrado lanza excepción")
+  void updateMenuNotFound() {
+    when(menuRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    Exception exception = assertThrows(RuntimeException.class, () -> menuService.updateMenu(1L, new Menu()));
+
+    assertEquals("Menú con id 1 no se pudo actualizar.", exception.getMessage());
+
+    verify(menuRepository).findById(anyLong());
+    verify(menuRepository, never()).save(any());
+  }
+
+  @Test
   @DisplayName("Eliminar menú exitoso")
   void deleteMenu() {
     Dish dish1 = mock(Dish.class);
@@ -122,6 +137,19 @@ class MenuServiceTest {
 
     verify(dish1).setMenu(null);
     verify(menuRepository).deleteById(anyLong());
+  }
+
+  @Test
+  @DisplayName("Eliminar menú no encontrado")
+  void deleteMenuNotFound() {
+    when(menuRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    Exception exception = assertThrows(RuntimeException.class, () -> menuService.deleteMenu(1L));
+
+    assertEquals("Menú no encontrado", exception.getMessage());
+
+    verify(menuRepository).findById(anyLong());
+    verify(menuRepository, never()).deleteById(anyLong());
   }
 
   private List<Menu> getMenuList() {

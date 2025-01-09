@@ -19,10 +19,8 @@ public class MenuService {
   }
 
   public Menu addMenu(Menu menu){
-    if (menu.getDishes() != null) {
-      for (Dish dish : menu.getDishes()) {
-        dish.setMenu(menu);
-      }
+    for (Dish dish : menu.getDishes()) {
+      dish.setMenu(menu);
     }
     return repository.save(menu);
   }

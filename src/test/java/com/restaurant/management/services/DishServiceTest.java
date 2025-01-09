@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -115,9 +116,40 @@ class DishServiceTest {
   }
 
   @Test
+  @DisplayName("Actualizar plato no encontrado lanza excepción")
+  void updateDishNotFound() {
+    when(dishRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    Exception exception = assertThrows(RuntimeException.class, () -> dishService.updateDish(1L, new Dish()));
+
+    assertEquals("Plato con id 1 no se pudo actualizar.", exception.getMessage());
+
+    verify(dishRepository).findById(anyLong());
+    verify(dishRepository, never()).save(any());
+  }
+
+  @Test
   @DisplayName("Eliminar plato exitoso")
   void deleteDish() {
     Menu menu = new Menu();
+    Dish dish = new Dish(1L, "name", "description", 10f, menu);
+    menu.addDish(dish);
+
+    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dish));
+    doNothing().when(dishRepository).deleteById(anyLong());
+
+    dishService.deleteDish(1L);
+
+    assertFalse(menu.getDishes().contains(dish));
+
+    verify(dishRepository).findById(anyLong());
+    verify(dishRepository).deleteById(anyLong());
+  }
+
+  @Test
+  @DisplayName("Eliminar plato y remover del menú")
+  void deleteDishWithMenu() {
+    Menu menu = new Menu(1L, "nameMenu");
     Dish dish = new Dish(1L, "name", "description", 10f, menu);
     menu.addDish(dish);
 
@@ -143,6 +175,20 @@ class DishServiceTest {
 
     verify(dishRepository).findById(anyLong());
     verify(dishRepository, never()).deleteById(anyLong());
+  }
+
+  @Test
+  @DisplayName("Eliminar plato sin menú asociado")
+  void deleteDishWithoutMenu() {
+    Dish dish = new Dish(1L, "name", "description", 10f, null);
+
+    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dish));
+    doNothing().when(dishRepository).deleteById(anyLong());
+
+    dishService.deleteDish(1L);
+
+    verify(dishRepository).findById(anyLong());
+    verify(dishRepository).deleteById(anyLong());
   }
 
   private List<Dish> getDishList() {
