@@ -52,6 +52,6 @@ class MenuServiceProxyTest {
     assertTrue(result.isPresent());
     assertEquals(menu, result.get());
 
-    verify(menuService, times(0)).getMenuById(1L);
+    verify(menuService, times(1)).getMenuById(1L);
   }
 }

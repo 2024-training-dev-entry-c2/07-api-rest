@@ -45,16 +45,14 @@ public class CustomerModel {
   }
 
   public CustomerModel updateFrecuency(EntityManager entityManager) {
-    Integer totalOrders;
-
-    if (!this.isFrequent)
-    {
-      totalOrders = entityManager.createQuery("SELECT COUNT(o) FROM OrderModel o WHERE o.reservation.customer.id = :customerId", Long.class)
+    if (!this.isFrequent) {
+      Integer totalOrders = entityManager.createQuery("SELECT COUNT(o) FROM OrderModel o WHERE o.reservation.customer.id = :customerId", Long.class)
         .setParameter("customerId", this.id)
-        .getSingleResult().intValue();
+        .getSingleResult()
+        .intValue();
       verifyTotalOrders(totalOrders);
     }
-    return null;
+    return this;
   }
 
   public void verifyTotalOrders(Integer totalOrders) {

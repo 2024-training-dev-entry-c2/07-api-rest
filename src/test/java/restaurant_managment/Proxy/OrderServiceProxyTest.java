@@ -47,17 +47,15 @@ class OrderServiceProxyTest {
 
   @Test
   void testGetOrderById_OrderInCache() {
-    // Llama una vez para llenar la cache
+
     when(orderService.getOrderById(1L)).thenReturn(Optional.of(order));
     orderServiceProxy.getOrderById(1L);
 
-    // Llama de nuevo para verificar que se use la cache
     Optional<OrderModel> result = orderServiceProxy.getOrderById(1L);
 
     assertTrue(result.isPresent());
     assertEquals(order, result.get());
 
-    // Verificar que el método del servicio real sólo se llama una vez
     verify(orderService, times(1)).getOrderById(1L);
   }
 }

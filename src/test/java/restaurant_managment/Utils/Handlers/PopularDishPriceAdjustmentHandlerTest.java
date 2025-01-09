@@ -29,7 +29,6 @@ class PopularDishPriceAdjustmentHandlerTest {
 
     Double totalPrice = priceAdjustmentHandler.handle(order);
 
-    // Expected price adjustment: 10.0 * 0.0573 = 0.573
     assertEquals(30.0 + 0.573, totalPrice);
   }
 
@@ -65,7 +64,6 @@ class PopularDishPriceAdjustmentHandlerTest {
 
     Double totalPrice = priceAdjustmentHandler.handle(order);
 
-    // Expected price adjustment: 10.0 * 0.0573 = 0.573
     assertEquals(30.0 + 0.573, totalPrice);
   }
 

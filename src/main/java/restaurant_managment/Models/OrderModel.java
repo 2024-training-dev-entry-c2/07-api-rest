@@ -36,13 +36,17 @@ public class OrderModel {
 
   public Double getTotalPrice() {
     if (totalPrice == null) {
-      Double total = 0.0;
-      for (DishModel dish : dishes) {
-        total += dish.getPrice();
-      }
-      setTotalPrice(total);
-      return total;
+      totalPrice = calculateTotalPrice();
     }
     return totalPrice;
+  }
+
+  private Double calculateTotalPrice() {
+    if (dishes == null || dishes.isEmpty()) {
+      return 0.0;
+    }
+    return dishes.stream()
+      .mapToDouble(DishModel::getPrice)
+      .sum();
   }
 }

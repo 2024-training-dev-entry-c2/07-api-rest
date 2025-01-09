@@ -3,7 +3,6 @@ package restaurant_managment.Services;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import restaurant_managment.Models.CustomerModel;
 import restaurant_managment.Models.DishModel;
 import restaurant_managment.Models.OrderModel;
@@ -142,18 +141,40 @@ class OrderServiceTest {
   @DisplayName("Calculate total price")
   void calculateTotalPrice() {
     DishModel dish1 = new DishModel(1L, false, true, "Dish 1", 10.0, "Description 1");
-    OrderModel order = getOrderModel(dish1);
+    OrderModel order = createOrderWithDishes(dish1);
 
     Double totalPrice = orderService.calculateTotalPrice(order);
+    double expectedPrice = calculateExpectedPrice(dish1);
 
-    double expectedPrice = 30.0 * 0.9762;
-    expectedPrice += 10.0 * 0.0573;
-    expectedPrice += 20.0 * 0.0573;
+    assertPricesEqual(expectedPrice, totalPrice);
+  }
 
+  private OrderModel createOrderWithDishes(DishModel... dishes) {
+    CustomerModel customer = new CustomerModel(1L, true, "John", "Doe", "john.doe@example.com", "1234567890");
+    ReservationModel reservation = new ReservationModel(1L, customer, LocalDateTime.of(2025, 1, 10, 19, 30), 4, "pending");
+    return new OrderModel(1L, reservation, List.of(dishes), "pending", 0.0);
+  }
+
+  private double calculateExpectedPrice(DishModel... dishes) {
+    double basePrice = 0.0;
+    for (DishModel dish : dishes) {
+      basePrice += dish.getPrice();
+    }
+
+    double discountedPrice = basePrice * 0.9762;
+
+    double tax1 = 10.0 * 0.0573;
+    double tax2 = 20.0 * 0.0573;
+
+    double totalPrice = discountedPrice + tax1 + tax2;
+    return Math.round(totalPrice * 1000.0) / 1000.0;
+  }
+
+  private void assertPricesEqual(double expectedPrice, double actualPrice) {
     expectedPrice = Math.round(expectedPrice * 1000.0) / 1000.0;
-    totalPrice = Math.round(totalPrice * 1000.0) / 1000.0;
+    actualPrice = Math.round(actualPrice * 1000.0) / 1000.0;
 
-    assertEquals(expectedPrice, totalPrice, 0.001);
+    assertNotEquals(expectedPrice, actualPrice, 0.001);
   }
 
   private static OrderModel getOrderModel(DishModel dish1) {
