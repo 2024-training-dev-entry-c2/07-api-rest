@@ -4,6 +4,7 @@ import com.example.restaurant.models.dto.CustomerDTO;
 import com.example.restaurant.models.dto.customer.CustomerRequestDTO;
 import com.example.restaurant.models.dto.customer.CustomerResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.example.restaurant.services.customer.CustomerCommandHandler;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +27,7 @@ public class CustomerController {
 
   @PostMapping
   public ResponseEntity<CustomerResponseDTO> createCustomer(@RequestBody CustomerRequestDTO customerDTO) {
-    return ResponseEntity.ok(customerCommandHandler.createCustomer(customerDTO));
+    return ResponseEntity.status(HttpStatus.CREATED).body(customerCommandHandler.createCustomer(customerDTO));
   }
 
   @PutMapping("/{id}")

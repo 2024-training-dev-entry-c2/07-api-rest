@@ -1,9 +1,11 @@
 package com.example.restaurant.controllers;
 
+import com.example.restaurant.mappers.DishMapper;
 import com.example.restaurant.models.dto.dish.DishRequestDTO;
 import com.example.restaurant.models.dto.dish.DishResponseDTO;
 import com.example.restaurant.services.dish.DishCommandHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +24,11 @@ import java.util.List;
 public class DishController {
 
   private final DishCommandHandler dishCommandHandler;
+  private final DishMapper dishMapper;
 
   @PostMapping
   public ResponseEntity<DishResponseDTO> createDish(@RequestBody DishRequestDTO dishDTO) {
-    return ResponseEntity.ok(dishCommandHandler.createDish(dishDTO));
+    return ResponseEntity.status(HttpStatus.CREATED).body(dishCommandHandler.createDish(dishDTO));
   }
 
   @PutMapping("/{id}")
