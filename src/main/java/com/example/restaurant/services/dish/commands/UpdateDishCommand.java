@@ -18,14 +18,14 @@ public class UpdateDishCommand {
   private final DishMapper dishMapper;
 
 
-  public DishResponseDTO execute(Long dishId, DishRequestDTO dishDTO) {
+  public DishResponseDTO execute(Long dishId, DishRequestDTO dish) {
     Optional<Dish> existingDish = dishRepository.findById(dishId);
+    Dish dish1 = dishMapper.toEntity(dish);
     if (existingDish.isEmpty()) {
       throw new RuntimeException("No se encontró plato con ID: " + dishId);
     }
-    Dish dishToUpdate = dishMapper.toEntity(dishDTO);
-    dishToUpdate.setId(dishId);
-    Dish updatedDish = dishRepository.save(dishToUpdate);
+    dish1.setId(dishId);
+    Dish updatedDish = dishRepository.save(dish1);
     return dishMapper.toDTO(updatedDish);
   }
 }

@@ -1,11 +1,14 @@
 package com.example.restaurant.mappers;
 
 import com.example.restaurant.models.Menu;
+import com.example.restaurant.models.dto.dish.DishResponseDTO;
 import com.example.restaurant.models.dto.menu.MenuRequestDTO;
 import com.example.restaurant.models.dto.menu.MenuResponseDTO;
 import com.example.restaurant.repositories.DishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +26,12 @@ public class MenuMapper {
   }
 
   public MenuResponseDTO toDTO(Menu menu) {
+    List<DishResponseDTO> MappedDishes = menu.getDishes().stream().map(dish -> dishMapper.toDTO(dish)).toList();
     MenuResponseDTO dto = new MenuResponseDTO();
     dto.setId(menu.getId());
     dto.setName(menu.getName());
     dto.setDescription(menu.getDescription());
-    dto.setDishes(menu.getDishes().stream().map(dishMapper::toDTO).toList());
+    dto.setDishes(MappedDishes);
     return dto;
   }
 }
