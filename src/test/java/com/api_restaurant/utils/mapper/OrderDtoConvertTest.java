@@ -89,6 +89,55 @@ class OrderDtoConvertTest {
     }
 
     @Test
+    @DisplayName("Convert to Response DTO - Null Client")
+    void convertToResponseDtoNullClient() {
+        Dish dish1 = new Dish();
+        dish1.setId(1L);
+        dish1.setName("Dish 1");
+
+        Dish dish2 = new Dish();
+        dish2.setId(2L);
+        dish2.setName("Dish 2");
+
+        Order order = new Order();
+        order.setId(1L);
+        order.setClient(null);
+        order.setDishes(List.of(dish1, dish2));
+        order.setTotal(25.0);
+
+        OrderResponseDTO responseDTO = orderDtoConvert.convertToResponseDto(order);
+
+        assertNotNull(responseDTO);
+        assertEquals(1L, responseDTO.getId());
+        assertNull(responseDTO.getClientId());
+        assertNotNull(responseDTO.getDishes());
+        assertEquals(2, responseDTO.getDishes().size());
+        assertEquals(25.0, responseDTO.getTotal());
+    }
+
+    @Test
+    @DisplayName("Convert to Response DTO - Empty Dishes")
+    void convertToResponseDtoEmptyDishes() {
+        Client client = new Client();
+        client.setId(1L);
+
+        Order order = new Order();
+        order.setId(1L);
+        order.setClient(client);
+        order.setDishes(List.of());
+        order.setTotal(0.0);
+
+        OrderResponseDTO responseDTO = orderDtoConvert.convertToResponseDto(order);
+
+        assertNotNull(responseDTO);
+        assertEquals(1L, responseDTO.getId());
+        assertEquals(1L, responseDTO.getClientId());
+        assertNotNull(responseDTO.getDishes());
+        assertTrue(responseDTO.getDishes().isEmpty());
+        assertEquals(0.0, responseDTO.getTotal());
+    }
+
+    @Test
     @DisplayName("Convert to Entity - Client Not Found")
     void convertToEntityClientNotFound() {
         OrderRequestDTO requestDTO = new OrderRequestDTO();
