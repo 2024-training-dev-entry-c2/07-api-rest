@@ -10,6 +10,6 @@ public class PopularDishPricingStrategy implements PricingStrategy {
                 .filter(Dishfood::getIsPopular)
                 .mapToDouble(dish -> dish.getPrice() * 0.0573)
                 .sum();
-        order.setTotal(order.getTotal() + increase);
+        order.setTotalPrice(order.getTotalPrice() + increase);
     }
 }

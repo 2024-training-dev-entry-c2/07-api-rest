@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,8 +18,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
-
-
 @Setter
 @Getter
 @Builder
@@ -42,7 +41,8 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "dishfood_id")
     )
     private List<Dishfood> dishfoods;
-    private double total;
+    @Column(name = "total_price", nullable = false)
+    private Double totalPrice;
 
 
 

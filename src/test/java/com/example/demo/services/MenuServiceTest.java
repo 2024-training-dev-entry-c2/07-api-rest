@@ -16,7 +16,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -89,6 +91,17 @@ class MenuServiceTest {
         menuService.deleteMenu(menuId);
         verify(menuRepository).existsById(menuId);
         verify(menuRepository).deleteById(menuId);
+    }
+    @Test
+    void deleteMenuError() {
+        Long menuId = 1L;
+        when(menuRepository.existsById(menuId)).thenReturn(false);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> menuService.deleteMenu(menuId));
+        assertEquals("Menu not found", exception.getMessage());
+
+        verify(menuRepository).existsById(menuId);
+        verify(menuRepository, never()).deleteById(menuId);
     }
     private List<Menu> getMenuList() {
         return List.of(

@@ -6,8 +6,8 @@ public class FrequentClientPricingStrategy implements PricingStrategy {
     @Override
     public void apply(Order order) {
         if (order.getClient().getIsOften()) {
-            double discount = order.getTotal() * 0.0238;
-            order.setTotal(order.getTotal() - discount);
+            double discount = order.getTotalPrice() * 0.0238;
+            order.setTotalPrice(order.getTotalPrice() - discount);
         }
     }
 }

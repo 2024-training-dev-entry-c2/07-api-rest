@@ -47,6 +47,12 @@ public class OrderService {
         Client client = clientRepository.findById(orderDTO.getClientId()).orElseThrow(() -> new RuntimeException("Client not found"));
         List<Dishfood> dishfoods = dishfoodRepository.findAllById(orderDTO.getDishfoodIds());
         if (dishfoods.isEmpty())  throw new RuntimeException("Dishfoods not found");
+        Order order = getOrder(orderDTO, dishfoods, client);
+
+        return OrderConverter.toResponseDTO(repository.save(order));
+    }
+
+    private Order getOrder(OrderRequestDTO orderDTO, List<Dishfood> dishfoods, Client client) {
         double total = dishfoods.stream().mapToDouble(Dishfood::getPrice).sum();
         checkClient(client);
         checkDishFood(dishfoods);
@@ -55,11 +61,9 @@ public class OrderService {
                 new FrequentClientDiscountHandler(new FrequentClientPricingStrategy());
         PopularDishPriceIncreaseHandler popularHandler =
                 new PopularDishPriceIncreaseHandler(new PopularDishPricingStrategy());
-
         frequentHandler.setNextHandler(popularHandler);
-
         frequentHandler.applyRule(order);
-        return OrderConverter.toResponseDTO(repository.save(order));
+        return order;
     }
 
     public OrderResponseDTO getOrderById(Long id) {
@@ -88,7 +92,7 @@ public class OrderService {
                 .localDate(orderRequestDTO.getLocalDate())
                 .client(client)
                 .dishfoods(dishfoods)
-                .total(total)
+                .totalPrice(total)
                 .build();
 
 

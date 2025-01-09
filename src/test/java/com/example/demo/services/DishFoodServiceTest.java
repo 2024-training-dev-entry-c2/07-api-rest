@@ -18,7 +18,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -126,6 +128,17 @@ class DishFoodServiceTest {
 
         verify(dishfoodRepository).existsById(1L);
         verify(dishfoodRepository).deleteById(1L);
+
+    }
+    @Test
+    void deleteDishfoodError() {
+        Long dishFoodId = 1L;
+        when(dishfoodRepository.existsById(dishFoodId)).thenReturn(false);
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> dishFoodService.deleteDishfood(dishFoodId));
+        assertEquals("Dishfood not found", exception.getMessage());
+
+        verify(dishfoodRepository).existsById(dishFoodId);
+        verify(dishfoodRepository, never()).deleteById(dishFoodId);
 
     }
 

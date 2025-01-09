@@ -76,7 +76,7 @@ class OrderServiceTest {
                 .client(client)
                 .localDate(orderRequestDTO.getLocalDate())
                 .dishfoods(getDishfoodList(menu))
-                .total(15.0)
+                .totalPrice(15.0)
                 .build();
         when(clientRepository.findById(any())).thenReturn(Optional.of(client));
         when(dishfoodRepository.findAllById(orderRequestDTO.getDishfoodIds()))
@@ -84,7 +84,7 @@ class OrderServiceTest {
         when(orderRepository.save(any(Order.class))).thenReturn(order);
         OrderResponseDTO response = orderService.createOrder(orderRequestDTO);
         assertNotNull(response);
-        assertEquals(15.0, response.getTotal());
+        assertEquals(15.0, response.getTotalPrice());
         assertEquals("Mario", response.getClient().getName());
         assertEquals(Arrays.asList(1L, 2L, 3L), response.getDishfoodIds());
 
@@ -189,7 +189,7 @@ class OrderServiceTest {
                 .client(mockClient)
                 .dishfoods(List.of(mockDish1))
                 .localDate(LocalDate.now().minusDays(1))
-                .total(10.0)
+                .totalPrice(10.0)
                 .build();
 
         Order updatedOrder = Order.builder()
@@ -197,7 +197,7 @@ class OrderServiceTest {
                 .client(mockClient)
                 .dishfoods(List.of(mockDish1, mockDish2))
                 .localDate(orderRequestDTO.getLocalDate())
-                .total(25.0)
+                .totalPrice(25.0)
                 .build();
 
         // Configurar los mocks
@@ -214,7 +214,7 @@ class OrderServiceTest {
         assertEquals(orderId, response.getId());
         assertEquals(clientId, response.getClient().getId());
         assertEquals(2, response.getDishfoodIds().size());
-        assertEquals(25.0, response.getTotal());
+        assertEquals(25.0, response.getTotalPrice());
 
         // Verificar interacciones
         verify(orderRepository).findById(orderId);
@@ -255,7 +255,6 @@ class OrderServiceTest {
                 frequentObserver,
                 popularObserver
         );
-
         orderService.checkClient(client);
         assertTrue(client.getIsOften());
         verify(clientRepository, times(1)).save(client);
@@ -273,9 +272,9 @@ class OrderServiceTest {
 
 
         when(dishfoodRepository.findAllById(orderRequestDTO.getDishfoodIds())).thenReturn(dishfoodList);
-        when(orderRepository.countByClient_Id(client.getId())).thenReturn(10L);
+        when(orderRepository.countByClient_Id(client.getId())).thenReturn(11L);
         when(clientRepository.save(client)).thenReturn(client);
-        when(orderRepository.countByDishfoods_Id(dishfoodList.get(0).getId())).thenReturn(12L);
+        when(orderRepository.countByDishfoods_Id(dishfoodList.get(0).getId())).thenReturn(13L);
 
 
         FrequentClientObserver frequentObserver = mock(FrequentClientObserver.class);
@@ -314,7 +313,6 @@ class OrderServiceTest {
 
         verify(orderRepository, never()).deleteById(nonExistentId);
     }
-
 
     private List<Dishfood> getDishfoodList(Menu menu) {
         return List.of(

@@ -16,6 +16,6 @@ public class OrderResponseDTO {
     private ClientResponseDTO client;
     private LocalDate localDate;
     private List<Long> dishfoodIds;
-    private double total;
+    private double totalPrice = 0.0;
 
 }
