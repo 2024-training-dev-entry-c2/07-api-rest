@@ -32,4 +32,7 @@ public class Menu {
     @OneToMany(mappedBy = "menu",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Dishfood> dishfoods  = new ArrayList<>();
 
+    public Menu(String name) {
+        this.name = name;
+    }
 }

@@ -76,14 +76,24 @@ public class OrderService {
 
     public OrderResponseDTO updateOrder(Long id, OrderRequestDTO orderRequestDTO) {
         Order existingOrder = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("menu not found"));
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        Client client = clientRepository.getReferenceById(orderRequestDTO.getClientId());
+        List<Dishfood> dishfoods = dishfoodRepository.findAllById(orderRequestDTO.getDishfoodIds());
+
+        double total = dishfoods.stream().mapToDouble(Dishfood::getPrice).sum();
+
         Order orderUpdated = Order.builder()
                 .id(existingOrder.getId())
                 .localDate(orderRequestDTO.getLocalDate())
-                .client(clientRepository.getReferenceById(orderRequestDTO.getClientId()))
-                .dishfoods(dishfoodRepository.findAllById(orderRequestDTO.getDishfoodIds()))
+                .client(client)
+                .dishfoods(dishfoods)
+                .total(total)
                 .build();
+
+
         repository.save(orderUpdated);
+
         return OrderConverter.toResponseDTO(orderUpdated);
 
     }
@@ -95,7 +105,7 @@ public class OrderService {
         repository.deleteById(id);
     }
 
-    private void checkClient(Client client) {
+    public void checkClient(Client client) {
         long orderCount = repository.countByClient_Id(client.getId());
         if (orderCount >= 10 && !client.getIsOften()) {
             client.setIsOften(true);
@@ -104,7 +114,7 @@ public class OrderService {
         }
     }
 
-    private void  checkDishFood(List<Dishfood> dishfoods){
+    public void  checkDishFood(List<Dishfood> dishfoods){
         for (Dishfood dish : dishfoods) {
             long dishCount = repository.countByDishfoods_Id(dish.getId());
             if (dishCount > 11 && !dish.getIsPopular()) {//100?

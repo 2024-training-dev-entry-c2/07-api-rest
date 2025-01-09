@@ -11,6 +11,6 @@ public class ClientResponseDTO {
     private Long id;
     private String name;
     private String email;
-    private boolean isOften;
+    private Boolean isOften=false;
     private List<Long> orderIds;
 }
