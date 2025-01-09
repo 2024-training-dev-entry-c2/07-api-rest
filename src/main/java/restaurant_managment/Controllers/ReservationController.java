@@ -18,15 +18,18 @@ import java.util.stream.Collectors;
 @RequestMapping("/reservations")
 public class ReservationController {
 
-  @Autowired
   private ReservationService reservationService;
 
-  @Autowired
   private ReservationServiceProxy reservationServiceProxy;
 
-  @Autowired
   private ReservationDTOConverter reservationDTOConverter;
 
+  @Autowired
+  public ReservationController(ReservationService reservationService, ReservationServiceProxy reservationServiceProxy, ReservationDTOConverter reservationDTOConverter) {
+    this.reservationService = reservationService;
+    this.reservationServiceProxy = reservationServiceProxy;
+    this.reservationDTOConverter = reservationDTOConverter;
+  }
   @PostMapping
   public ResponseEntity<ReservationResponseDTO> createReservation(@RequestBody ReservationRequestDTO reservationRequestDTO) {
     ReservationModel reservationModel = reservationDTOConverter.toReservation(reservationRequestDTO);

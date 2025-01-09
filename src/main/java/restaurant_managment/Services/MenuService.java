@@ -15,10 +15,10 @@ import java.util.Optional;
 public class MenuService implements IMenuService {
 
   @Autowired
-  private MenuRepository menuRepository;
+  MenuRepository menuRepository;
 
   @Autowired
-  private DishRepository dishRepository;
+  DishRepository dishRepository;
 
   public List<MenuModel> getAllMenus() {
     return menuRepository.findAll();

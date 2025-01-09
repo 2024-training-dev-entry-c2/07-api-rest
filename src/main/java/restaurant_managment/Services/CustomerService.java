@@ -13,7 +13,7 @@ import java.util.Optional;
 public class CustomerService implements ICustomerService {
 
   @Autowired
-  private CustomerRepository customerRepository;
+  CustomerRepository customerRepository;
 
   public List<CustomerModel> getAllCustomers() {
     return customerRepository.findAll();

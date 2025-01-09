@@ -8,20 +8,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "customers")
 public class CustomerModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
   @Column(nullable = false)
   private Boolean isFrequent = false;
   private String firstName;
@@ -29,7 +24,27 @@ public class CustomerModel {
   private String email;
   private String phone;
 
-  public void updateFrecuency(EntityManager entityManager) {
+  public CustomerModel(Long id, Boolean isFrequent, String firstName, String lastName, String email, String phone) {
+    this.id = id;
+    this.isFrequent = isFrequent;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.phone = phone;
+  }
+
+  public CustomerModel(Boolean isFrequent, String firstName, String lastName, String email, String phone) {
+    this.isFrequent = isFrequent;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.phone = phone;
+  }
+
+  public CustomerModel() {
+  }
+
+  public CustomerModel updateFrecuency(EntityManager entityManager) {
     Integer totalOrders;
 
     if (!this.isFrequent)
@@ -39,6 +54,7 @@ public class CustomerModel {
         .getSingleResult().intValue();
       verifyTotalOrders(totalOrders);
     }
+    return null;
   }
 
   public void verifyTotalOrders(Integer totalOrders) {

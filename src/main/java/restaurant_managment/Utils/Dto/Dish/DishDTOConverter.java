@@ -16,7 +16,7 @@ public class DishDTOConverter {
     return dish;
   }
 
-  public DishResponseDTO toDishResponseDTO(DishModel dish) {
+  public static DishResponseDTO toDishResponseDTO(DishModel dish) {
     DishResponseDTO dto = new DishResponseDTO();
     dto.setId(dish.getId());
     dto.setName(dish.getName());

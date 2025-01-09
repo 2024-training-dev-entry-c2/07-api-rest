@@ -1,11 +1,11 @@
 package restaurant_managment.Utils.Dto.Menu;
 
-import restaurant_managment.Repositories.DishRepository;
-import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
-import restaurant_managment.Models.DishModel;
-import restaurant_managment.Models.MenuModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import restaurant_managment.Models.DishModel;
+import restaurant_managment.Models.MenuModel;
+import restaurant_managment.Repositories.DishRepository;
+import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,10 +13,14 @@ import java.util.stream.Collectors;
 @Component
 public class MenuDTOConverter {
 
-  @Autowired
-  private DishRepository dishRepository;
+  private static DishRepository dishRepository;
 
-  public MenuModel toMenu(MenuRequestDTO dto) {
+  @Autowired
+  public MenuDTOConverter(DishRepository dishRepository) {
+    this.dishRepository = dishRepository;
+  }
+
+  public static MenuModel toMenu(MenuRequestDTO dto) {
     MenuModel menu = new MenuModel();
     menu.setName(dto.getName());
 
@@ -25,11 +29,10 @@ public class MenuDTOConverter {
       throw new IllegalArgumentException("One or more dishes not found");
     }
     menu.setDishes(dishes);
-
     return menu;
   }
 
-  public MenuResponseDTO toMenuResponseDTO(MenuModel menu) {
+  public static MenuResponseDTO toMenuResponseDTO(MenuModel menu) {
     MenuResponseDTO dto = new MenuResponseDTO();
     dto.setId(menu.getId());
     dto.setName(menu.getName());

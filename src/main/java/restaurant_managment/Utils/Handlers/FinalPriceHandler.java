@@ -13,6 +13,9 @@ public class FinalPriceHandler implements PriceHandler {
 
   @Override
   public Double handle(OrderModel order) {
+    if (nextHandler != null) {
+      return nextHandler.handle(order);
+    }
     return order.getTotalPrice();
   }
 }

@@ -15,7 +15,7 @@ public class CustomerDTOConverter {
     return customer;
   }
 
-  public CustomerResponseDTO toCustomerResponseDTO(CustomerModel customer) {
+  public static CustomerResponseDTO toCustomerResponseDTO(CustomerModel customer) {
     CustomerResponseDTO dto = new CustomerResponseDTO();
     dto.setId(customer.getId());
     dto.setFirstName(customer.getFirstName());

@@ -1,6 +1,7 @@
 package restaurant_managment.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import restaurant_managment.Proxy.OrderServiceProxy;
@@ -18,21 +19,25 @@ import java.util.stream.Collectors;
 @RequestMapping("/orders")
 public class OrderController {
 
-  @Autowired
   private OrderService orderService;
 
-  @Autowired
   private OrderServiceProxy orderServiceProxy;
 
-  @Autowired
   private OrderDTOConverter orderDTOConverter;
 
+  @Autowired
+  public OrderController(OrderService orderService, OrderServiceProxy orderServiceProxy, OrderDTOConverter orderDTOConverter) {
+    this.orderService = orderService;
+    this.orderServiceProxy = orderServiceProxy;
+    this.orderDTOConverter = orderDTOConverter;
+  }
+
   @PostMapping
-  public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
+  @ResponseStatus(HttpStatus.CREATED)
+  public OrderResponseDTO createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
     OrderModel orderModel = orderDTOConverter.toOrder(orderRequestDTO);
     OrderModel createdOrder = orderService.createOrder(orderModel);
-    OrderResponseDTO responseDTO = orderDTOConverter.toOrderResponseDTO(createdOrder);
-    return ResponseEntity.ok(responseDTO);
+    return OrderDTOConverter.toOrderResponseDTO(createdOrder);
   }
 
   @GetMapping("/{id}")
@@ -46,7 +51,7 @@ public class OrderController {
   public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
     List<OrderModel> orders = orderService.getAllOrders();
     List<OrderResponseDTO> responseDTOs = orders.stream()
-      .map(orderDTOConverter::toOrderResponseDTO)
+      .map(OrderDTOConverter::toOrderResponseDTO)
       .collect(Collectors.toList());
     return ResponseEntity.ok(responseDTOs);
   }
@@ -55,7 +60,7 @@ public class OrderController {
   public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody OrderRequestDTO orderRequestDTO) {
     OrderModel updatedOrderModel = orderDTOConverter.toOrder(orderRequestDTO);
     OrderModel updatedOrder = orderService.updateOrder(id, updatedOrderModel);
-    OrderResponseDTO responseDTO = orderDTOConverter.toOrderResponseDTO(updatedOrder);
+    OrderResponseDTO responseDTO = OrderDTOConverter.toOrderResponseDTO(updatedOrder);
     return ResponseEntity.ok(responseDTO);
   }
 

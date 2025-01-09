@@ -18,12 +18,13 @@ public class PopularDishPriceAdjustmentHandler implements PriceHandler {
 
     for (DishModel dish : order.getDishes()) {
       if (dish.getIsPopular()) {
-        totalPrice += dish.getPrice() * 0.0573;
+        totalPrice += dish.getPrice() * 0.0573; // Applying price adjustment for popular dishes
       }
     }
 
+    order.setTotalPrice(totalPrice);
+
     if (nextHandler != null) {
-      order.setTotalPrice(totalPrice);
       return nextHandler.handle(order);
     }
 

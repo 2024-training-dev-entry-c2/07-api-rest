@@ -1,6 +1,7 @@
 package restaurant_managment.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import restaurant_managment.Proxy.CustomerServiceProxy;
@@ -17,27 +18,28 @@ import java.util.stream.Collectors;
 @RequestMapping("/customers")
 public class CustomerController {
 
-  @Autowired
-  private CustomerService customerService;
+  private final CustomerService customerService;
+
+  private final CustomerServiceProxy customerServiceProxy;
 
   @Autowired
-  private CustomerServiceProxy customerServiceProxy;
-
-  @Autowired
-  private CustomerDTOConverter customerDTOConverter;
+  public CustomerController(CustomerService customerService, CustomerServiceProxy customerServiceProxy) {
+    this.customerServiceProxy = customerServiceProxy;
+    this.customerService = customerService;
+  }
 
   @PostMapping
-  public ResponseEntity<CustomerResponseDTO> createCustomer(@RequestBody CustomerRequestDTO customerRequestDTO) {
+  @ResponseStatus(HttpStatus.CREATED)
+  public CustomerResponseDTO createCustomer(@RequestBody CustomerRequestDTO customerRequestDTO) {
     CustomerModel customerModel = CustomerDTOConverter.toCustomer(customerRequestDTO);
     CustomerModel createdCustomer = customerService.createCustomer(customerModel);
-    CustomerResponseDTO responseDTO = customerDTOConverter.toCustomerResponseDTO(createdCustomer);
-    return ResponseEntity.ok(responseDTO);
+    return CustomerDTOConverter.toCustomerResponseDTO(createdCustomer);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<CustomerResponseDTO> getCustomerById(@PathVariable Long id) {
     Optional<CustomerModel> customerModel = customerServiceProxy.getCustomerById(id);
-    return customerModel.map(customer -> ResponseEntity.ok(customerDTOConverter.toCustomerResponseDTO(customer)))
+    return customerModel.map(customer -> ResponseEntity.ok(CustomerDTOConverter.toCustomerResponseDTO(customer)))
       .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
@@ -45,7 +47,7 @@ public class CustomerController {
   public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers() {
     List<CustomerModel> customers = customerService.getAllCustomers();
     List<CustomerResponseDTO> responseDTOs = customers.stream()
-      .map(customerDTOConverter::toCustomerResponseDTO)
+      .map(CustomerDTOConverter::toCustomerResponseDTO)
       .collect(Collectors.toList());
     return ResponseEntity.ok(responseDTOs);
   }
@@ -54,7 +56,7 @@ public class CustomerController {
   public ResponseEntity<CustomerResponseDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerRequestDTO customerRequestDTO) {
     CustomerModel updatedCustomerModel = CustomerDTOConverter.toCustomer(customerRequestDTO);
     CustomerModel updatedCustomer = customerService.updateCustomer(id, updatedCustomerModel);
-    CustomerResponseDTO responseDTO = customerDTOConverter.toCustomerResponseDTO(updatedCustomer);
+    CustomerResponseDTO responseDTO = CustomerDTOConverter.toCustomerResponseDTO(updatedCustomer);
     return ResponseEntity.ok(responseDTO);
   }
 

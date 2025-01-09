@@ -10,7 +10,7 @@ import restaurant_managment.Repositories.CustomerRepository;
 public class ReservationDTOConverter {
 
   @Autowired
-  private CustomerRepository customerRepository;
+  public CustomerRepository customerRepository;
 
   public ReservationModel toReservation(ReservationRequestDTO dto) {
     ReservationModel reservation = new ReservationModel();

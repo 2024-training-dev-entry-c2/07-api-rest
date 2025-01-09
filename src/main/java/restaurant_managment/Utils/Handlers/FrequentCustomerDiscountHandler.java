@@ -15,13 +15,10 @@ public class FrequentCustomerDiscountHandler implements PriceHandler {
   @Override
   public Double handle(OrderModel order) {
     CustomerModel customer = order.getReservation().getCustomer();
-    Double totalPrice;
+    Double totalPrice = order.getTotalPrice();
 
     if (customer.getIsFrequent()) {
-      totalPrice = order.getTotalPrice() * 0.9762;
-    }
-    else {
-      totalPrice = order.getTotalPrice();
+      totalPrice = totalPrice * 0.9762;
     }
 
     order.setTotalPrice(totalPrice);

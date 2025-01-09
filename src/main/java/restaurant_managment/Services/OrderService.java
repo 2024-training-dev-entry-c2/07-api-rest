@@ -22,7 +22,7 @@ import java.util.Optional;
 public class OrderService implements IOrderService {
   private final OrderRepository orderRepository;
   private final EntityManager entityManager;
-  private final Subject subject;
+  Subject subject;
 
   @Autowired
   public OrderService(OrderRepository orderRepository, EntityManager entityManager) {

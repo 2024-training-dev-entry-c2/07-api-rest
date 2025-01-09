@@ -1,13 +1,13 @@
 package restaurant_managment.Utils.Dto.Order;
 
-import restaurant_managment.Repositories.DishRepository;
-import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import restaurant_managment.Models.DishModel;
 import restaurant_managment.Models.OrderModel;
 import restaurant_managment.Models.ReservationModel;
+import restaurant_managment.Repositories.DishRepository;
 import restaurant_managment.Repositories.ReservationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,11 +15,14 @@ import java.util.stream.Collectors;
 @Component
 public class OrderDTOConverter {
 
-  @Autowired
-  private ReservationRepository reservationRepository;
+  private final ReservationRepository reservationRepository;
+  private final DishRepository dishRepository;
 
   @Autowired
-  private DishRepository dishRepository;
+  public OrderDTOConverter(ReservationRepository reservationRepository, DishRepository dishRepository) {
+    this.reservationRepository = reservationRepository;
+    this.dishRepository = dishRepository;
+  }
 
   public OrderModel toOrder(OrderRequestDTO dto) {
     OrderModel order = new OrderModel();
@@ -30,13 +33,14 @@ public class OrderDTOConverter {
     order.setReservation(reservation);
 
     List<DishModel> dishes = dto.getDishIds().stream()
-      .map(dishId -> dishRepository.findById(dishId).orElseThrow(() -> new IllegalArgumentException("Dish not found"))).collect(Collectors.toList());
+      .map(dishId -> dishRepository.findById(dishId).orElseThrow(() -> new IllegalArgumentException("Dish not found")))
+      .collect(Collectors.toList());
     order.setDishes(dishes);
 
     return order;
   }
 
-  public OrderResponseDTO toOrderResponseDTO(OrderModel order) {
+  public static OrderResponseDTO toOrderResponseDTO(OrderModel order) {
     OrderResponseDTO dto = new OrderResponseDTO();
     dto.setId(order.getId());
     dto.setReservationId(order.getReservation().getId());
