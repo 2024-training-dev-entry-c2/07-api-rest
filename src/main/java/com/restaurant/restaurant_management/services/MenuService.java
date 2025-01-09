@@ -15,8 +15,8 @@ public class MenuService {
     this.menuRepository = menuRepository;
   }
 
-  public void saveMenu(Menu menu) {
-     menuRepository.save(menu);
+  public Menu saveMenu(Menu menu) {
+     return menuRepository.save(menu);
   }
 
   public Optional<Menu> getMenu(Integer id) {

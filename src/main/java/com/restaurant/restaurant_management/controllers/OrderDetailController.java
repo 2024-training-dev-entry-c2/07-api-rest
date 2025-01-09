@@ -9,6 +9,7 @@ import com.restaurant.restaurant_management.services.DishService;
 import com.restaurant.restaurant_management.services.OrderDetailService;
 import com.restaurant.restaurant_management.services.OrderService;
 import com.restaurant.restaurant_management.utils.DtoOrderDetailConverter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,17 +55,17 @@ public class OrderDetailController {
 
 
   @PostMapping
-  public ResponseEntity<String> saveOrderDetail(@RequestBody OrderDetailRequestDTO orderDetailRequestDTO) {
+  public ResponseEntity<OrderDetailResponseDTO> saveOrderDetail(@RequestBody OrderDetailRequestDTO orderDetailRequestDTO) {
     try {
       Dish dish = dishService.getDish(orderDetailRequestDTO.getDishId()).orElseThrow();
       ClientOrder order = orderService.getOrder(orderDetailRequestDTO.getOrderId()).orElseThrow();
       OrderDetail orderDetail = DtoOrderDetailConverter.convertToOrderDetail(orderDetailRequestDTO, order, dish);
-      orderDetailService.saveOrderDetail(orderDetail);
+      OrderDetail newDetail = orderDetailService.saveOrderDetail(orderDetail);
       orderService.updateTotalOrder(order.getId());
-      return ResponseEntity.ok("Detalle de pedido creado con éxito");
+      return ResponseEntity.status(HttpStatus.CREATED).body(DtoOrderDetailConverter.convertToResponseDTO(newDetail));
     }
     catch (RuntimeException e) {
-      return ResponseEntity.badRequest().body("No se pudo crear el detalle de pedido");
+      return ResponseEntity.notFound().build();
     }
   }
 

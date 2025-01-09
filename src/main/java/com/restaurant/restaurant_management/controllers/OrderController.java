@@ -15,6 +15,7 @@ import com.restaurant.restaurant_management.services.OrderService;
 import com.restaurant.restaurant_management.utils.DtoOrderConverter;
 import com.restaurant.restaurant_management.utils.DtoOrderDetailConverter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +47,7 @@ public class OrderController {
   }
 
   @PostMapping
-  public ResponseEntity<String> saveOrder(@RequestBody CompleteOrderRequestDTO completeOrderRequestDTO) {
+  public ResponseEntity<OrderResponseDTO> saveOrder(@RequestBody CompleteOrderRequestDTO completeOrderRequestDTO) {
     try{
       OrderRequestDTO orderRequestDTO = completeOrderRequestDTO.getOrderRequestDTO();
       Client client = clientService.getClient(orderRequestDTO.getClientId()).orElseThrow();
@@ -59,11 +60,12 @@ public class OrderController {
         orderDetails.add(DtoOrderDetailConverter.convertToOrderDetail(detail, newOrder, dish));
       }
       newOrder.setOrderDetails(orderDetailService.saveOrderDetails(orderDetails));
-
       orderService.updateTotalOrder(newOrder.getId());
-      return ResponseEntity.ok("Orden creada con éxito");
+      return ResponseEntity
+        .status(HttpStatus.CREATED)
+        .body(DtoOrderConverter.convertToResponseDTO(newOrder));
     }catch (RuntimeException e){
-      return ResponseEntity.badRequest().body("No se pudo crear el pedido");
+      return ResponseEntity.notFound().build();
     }
   }
 

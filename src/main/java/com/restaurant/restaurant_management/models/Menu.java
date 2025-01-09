@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "MENU")
 public class Menu {
@@ -34,4 +36,11 @@ public class Menu {
   @OneToMany(targetEntity = Dish.class, mappedBy = "menu")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<Dish> dishes = new ArrayList<>();
+
+  public Menu(Integer id, String menuName, String description, Boolean active) {
+    this.id = id;
+    this.menuName = menuName;
+    this.description = description;
+    this.active = active;
+  }
 }

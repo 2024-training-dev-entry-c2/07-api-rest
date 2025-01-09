@@ -5,6 +5,7 @@ import com.restaurant.restaurant_management.dto.MenuResponseDTO;
 import com.restaurant.restaurant_management.models.Menu;
 import com.restaurant.restaurant_management.services.MenuService;
 import com.restaurant.restaurant_management.utils.DtoMenuConverter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,10 +27,11 @@ public class MenuController {
   }
 
   @PostMapping
-  public ResponseEntity<String> saveMenu(@RequestBody MenuRequestDTO menuRequestDTO) {
+  public ResponseEntity<MenuResponseDTO> saveMenu(@RequestBody MenuRequestDTO menuRequestDTO) {
     Menu menu = DtoMenuConverter.convertToMenu(menuRequestDTO);
-    menuService.saveMenu(menu);
-    return ResponseEntity.ok("Menú creado con éxito");
+    return ResponseEntity
+      .status(HttpStatus.CREATED)
+      .body(DtoMenuConverter.convertToResponseDTO(menuService.saveMenu(menu)));
   }
 
   @GetMapping("/{id}")

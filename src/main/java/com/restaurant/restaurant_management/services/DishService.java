@@ -15,8 +15,8 @@ public class DishService {
     this.dishRepository = dishRepository;
   }
 
-  public void saveDish(Dish dish) {
-    dishRepository.save(dish);
+  public Dish saveDish(Dish dish) {
+    return dishRepository.save(dish);
   }
 
   public Optional<Dish> getDish(Integer id) {

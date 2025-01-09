@@ -15,8 +15,8 @@ public class ClientService {
     this.clientRepository = clientRepository;
   }
 
-  public void saveClient(Client client) {
-    clientRepository.save(client);
+  public Client saveClient(Client client) {
+    return clientRepository.save(client);
   }
 
   public Optional<Client> getClient(Long id) {

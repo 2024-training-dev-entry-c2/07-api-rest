@@ -7,6 +7,7 @@ import com.restaurant.restaurant_management.models.Menu;
 import com.restaurant.restaurant_management.services.DishService;
 import com.restaurant.restaurant_management.services.MenuService;
 import com.restaurant.restaurant_management.utils.DtoDishConverter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,14 +31,15 @@ public class DishController {
   }
 
   @PostMapping
-  public ResponseEntity<String> saveDish(@RequestBody DishRequestDTO dishRequestDTO) {
+  public ResponseEntity<DishResponseDTO> saveDish(@RequestBody DishRequestDTO dishRequestDTO) {
     try {
       Menu menu = menuService.getMenu(dishRequestDTO.getMenuId()).orElseThrow();
       Dish dish = DtoDishConverter.convertToDish(dishRequestDTO, menu);
-      dishService.saveDish(dish);
-      return ResponseEntity.ok("Plato creado con éxito");
+      return ResponseEntity
+        .status(HttpStatus.CREATED)
+        .body(DtoDishConverter.convertToResponseDTO(dishService.saveDish(dish)));
     } catch (RuntimeException e) {
-      return ResponseEntity.badRequest().body("No se encuentra el menú del plato");
+      return ResponseEntity.notFound().build();
     }
   }
 

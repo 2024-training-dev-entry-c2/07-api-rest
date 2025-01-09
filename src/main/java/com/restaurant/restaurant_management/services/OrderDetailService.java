@@ -20,8 +20,8 @@ public class OrderDetailService {
     eventManager.subscribe("DishOrdered", new PopularDishObserver(dishRepository, orderDetailRepository));
   }
 
-  public void saveOrderDetail(OrderDetail orderDetail) {
-    orderDetailRepository.save(orderDetail);
+  public OrderDetail saveOrderDetail(OrderDetail orderDetail) {
+    return orderDetailRepository.save(orderDetail);
   }
 
   public Optional<OrderDetail> getOrderDetail(Long id) {

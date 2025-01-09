@@ -5,6 +5,7 @@ import com.restaurant.restaurant_management.dto.ClientResponseDTO;
 import com.restaurant.restaurant_management.models.Client;
 import com.restaurant.restaurant_management.services.ClientService;
 import com.restaurant.restaurant_management.utils.DtoClientConverter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +28,11 @@ public class ClientController {
   }
 
   @PostMapping
-  public ResponseEntity<String> saveClient(@RequestBody ClientRequestDTO clientRequestDTO) {
+  public ResponseEntity<ClientResponseDTO> saveClient(@RequestBody ClientRequestDTO clientRequestDTO) {
     Client client = DtoClientConverter.convertToClient(clientRequestDTO);
-    clientService.saveClient(client);
-    return ResponseEntity.ok("Cliente creado con éxito");
+    return ResponseEntity
+      .status(HttpStatus.CREATED)
+      .body(DtoClientConverter.convertToResponseDTO(clientService.saveClient(client)));
   }
 
   @GetMapping("/{id}")

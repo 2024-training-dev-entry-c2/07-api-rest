@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "CLIENT")
 public class Client {
@@ -30,7 +32,7 @@ public class Client {
   @Column(nullable = false, length = 45)
   private String lastName;
 
-  @Column(nullable = false, length = 45, unique = true)
+  @Column(nullable = false, length = 45)
   private String email;
 
   @Column(length = 15)
@@ -42,11 +44,17 @@ public class Client {
   @Column(nullable = false)
   private Boolean isFrequent = false;
 
-  @OneToMany(targetEntity = Booking.class, mappedBy = "client", cascade = CascadeType.REMOVE)
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private List<Booking> bookings = new ArrayList<>();
-
   @OneToMany(targetEntity = ClientOrder.class,mappedBy = "client", cascade = CascadeType.REMOVE)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<ClientOrder> orders = new ArrayList<>();
+
+  public Client(Long id, String name, String lastName, String email, String phone, String address, Boolean isFrequent) {
+    this.id = id;
+    this.name = name;
+    this.lastName = lastName;
+    this.email = email;
+    this.phone = phone;
+    this.address = address;
+    this.isFrequent = isFrequent;
+  }
 }

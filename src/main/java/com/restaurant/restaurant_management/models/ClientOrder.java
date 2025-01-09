@@ -13,7 +13,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -22,6 +24,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "CLIENT_ORDER")
 public class ClientOrder {
@@ -44,4 +48,12 @@ public class ClientOrder {
 
   @OneToMany(targetEntity = OrderDetail.class, mappedBy = "clientOrder", cascade = CascadeType.REMOVE)
   private List<OrderDetail> orderDetails = new ArrayList<>();
+
+  public ClientOrder(Long id, LocalDateTime orderDateTime, OrderStatus status, Double total, Client client) {
+    this.id = id;
+    this.orderDateTime = orderDateTime;
+    this.status = status;
+    this.total = total;
+    this.client = client;
+  }
 }
