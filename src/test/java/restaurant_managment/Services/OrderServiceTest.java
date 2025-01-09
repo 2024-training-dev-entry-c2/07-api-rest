@@ -155,22 +155,36 @@ class OrderServiceTest {
     return new OrderModel(1L, reservation, List.of(dishes), "pending", 0.0);
   }
 
-  private double calculateExpectedPrice(DishModel... dishes) {
+  private Double calculateExpectedPrice(DishModel... dishes) {
+    double basePrice = calculateBasePrice(dishes);
+    Double discountedPrice = applyDiscount(basePrice);
+    Double totalPrice = calculateTotalPriceWithTaxes(discountedPrice);
+    return roundPrice(totalPrice);
+  }
+
+  private Double calculateBasePrice(DishModel... dishes) {
     double basePrice = 0.0;
     for (DishModel dish : dishes) {
       basePrice += dish.getPrice();
     }
+    return basePrice;
+  }
 
-    double discountedPrice = basePrice * 0.9762;
+  private Double applyDiscount(Double basePrice) {
+    return basePrice * 0.9762;
+  }
 
-    double tax1 = 10.0 * 0.0573;
-    double tax2 = 20.0 * 0.0573;
+  private Double calculateTotalPriceWithTaxes(Double discountedPrice) {
+    Double tax1 = 10.0 * 0.0573;
+    Double tax2 = 20.0 * 0.0573;
+    return discountedPrice + tax1 + tax2;
+  }
 
-    double totalPrice = discountedPrice + tax1 + tax2;
+  private Double roundPrice(Double totalPrice) {
     return Math.round(totalPrice * 1000.0) / 1000.0;
   }
 
-  private void assertPricesEqual(double expectedPrice, double actualPrice) {
+  private void assertPricesEqual(Double expectedPrice, Double actualPrice) {
     expectedPrice = Math.round(expectedPrice * 1000.0) / 1000.0;
     actualPrice = Math.round(actualPrice * 1000.0) / 1000.0;
 

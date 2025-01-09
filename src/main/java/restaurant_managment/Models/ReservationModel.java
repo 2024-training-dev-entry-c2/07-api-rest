@@ -24,10 +24,7 @@ public class ReservationModel {
 
   @ManyToOne
   private CustomerModel customer;
-
   private LocalDateTime time;
-
   private Integer people;
-
   private String status;
 }

@@ -3,14 +3,12 @@ package restaurant_managment.Utils.Dto.Menu;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import restaurant_managment.Models.DishModel;
 import restaurant_managment.Models.MenuModel;
 import restaurant_managment.Repositories.DishRepository;
 import restaurant_managment.Utils.Dto.Dish.DishResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -38,7 +36,7 @@ class MenuDTOConverterTest {
     menuRequestDTO.setName("Test Menu");
     menuRequestDTO.setDishIds(List.of(1L, 2L));
 
-    MenuModel menuModel = MenuDTOConverter.toMenu(menuRequestDTO);
+    MenuModel menuModel = menuDTOConverter.toMenu(menuRequestDTO);
 
     assertNotNull(menuModel);
     assertEquals("Test Menu", menuModel.getName());

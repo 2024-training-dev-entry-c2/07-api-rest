@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class DishController {
 
   private DishService dishService;
-
   private DishServiceProxy dishServiceProxy;
   private DishDTOConverter dishDTOConverter;
 
@@ -34,8 +33,8 @@ public class DishController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public DishResponseDTO createDish(@RequestBody DishRequestDTO dishRequestDTO) {
-    DishModel dishModel = DishDTOConverter.toDish(dishRequestDTO);
-    return DishDTOConverter.toDishResponseDTO(dishService.saveDish(dishModel));
+    DishModel dishModel = dishDTOConverter.toDish(dishRequestDTO);
+    return dishDTOConverter.toDishResponseDTO(dishService.saveDish(dishModel));
   }
 
   @GetMapping("/{id}")

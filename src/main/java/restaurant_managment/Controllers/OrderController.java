@@ -20,9 +20,7 @@ import java.util.stream.Collectors;
 public class OrderController {
 
   private OrderService orderService;
-
   private OrderServiceProxy orderServiceProxy;
-
   private OrderDTOConverter orderDTOConverter;
 
   @Autowired

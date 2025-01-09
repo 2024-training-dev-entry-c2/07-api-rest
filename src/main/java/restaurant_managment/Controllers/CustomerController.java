@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class CustomerController {
 
   private final CustomerService customerService;
-
   private final CustomerServiceProxy customerServiceProxy;
 
   @Autowired

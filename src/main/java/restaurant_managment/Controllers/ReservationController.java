@@ -19,9 +19,7 @@ import java.util.stream.Collectors;
 public class ReservationController {
 
   private ReservationService reservationService;
-
   private ReservationServiceProxy reservationServiceProxy;
-
   private ReservationDTOConverter reservationDTOConverter;
 
   @Autowired

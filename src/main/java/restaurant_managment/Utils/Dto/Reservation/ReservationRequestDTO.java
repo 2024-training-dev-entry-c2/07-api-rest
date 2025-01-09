@@ -16,5 +16,4 @@ public class ReservationRequestDTO {
   private LocalDateTime time;
   private Integer people;
   private String status;
-
 }
