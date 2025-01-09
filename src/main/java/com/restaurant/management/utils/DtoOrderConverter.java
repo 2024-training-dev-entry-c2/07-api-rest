@@ -11,10 +11,9 @@ import java.util.List;
 
 public class DtoOrderConverter {
   public static Order toOrder(OrderRequestDTO orderRequestDTO, Client client, List<OrderDish> dishes) {
-    Order order = new Order(
-      client,
-      orderRequestDTO.getDate()
-    );
+    Order order = new Order();
+    order.setClient(client);
+    order.setDate(orderRequestDTO.getDate());
     order.setOrderDishes(dishes);
     return order;
   }

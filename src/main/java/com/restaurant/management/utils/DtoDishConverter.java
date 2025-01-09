@@ -7,12 +7,12 @@ import com.restaurant.management.models.dto.DishResponseDTO;
 
 public class DtoDishConverter {
   public static Dish toDish(DishRequestDTO dishRequestDTO, Menu menu){
-    return new Dish(
-      dishRequestDTO.getName(),
-      dishRequestDTO.getDescription(),
-      dishRequestDTO.getPrice(),
-      menu
-    );
+    Dish dish = new Dish();
+    dish.setName(dishRequestDTO.getName());
+    dish.setDescription(dishRequestDTO.getDescription());
+    dish.setPrice(dishRequestDTO.getPrice());
+    dish.setMenu(menu);
+    return dish;
   }
 
   public static DishResponseDTO toDishResponseDTO(Dish dish){

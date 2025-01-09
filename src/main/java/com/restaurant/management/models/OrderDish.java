@@ -8,11 +8,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @Table(name = "ORDER_INCLUDES_DISH")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDish {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,17 +32,9 @@ public class OrderDish {
 
   private int quantity;
 
-  public OrderDish(Order order, Dish dish, int quantity) {
-    this.order = order;
-    this.dish = dish;
-    this.quantity = quantity;
-  }
-
   public OrderDish(Dish dish, int quantity) {
     this.dish = dish;
     this.quantity = quantity;
   }
 
-  public OrderDish() {
-  }
 }

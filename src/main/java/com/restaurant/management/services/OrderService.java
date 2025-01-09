@@ -14,6 +14,7 @@ import com.restaurant.management.repositories.OrderDishRepository;
 import com.restaurant.management.repositories.OrderRepository;
 import com.restaurant.management.services.observer.ClientOrderObserver;
 import com.restaurant.management.services.observer.DishOrderObserver;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 @Service
 public class OrderService implements IObservable {
   private final OrderRepository repository;
+  @Getter
   private final List<IOrderObserver> observers;
 
   @Autowired
@@ -100,4 +102,5 @@ public class OrderService implements IObservable {
       }
     }
   }
+
 }

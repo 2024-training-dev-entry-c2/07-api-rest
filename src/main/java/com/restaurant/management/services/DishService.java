@@ -30,14 +30,6 @@ public class DishService {
     return repository.findAll();
   }
 
-  public List<Dish> getDishesByIds(List<Long> ids) {
-    List<Dish> dishes = repository.findAllById(ids);
-    if (dishes.size() != ids.size()) {
-      throw new RuntimeException("Algunos platos no fueron encontrados.");
-    }
-    return dishes;
-  }
-
   public Dish updateDish(Long id, Dish updatedDish){
     return repository.findById(id).map(d ->{
       d.setName(updatedDish.getName());

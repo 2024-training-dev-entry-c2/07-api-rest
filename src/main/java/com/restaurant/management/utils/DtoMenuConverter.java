@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 
 public class DtoMenuConverter {
   public static Menu toMenu(MenuRequestDTO menuRequestDTO){
-    return new Menu(
-      menuRequestDTO.getName()
-    );
+    Menu menu = new Menu();
+    menu.setName(menuRequestDTO.getName());
+    return menu;
   }
 
   public static MenuResponseDTO toMenuResponseDTO(Menu menu){

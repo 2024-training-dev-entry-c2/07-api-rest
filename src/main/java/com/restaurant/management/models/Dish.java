@@ -19,6 +19,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,8 @@ public class Dish {
   @ManyToOne
   @JoinColumn(name = "menu_id")
   @JsonBackReference
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   private Menu menu;
 
   @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
