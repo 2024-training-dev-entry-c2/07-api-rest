@@ -21,13 +21,11 @@ public class DishFoodService {
     @Autowired
     private final MenuRepository menuRepository;
 
-
-
     public DishFoodService(DishfoodRepository dishfoodRepository, MenuRepository menuRepository) {
         this.dishfoodRepository = dishfoodRepository;
         this.menuRepository = menuRepository;
     }
-    // Crear un nuevo plato
+
     public  DishfoodResponseDTO createDishFood(DishfoodRequestDTO dto){
         Menu menu = menuRepository.findById(dto.getMenuId())
                 .orElseThrow(()-> new RuntimeException("Producto no pudo ser actualizado"));
@@ -36,7 +34,6 @@ public class DishFoodService {
 
     }
 
-    // Obtener todos los platos
     public List<DishfoodResponseDTO> getAllDishfoods() {
         return dishfoodRepository.findAll()
                 .stream()
@@ -44,13 +41,11 @@ public class DishFoodService {
                 .collect(Collectors.toList());
     }
 
-    // Obtener plato por ID
     public DishfoodResponseDTO getDishfoodById(Long id) {
         Dishfood dishfood = dishfoodRepository.findById(id).orElseThrow(() -> new RuntimeException("Dishfood not found"));
         return DishfoodConverter.toResponseDTO(dishfood);
     }
 
-    // Actualizar un plato
     public DishfoodResponseDTO updateDishfood(Long id, DishfoodRequestDTO dishfoodRequestDTO) {
         Dishfood existingDishfood = dishfoodRepository.findById(id).orElseThrow(() -> new RuntimeException("Dishfood not found"));
         Menu menu = menuRepository.findById(dishfoodRequestDTO.getMenuId())
@@ -59,11 +54,10 @@ public class DishFoodService {
         existingDishfood.setPrice(dishfoodRequestDTO.getPrice());
         existingDishfood.setIsPopular(dishfoodRequestDTO.getIsPopular());
         existingDishfood.setMenu(menu);
-
         return DishfoodConverter.toResponseDTO(dishfoodRepository.save(existingDishfood));
     }
 
-    // Eliminar un plato
+
     public void deleteDishfood(Long id) {
         if (!dishfoodRepository.existsById(id)) {
             throw new RuntimeException("Dishfood not found");

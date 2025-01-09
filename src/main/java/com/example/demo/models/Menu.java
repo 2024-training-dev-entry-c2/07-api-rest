@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -30,7 +29,7 @@ public class Menu {
     private Long id;
     private String name;
     @OneToMany(mappedBy = "menu",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Dishfood> dishfoods  = new ArrayList<>();
+    private List<Dishfood> dishfoods;
 
     public Menu(String name) {
         this.name = name;

@@ -17,14 +17,11 @@ public class MenuService {
     @Autowired
     private MenuRepository menuRepository;
 
-
-    // Crear un nuevo menu
     public MenuResponseDTO createMenu(MenuRequestDTO menuRequestDTO) {
         Menu menu = MenuConverter.toEntity(menuRequestDTO);
         return MenuConverter.toResponseDTO(menuRepository.save(menu));
     }
 
-    // Obtener todos los menus
     public List<MenuResponseDTO> getAllMenus() {
         return menuRepository.findAll()
                 .stream()
@@ -32,14 +29,12 @@ public class MenuService {
                 .collect(Collectors.toList());
     }
 
-    // Obtener un menu por ID
     public MenuResponseDTO getMenuById(Long id) {
         Menu menu = menuRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
         return MenuConverter.toResponseDTO(menu);
     }
 
-    // Actualizar un menu
     public MenuResponseDTO updateMenu(Long id, MenuRequestDTO menuRequestDTO) {
         Menu existingMenu = menuRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Menu not found"));
@@ -50,7 +45,6 @@ public class MenuService {
         return MenuConverter.toResponseDTO(updatedMenu);
     }
 
-    // Eliminar un menu
     public void deleteMenu(Long id) {
         if (!menuRepository.existsById(id)) {
             throw new RuntimeException("Menu not found");
