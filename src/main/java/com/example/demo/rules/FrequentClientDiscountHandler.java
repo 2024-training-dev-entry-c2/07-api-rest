@@ -1,13 +1,15 @@
 package com.example.demo.rules;
 
 import com.example.demo.models.Order;
-import com.example.demo.strategy.PricingStrategy;
+import com.example.demo.strategy.FrequentClientPricingStrategy;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FrequentClientDiscountHandler implements OrderRule {
     private OrderRule nextHandler;
-    private final PricingStrategy strategy;
+    private final FrequentClientPricingStrategy strategy; // Usa la implementación concreta
 
-    public FrequentClientDiscountHandler(PricingStrategy strategy) {
+    public FrequentClientDiscountHandler(FrequentClientPricingStrategy strategy) {
         this.strategy = strategy;
     }
 

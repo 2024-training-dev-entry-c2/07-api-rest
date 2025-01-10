@@ -25,7 +25,7 @@ public class OrderConverter {
                 .client(ClientConverter.toResponseDTO(order.getClient()))
                 .localDate(order.getLocalDate())
                 .totalPrice(order.getTotalPrice() == null ? 0.0 : order.getTotalPrice())
-                .dishfoodIds(order.getDishfoods().stream().map(Dishfood::getId).collect(Collectors.toList())) // Solo IDs
+                .dishfoodIds(order.getDishfoods() ==null ? List.of() : order.getDishfoods().stream().map(Dishfood::getId).collect(Collectors.toList())) // Solo IDs
                 .build();
     }
 }

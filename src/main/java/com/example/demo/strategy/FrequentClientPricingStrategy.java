@@ -1,7 +1,9 @@
 package com.example.demo.strategy;
 
 import com.example.demo.models.Order;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FrequentClientPricingStrategy implements PricingStrategy {
     @Override
     public void apply(Order order) {

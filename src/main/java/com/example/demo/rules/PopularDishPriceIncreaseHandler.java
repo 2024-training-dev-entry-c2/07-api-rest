@@ -1,13 +1,15 @@
 package com.example.demo.rules;
 
 import com.example.demo.models.Order;
-import com.example.demo.strategy.PricingStrategy;
+import com.example.demo.strategy.PopularDishPricingStrategy;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PopularDishPriceIncreaseHandler implements OrderRule {
     private OrderRule nextHandler;
-    private final PricingStrategy strategy;
+    private final PopularDishPricingStrategy strategy;
 
-    public PopularDishPriceIncreaseHandler(PricingStrategy strategy) {
+    public PopularDishPriceIncreaseHandler(PopularDishPricingStrategy strategy) {
         this.strategy = strategy;
     }
 
