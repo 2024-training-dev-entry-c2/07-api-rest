@@ -18,9 +18,9 @@ public class DtoMenuConverter {
     MenuResponseDTO menuResponseDTO = new MenuResponseDTO();
     menuResponseDTO.setId(menu.getId());
     menuResponseDTO.setName(menu.getName());
-    menuResponseDTO.setDishes(menu.getDishes()!= null ? menu.getDishes().stream()
+    menuResponseDTO.setDishes(menu.getDishes().stream()
       .map(DtoDishConverter::toDishResponseDTO)
-      .collect(Collectors.toList()) : new ArrayList<>());
+      .collect(Collectors.toList()));
     return menuResponseDTO;
   }
 }

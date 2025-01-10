@@ -14,6 +14,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -86,6 +87,20 @@ class ClientServiceTest {
 
     verify(clientRepository).findById(anyLong());
     verify(clientRepository).save(client);
+  }
+
+  @Test
+  @DisplayName("Actualizar cliente no encontrado lanza excepción")
+  void updateClientNotFound() {
+    Client client = new Client(1L, "name", "email");
+    when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    Exception exception = assertThrows(RuntimeException.class, () -> clientService.updateClient(1L, client));
+
+    assertEquals("Cliente con id 1 no se pudo actualizar.", exception.getMessage());
+
+    verify(clientRepository).findById(anyLong());
+    verify(clientRepository, never()).save(eq(client));
   }
 
   @Test

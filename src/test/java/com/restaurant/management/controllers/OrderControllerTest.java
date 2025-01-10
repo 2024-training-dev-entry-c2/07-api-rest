@@ -3,7 +3,9 @@ package com.restaurant.management.controllers;
 import com.restaurant.management.models.Client;
 import com.restaurant.management.models.Dish;
 import com.restaurant.management.models.Order;
+import com.restaurant.management.models.OrderDish;
 import com.restaurant.management.models.dto.DishOrderRequestDTO;
+import com.restaurant.management.models.dto.DishOrderResponseDTO;
 import com.restaurant.management.models.dto.OrderRequestDTO;
 import com.restaurant.management.models.dto.OrderResponseDTO;
 import com.restaurant.management.services.ClientService;
@@ -15,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,12 +44,16 @@ class OrderControllerTest {
   @Test
   @DisplayName("Agregar pedido")
   void addOrder() {
-
-    OrderRequestDTO orderRequestDTO = new OrderRequestDTO(1L,getDishOrderRequestList(), LocalDate.parse("2025-01-08"));
+    DishOrderRequestDTO dishOrderRequestDTO = new DishOrderRequestDTO(1L, 2);
+    OrderRequestDTO orderRequestDTO = new OrderRequestDTO(1L,new ArrayList<>(List.of(dishOrderRequestDTO)), LocalDate.parse("2025-01-08"));
     Client client = new Client(1L, "name", "email");
+    Dish dish = new Dish(1L, "nameDish", "Description", 12.50f, null);
+    OrderDish orderDish = new OrderDish(dish, 2);
     Order order = new Order(1L, client, LocalDate.parse("2025-01-08"));
+    order.setOrderDishes(new ArrayList<>(List.of(orderDish)));
+
     when(clientService.getClientById(any(Long.class))).thenReturn(Optional.of(client));
-    when(dishService.getDishById(any(Long.class))).thenReturn(Optional.of(mock(Dish.class)));
+    when(dishService.getDishById(any(Long.class))).thenReturn(Optional.of(dish));
     when(orderService.addOrder(any(Order.class))).thenReturn(order);
 
     webTestClient.post()
@@ -62,6 +69,12 @@ class OrderControllerTest {
         assertEquals(orderResponseDTO.getClient().getId(), order.getClient().getId());
         assertEquals(orderResponseDTO.getDate(), order.getDate());
         assertEquals(orderResponseDTO.getDishes().length, order.getOrderDishes().size());
+
+        DishOrderResponseDTO dishOrderResponseDTO = orderResponseDTO.getDishes()[0];
+        assertEquals(dishOrderResponseDTO.getDishId(), order.getOrderDishes().get(0).getDish().getId());
+        assertEquals(dishOrderResponseDTO.getDishName(), order.getOrderDishes().get(0).getDish().getName());
+        assertEquals(dishOrderResponseDTO.getPrice(), order.getOrderDishes().get(0).getDish().getPrice(), 0.0001f);
+        assertEquals(dishOrderResponseDTO.getQuantity(), order.getOrderDishes().get(0).getQuantity());
       });
 
     verify(orderService).addOrder(any(Order.class));
