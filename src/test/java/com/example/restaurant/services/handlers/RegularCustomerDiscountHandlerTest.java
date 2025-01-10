@@ -47,12 +47,12 @@ class RegularCustomerDiscountHandlerTest {
     Dish dish = new Dish();
     Float initialPrice = 100.0f;
 
-    when(orderRepository.countByCustomerId(customer.getCustomerId())).thenReturn(10L);
+    when(orderRepository.countByCustomerCustomerId(customer.getCustomerId())).thenReturn(10L);
 
     Float result = regularCustomerDiscountHandler.calculatePrice(initialPrice, order, dish);
 
     assertEquals(97.62f, result, 0.01);
-    verify(orderRepository, times(1)).countByCustomerId(customer.getCustomerId());
+    verify(orderRepository, times(1)).countByCustomerCustomerId(customer.getCustomerId());
   }
 
   @Test
@@ -65,12 +65,12 @@ class RegularCustomerDiscountHandlerTest {
     Dish dish = new Dish();
     Float initialPrice = 100.0f;
 
-    when(orderRepository.countByCustomerId(customer.getCustomerId())).thenReturn(5L);
+    when(orderRepository.countByCustomerCustomerId(customer.getCustomerId())).thenReturn(5L);
 
     Float result = regularCustomerDiscountHandler.calculatePrice(initialPrice, order, dish);
 
     assertEquals(100.0f, result);
-    verify(orderRepository, times(1)).countByCustomerId(customer.getCustomerId());
+    verify(orderRepository, times(1)).countByCustomerCustomerId(customer.getCustomerId());
   }
 
   public List<Dish> getDishes() {

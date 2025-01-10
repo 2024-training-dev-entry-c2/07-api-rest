@@ -14,7 +14,7 @@ public class RegularCustomerDiscountHandler extends AbstractPriceHandler {
 
   @Override
   public Float calculatePrice(Float price, Order order, Dish dish) {
-    Long customerOrdersQuantity = orderRepository.countByCustomerId(order.getCustomer().getCustomerId());
+    Long customerOrdersQuantity = orderRepository.countByCustomerCustomerId(order.getCustomer().getCustomerId());
     if (customerOrdersQuantity >= 10) {
       return price * 0.9762f;
     }

@@ -52,11 +52,11 @@ class RegularCustomerObserverTest {
             getDishes()
     );
 
-    when(orderRepository.countByCustomerId(customer.getCustomerId())).thenReturn(10L);
+    when(orderRepository.countByCustomerCustomerId(customer.getCustomerId())).thenReturn(10L);
 
     regularCustomerObserver.onOrderCreated(order);
 
-    verify(orderRepository, times(1)).countByCustomerId(customer.getCustomerId());
+    verify(orderRepository, times(1)).countByCustomerCustomerId(customer.getCustomerId());
 
   }
 

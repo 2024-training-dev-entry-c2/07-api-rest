@@ -35,12 +35,12 @@ class PopularDishMarkupHandlerTest {
     Order order = new Order();
     Float initialPrice = 100.0f;
 
-    when(dishRepository.countOrdersById(dish.getDishId())).thenReturn(100L);
+    when(dishRepository.countOrdersByDishId(dish.getDishId())).thenReturn(100L);
 
     Float result = popularDishMarkupHandler.calculatePrice(initialPrice, order, dish);
 
     assertEquals(105.73f, result, 0.01);
-    verify(dishRepository, times(1)).countOrdersById(dish.getDishId());
+    verify(dishRepository, times(1)).countOrdersByDishId(dish.getDishId());
   }
 
   @Test
@@ -51,11 +51,11 @@ class PopularDishMarkupHandlerTest {
     Order order = new Order();
     Float initialPrice = 100.0f;
 
-    when(dishRepository.countOrdersById(dish.getDishId())).thenReturn(50L);
+    when(dishRepository.countOrdersByDishId(dish.getDishId())).thenReturn(50L);
 
     Float result = popularDishMarkupHandler.calculatePrice(initialPrice, order, dish);
 
     assertEquals(100.0f, result);
-    verify(dishRepository, times(1)).countOrdersById(dish.getDishId());
+    verify(dishRepository, times(1)).countOrdersByDishId(dish.getDishId());
   }
 }

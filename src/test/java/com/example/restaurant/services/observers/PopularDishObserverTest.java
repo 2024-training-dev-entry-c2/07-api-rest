@@ -38,10 +38,10 @@ class PopularDishObserverTest {
     Order order = new Order();
     order.setDishes(List.of(dish));
 
-    when(dishRepository.countOrdersById(dish.getDishId())).thenReturn(100L);
+    when(dishRepository.countOrdersByDishId(dish.getDishId())).thenReturn(100L);
 
     popularDishObserver.onOrderCreated(order);
 
-    verify(dishRepository, times(1)).countOrdersById(dish.getDishId());
+    verify(dishRepository, times(1)).countOrdersByDishId(dish.getDishId());
   }
 }

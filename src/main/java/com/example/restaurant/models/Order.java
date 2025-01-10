@@ -41,8 +41,8 @@ public class Order {
   @ManyToMany(fetch = FetchType.EAGER, targetEntity = Dish.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
           name = "order_dish",
-          joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
-          inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id")
+          joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "orderId"),
+          inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "dishId")
   )
   private List<Dish> dishes;
 
