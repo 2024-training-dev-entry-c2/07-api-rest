@@ -34,9 +34,13 @@ public class Menu {
           targetEntity = Dish.class,
           fetch = FetchType.EAGER,
           mappedBy = "menu",
-          orphanRemoval = false,
           cascade = CascadeType.ALL
   )
   private List<Dish> dishes;
 
+  public Menu(Long id, String name, String description) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+  }
 }

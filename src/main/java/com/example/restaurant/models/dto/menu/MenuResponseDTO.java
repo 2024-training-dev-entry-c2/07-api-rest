@@ -11,4 +11,13 @@ public class MenuResponseDTO {
   private String name;
   private String description;
   private List<DishResponseDTO> dishes;
+
+  public MenuResponseDTO(Long id, String name, String description) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+  }
+
+  public MenuResponseDTO() {
+  }
 }
