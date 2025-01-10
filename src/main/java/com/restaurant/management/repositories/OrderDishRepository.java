@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderDishRepository extends JpaRepository<OrderDish, Long> {
-  @Query("SELECT SUM(od.quantity) FROM OrderDish od WHERE od.dish = :dish")
+  @Query("SELECT COALESCE(SUM(od.quantity), 0) FROM OrderDish od WHERE od.dish = :dish")
   Integer sumQuantityByDish(@Param("dish")Dish dish);
 }

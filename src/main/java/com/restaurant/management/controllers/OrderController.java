@@ -49,6 +49,8 @@ public class OrderController {
       Client client = clientService.getClientById(orderRequestDTO.getClientId())
         .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
+      System.out.println(client);
+
       List<OrderDish> orderDishes = new ArrayList<>();
       for (DishOrderRequestDTO dishOrderRequestDTO : orderRequestDTO.getDishes()) {
         Dish dish = dishService.getDishById(dishOrderRequestDTO.getDishId())
@@ -56,6 +58,8 @@ public class OrderController {
 
         orderDishes.add(new OrderDish( dish, dishOrderRequestDTO.getQuantity()));
       }
+
+      System.out.println(orderDishes);
 
       Order order = DtoOrderConverter.toOrder(orderRequestDTO, client, orderDishes);
 

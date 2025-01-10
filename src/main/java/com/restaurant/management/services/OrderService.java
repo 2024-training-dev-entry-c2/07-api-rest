@@ -97,8 +97,7 @@ public class OrderService implements IObservable {
   public void notifyObservers(Order order) {
     for(IOrderObserver observer : observers){
       for (OrderDish orderDish : order.getOrderDishes()) {
-        Dish dish = orderDish.getDish();
-        observer.updateOrder(order.getClient(), dish);
+        observer.updateOrder(order.getClient(), orderDish.getDish());
       }
     }
   }

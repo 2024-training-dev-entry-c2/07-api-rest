@@ -50,6 +50,7 @@ public class Dish {
 
   @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
+  @ToString.Exclude
   private List<OrderDish> orderDishes;
 
   @Transient

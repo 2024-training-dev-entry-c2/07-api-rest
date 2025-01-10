@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class Order {
   private Client client;
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+  @ToString.Exclude
   private List<OrderDish> orderDishes;
 
   private LocalDate date;
@@ -52,6 +54,7 @@ public class Order {
   }
 
   public void calculateTotal(){
+    //System.out.println("Calculando el total");
     total =  orderDishes.isEmpty() ? 0f : (float) orderDishes.stream()
       .mapToDouble(orderDish -> orderDish.getDish().getPrice() * orderDish.getQuantity())
       .sum();

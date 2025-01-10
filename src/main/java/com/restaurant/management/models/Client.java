@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Client {
   private Boolean frequent;
 
   @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+  @ToString.Exclude
   private List<Order> orders;
 
   public Client(Long id, String name, String email) {
