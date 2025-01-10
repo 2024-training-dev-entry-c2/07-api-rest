@@ -1,5 +1,6 @@
 package com.restaurant.restaurant.dtos;
 
+import com.restaurant.restaurant.enums.ClientType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,5 @@ public class ClientDTO {
   private String lastName;
   private String email;
   private String phone;
-  private Boolean isFrecuent;
+  private ClientType type;
 }

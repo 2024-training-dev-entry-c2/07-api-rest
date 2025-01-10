@@ -1,10 +1,9 @@
 package com.restaurant.restaurant.controllers;
 
 import com.restaurant.restaurant.dtos.MenuDTO;
-import com.restaurant.restaurant.models.MenuModel;
 import com.restaurant.restaurant.services.MenuService;
-import com.restaurant.restaurant.utils.MapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.restaurant.restaurant.utils.ApiResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,33 +20,36 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/menus")
+@RequiredArgsConstructor
 public class MenuController {
-  @Autowired
-  private MenuService menuService;
-
-  @PostMapping
-  public ResponseEntity<MenuDTO> createMenu(@RequestBody MenuDTO menuDTO){
-    MenuModel menuModel = MapperUtil.mapToMenuModel(menuDTO);
-    MenuModel createdMenu = menuService.createMenu(menuModel);
-    return ResponseEntity.status(HttpStatus.CREATED).body(MapperUtil.mapToMenuDTO(createdMenu));
-  }
+  private final MenuService menuService;
 
   @GetMapping
-  public ResponseEntity<List<MenuDTO>> getMenus(){
-    List<MenuModel> menus = menuService.getMenus();
-    List<MenuDTO> menuDTOs = menus.stream().map(MapperUtil::mapToMenuDTO).collect(Collectors.toList());
-    return ResponseEntity.ok(menuDTOs);
+  public ResponseEntity<ApiResponse<List<MenuDTO>>> getAllMenus(){
+    List<MenuDTO> menus = menuService.findAll();
+    return ResponseEntity.ok(ApiResponse.success(menus));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<ApiResponse<MenuDTO>> getMenuById(@PathVariable Long id) {
+    MenuDTO menu = menuService.findById(id);
+    return ResponseEntity.ok(ApiResponse.success(menu));
+  }
+
+  @PostMapping
+  public ResponseEntity<ApiResponse<MenuDTO>> createMenu(@RequestBody MenuDTO menuDTO){
+    MenuDTO createdMenu = menuService.createMenu(menuDTO);
+    return new ResponseEntity<>(ApiResponse.success("Success Created Menu", createdMenu), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<MenuDTO> updateMenu(@PathVariable Long id, @RequestBody MenuDTO menuDTO){
-    MenuModel menu = MapperUtil.mapToMenuModel(menuDTO);
-    MenuModel updatedMenu = menuService.updateMenu(id, menu);
-    return ResponseEntity.ok(MapperUtil.mapToMenuDTO(updatedMenu));
+  public ResponseEntity<ApiResponse<MenuDTO>> updateMenu(@PathVariable Long id, @RequestBody MenuDTO menuDTO){
+    MenuDTO updatedMenu = menuService.updateMenu(id, menuDTO);
+    return ResponseEntity.ok(ApiResponse.success("Success Updated Menu", updatedMenu));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteMenu(@PathVariable Long id){
+  public ResponseEntity<ApiResponse<Void>> deleteMenu(@PathVariable Long id){
     menuService.deleteMenu(id);
     return ResponseEntity.noContent().build();
   }

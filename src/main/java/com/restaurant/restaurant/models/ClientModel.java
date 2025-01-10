@@ -1,12 +1,10 @@
 package com.restaurant.restaurant.models;
 
+import com.restaurant.restaurant.enums.ClientType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -30,10 +28,7 @@ public class ClientModel {
   @Column(nullable = false)
   private String phone;
 
-  @Column(nullable = false)
-  private Boolean isFrecuent = false;
-
-  @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-  private List<OrderModel> orders = new ArrayList<>();
+  @Enumerated(EnumType.STRING)
+  private ClientType type = ClientType.COMUN;
 
 }

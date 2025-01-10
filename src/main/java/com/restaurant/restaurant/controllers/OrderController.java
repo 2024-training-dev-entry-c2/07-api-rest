@@ -1,11 +1,10 @@
 package com.restaurant.restaurant.controllers;
 
+import com.restaurant.restaurant.dtos.CreateOrderDTO;
 import com.restaurant.restaurant.dtos.OrderDTO;
-import com.restaurant.restaurant.models.OrderModel;
-import com.restaurant.restaurant.services.OrderProcessingService;
 import com.restaurant.restaurant.services.OrderService;
-import com.restaurant.restaurant.utils.MapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.restaurant.restaurant.utils.ApiResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,43 +17,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/orders")
+@RequiredArgsConstructor
 public class OrderController {
-  @Autowired
-  private OrderService orderService;
+  private final OrderService orderService;
 
-  private final OrderProcessingService orderProcessingService;
+  @GetMapping
+  public ResponseEntity<ApiResponse<List<OrderDTO>>> getAllOrders(){
+    List<OrderDTO> orders = orderService.findAll();
+    return ResponseEntity.ok(ApiResponse.success(orders));
+  }
 
-  public OrderController(){
-    this.orderProcessingService = new OrderProcessingService();
+  @GetMapping("/{id}")
+  public ResponseEntity<ApiResponse<OrderDTO>> getOrderById(@PathVariable Long id) {
+    OrderDTO order = orderService.findById(id);
+    return ResponseEntity.ok(ApiResponse.success(order));
   }
 
   @PostMapping
-  public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO){
-    OrderModel order = MapperUtil.mapToOrderModel(orderDTO);
-    OrderModel createdOrder = orderService.createOrder(order);
-    return ResponseEntity.status(HttpStatus.CREATED).body(MapperUtil.mapToOrderDTO(createdOrder));
-  }
-
-  @GetMapping
-  public ResponseEntity<List<OrderDTO>> getOrders(){
-    List<OrderModel> orders = orderService.getOrders();
-    List<OrderDTO> orderDTOs = orders.stream().map(MapperUtil::mapToOrderDTO).collect(Collectors.toList());
-    return ResponseEntity.ok(orderDTOs);
+  public ResponseEntity<ApiResponse<OrderDTO>> createOrder(@RequestBody CreateOrderDTO createOrderDTO){
+    OrderDTO createdOrder = orderService.createOrder(createOrderDTO);
+    return new ResponseEntity<>(ApiResponse.success("Success Created Order", createdOrder), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO){
-    OrderModel order = MapperUtil.mapToOrderModel(orderDTO);
-    OrderModel updatedOrder = orderService.updateOrder(id, order);
-    return ResponseEntity.ok(MapperUtil.mapToOrderDTO(updatedOrder));
+  public ResponseEntity<ApiResponse<OrderDTO>> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO){
+    OrderDTO updatedOrder = orderService.updateOrder(id, orderDTO);
+    return ResponseEntity.ok(ApiResponse.success("Success Updated Order", updatedOrder));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteOrder(@PathVariable Long id){
+  public ResponseEntity<ApiResponse<Void>> deleteOrder(@PathVariable Long id){
     orderService.deleteOrder(id);
     return ResponseEntity.noContent().build();
   }

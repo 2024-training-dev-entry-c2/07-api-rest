@@ -43,10 +43,10 @@ public class OrderModel {
           joinColumns = @JoinColumn(name = "order_id"),
           inverseJoinColumns = @JoinColumn(name = "dish_id")
   )
-  private List<DishModel> dishes = new ArrayList<>();
+  private List<DishModel> dishes;
 
   @Column(nullable = false)
-  private LocalDateTime date;
+  private LocalDateTime date = LocalDateTime.now();
 
   @Column(nullable = false)
   private Double totalCost;

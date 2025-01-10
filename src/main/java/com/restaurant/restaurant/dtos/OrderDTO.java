@@ -15,4 +15,5 @@ public class OrderDTO {
   private Long clientId;
   private List<Long> dishIds;
   private LocalDateTime date;
+  private Double totalCost;
 }

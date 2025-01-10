@@ -1,10 +1,9 @@
 package com.restaurant.restaurant.controllers;
 
 import com.restaurant.restaurant.dtos.DishDTO;
-import com.restaurant.restaurant.models.DishModel;
 import com.restaurant.restaurant.services.DishService;
-import com.restaurant.restaurant.utils.MapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.restaurant.restaurant.utils.ApiResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,40 +20,37 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/dishes")
+@RequiredArgsConstructor
 public class DishController {
-  @Autowired
-  private DishService dishService;
-
-  @PostMapping
-  public ResponseEntity<DishDTO> createDish(@RequestBody DishDTO dishDTO){
-    DishModel dishModel = MapperUtil.mapToDishModel(dishDTO);
-    DishModel createdDish = dishService.createDish(dishModel);
-    return ResponseEntity.status(HttpStatus.CREATED).body(MapperUtil.mapToDishDTO(createdDish));
-  }
+  private final DishService dishService;
 
   @GetMapping
-  public ResponseEntity<List<DishDTO>> getDishes(){
-    List<DishModel> dishes = dishService.getDishes();
-    List<DishDTO> dishDTOs = dishes.stream().map(MapperUtil::mapToDishDTO).collect(Collectors.toList());
-    return ResponseEntity.ok(dishDTOs);
+  public ResponseEntity<ApiResponse<List<DishDTO>>> getAllDishes(){
+    List<DishDTO> dishes = dishService.findAll();
+    return ResponseEntity.ok(ApiResponse.success(dishes));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<ApiResponse<DishDTO>> getDishById(@PathVariable Long id) {
+    DishDTO dish = dishService.findById(id);
+    return ResponseEntity.ok(ApiResponse.success(dish));
+  }
+
+  @PostMapping
+  public ResponseEntity<ApiResponse<DishDTO>> createDish(@RequestBody DishDTO dishDTO){
+    DishDTO createdDish = dishService.createDish(dishDTO);
+    return new ResponseEntity<>(ApiResponse.success("Success Created Dish", createdDish), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<DishDTO> updateDish(@PathVariable Long id, @RequestBody DishDTO dishDTO){
-    DishModel dish = MapperUtil.mapToDishModel(dishDTO);
-    DishModel updatedDish = dishService.updateDish(id, dish);
-    return ResponseEntity.ok(MapperUtil.mapToDishDTO(updatedDish));
+  public ResponseEntity<ApiResponse<DishDTO>> updateDish(@PathVariable Long id, @RequestBody DishDTO dishDTO){
+    DishDTO updatedDish = dishService.updateDish(id, dishDTO);
+    return ResponseEntity.ok(ApiResponse.success("Success Updated Dish", updatedDish));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteDish(@PathVariable Long id){
+  public ResponseEntity<ApiResponse<Void>> deleteDish(@PathVariable Long id){
     dishService.deleteDish(id);
     return ResponseEntity.noContent().build();
-  }
-
-  @GetMapping("{id}/verify-popular")
-  public ResponseEntity<Void> verifyPopular(@PathVariable Long id){
-    dishService.verifyPopular(id);
-    return ResponseEntity.ok().build();
   }
 }

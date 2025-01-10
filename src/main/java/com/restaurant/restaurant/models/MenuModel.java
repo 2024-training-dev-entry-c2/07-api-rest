@@ -38,5 +38,5 @@ public class MenuModel {
           joinColumns = @JoinColumn(name = "menu_id"),
           inverseJoinColumns = @JoinColumn(name = "dish_id")
   )
-  private List<DishModel> dishes = new ArrayList<>();
+  private List<DishModel> dishes;
 }

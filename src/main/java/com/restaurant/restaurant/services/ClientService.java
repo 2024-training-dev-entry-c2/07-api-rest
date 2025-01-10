@@ -1,50 +1,70 @@
 package com.restaurant.restaurant.services;
 
-import com.restaurant.restaurant.factories.ClientFactory;
+import com.restaurant.restaurant.dtos.ClientDTO;
+import com.restaurant.restaurant.exceptions.ResourceNotFoundException;
 import com.restaurant.restaurant.models.ClientModel;
+import com.restaurant.restaurant.enums.ClientType;
 import com.restaurant.restaurant.repositories.ClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ClientService {
-  @Autowired
-  private ClientRepository clientRepository;
 
-  @Autowired
-  private ClientFactory clientFactory;
+  private final ClientRepository clientRepository;
 
-  public ClientModel createClient(ClientModel clientModel){
-    return clientRepository.save(clientModel);
+  @Transactional
+  public List<ClientDTO> findAll(){
+    return clientRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
-  public List<ClientModel> getClients(){
-    return clientRepository.findAll();
+  @Transactional
+  public ClientDTO findById(Long id){
+    return clientRepository.findById(id).map(this::convertToDto).orElseThrow(() -> new ResourceNotFoundException("Client not found with id " + id));
   }
 
-  public ClientModel updateClient(Long id, ClientModel client) {
-    return clientRepository.findById(id).map(x -> {
-      x.setName(client.getName());
-      x.setLastName(client.getLastName());
-      x.setEmail(client.getEmail());
-      x.setPhone(client.getPhone());
-      x.setIsFrecuent(client.getIsFrecuent());
-      return clientRepository.save(x);
-    }).orElseThrow(() -> new RuntimeException("Client with id " + id + " not found"));
+  @Transactional
+  public ClientDTO createClient(ClientDTO clientDTO){
+    ClientModel clientModel = new ClientModel();
+    clientModel.setName(clientDTO.getName());
+    clientModel.setLastName(clientDTO.getLastName());
+    clientModel.setEmail(clientDTO.getEmail());
+    clientModel.setPhone(clientDTO.getPhone());
+    clientModel.setType(ClientType.COMUN);
+
+    return convertToDto(clientRepository.save(clientModel));
   }
 
+  @Transactional
+  public ClientDTO updateClient(Long id, ClientDTO clientDTO){
+    ClientModel clientModel = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client not found with id " + id));
+    clientModel.setName(clientDTO.getName());
+    clientModel.setLastName(clientDTO.getLastName());
+    clientModel.setPhone(clientDTO.getPhone());
+    return convertToDto(clientRepository.save(clientModel));
+  }
+
+  @Transactional
   public void deleteClient(Long id){
+    if(!clientRepository.existsById(id)){
+      throw new ResourceNotFoundException("Client not found with id " + id);
+    }
     clientRepository.deleteById(id);
   }
 
-  public void verifyFrecuent(Long clientId){
-    Integer totalOrders = clientRepository.countOrdersByClientId(clientId);
-    if(totalOrders >= 10){
-      ClientModel client = clientRepository.findById(clientId).orElseThrow(() -> new RuntimeException("Client with id " + clientId + " not found"));
-      client.setIsFrecuent(true);
-      clientRepository.save(client);
-    }
+  private ClientDTO convertToDto(ClientModel clientModel) {
+    ClientDTO dto = new ClientDTO();
+    dto.setId(clientModel.getId());
+    dto.setName(clientModel.getName());
+    dto.setLastName(clientModel.getLastName());
+    dto.setEmail(clientModel.getEmail());
+    dto.setPhone(clientModel.getPhone());
+    dto.setType(clientModel.getType());
+    return dto;
   }
 }
