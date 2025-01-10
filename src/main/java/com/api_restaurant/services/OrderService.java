@@ -3,8 +3,14 @@ package com.api_restaurant.services;
 import com.api_restaurant.models.Client;
 import com.api_restaurant.models.Order;
 import com.api_restaurant.repositories.OrderRepository;
-import com.api_restaurant.strategy.*;
-import com.api_restaurant.utils.*;
+import com.api_restaurant.strategy.NoDiscountStrategy;
+import com.api_restaurant.strategy.DiscountStrategy;
+import com.api_restaurant.strategy.FrequentClientDiscountStrategy;
+import com.api_restaurant.strategy.PriceStrategy;
+import com.api_restaurant.strategy.PopularDishPriceStrategy;
+import com.api_restaurant.strategy.RegularPriceStrategy;
+import com.api_restaurant.utils.FrequentClientHandler;
+import com.api_restaurant.utils.PopularDishHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +42,7 @@ public class OrderService {
         Client client = order.getClient();
         frequentClientHandler.handle(client);
 
-        Double total = order.getDishes().stream().mapToDouble(dish -> {
+        double total = order.getDishes().stream().mapToDouble(dish -> {
             popularDishHandler.handle(dish);
             PriceStrategy priceStrategy = dish.getSpecialDish() ? popularDishPriceStrategy : regularPriceStrategy;
             return priceStrategy.applyPrice(dish.getPrice());

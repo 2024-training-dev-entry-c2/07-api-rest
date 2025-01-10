@@ -57,6 +57,25 @@ class OrderControllerTest {
     }
 
     @Test
+    @DisplayName("Agregar Orden - Excepción")
+    void addOrderException() {
+        OrderRequestDTO orderRequestDTO = new OrderRequestDTO();
+        Order order = new Order();
+
+        when(orderDtoConvert.convertToEntity(any(OrderRequestDTO.class))).thenReturn(order);
+        when(orderService.addOrder(any(Order.class))).thenThrow(new RuntimeException("Order could not be added"));
+
+        webTestClient.post()
+                .uri("/orders")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(orderRequestDTO)
+                .exchange()
+                .expectStatus().isNotFound();
+
+        Mockito.verify(orderService).addOrder(any(Order.class));
+    }
+
+    @Test
     @DisplayName("Obtener Orden por ID")
     void getOrder() {
         Order order = new Order();
@@ -151,6 +170,31 @@ class OrderControllerTest {
     }
 
     @Test
+    @DisplayName("Update Order - Success")
+    void updateOrderSuccess() {
+        OrderRequestDTO requestDTO = new OrderRequestDTO();
+        Order order = new Order();
+        order.setId(1L);
+
+        when(orderDtoConvert.convertToEntity(any(OrderRequestDTO.class))).thenReturn(order);
+        when(orderService.updateOrder(any(Long.class), any(Order.class))).thenReturn(order);
+
+        webTestClient.put()
+                .uri("/orders/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(requestDTO)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .value(response -> {
+                    assertNotNull(response);
+                    assertEquals("Order actualizada exitosamente", response);
+                });
+
+        Mockito.verify(orderService).updateOrder(any(Long.class), any(Order.class));
+    }
+
+    @Test
     @DisplayName("Actualizar Orden - No Encontrado")
     void updateOrderNotFound() {
         OrderRequestDTO orderRequestDTO = new OrderRequestDTO();
@@ -197,6 +241,7 @@ class OrderControllerTest {
                 .uri("/orders/1")
                 .exchange()
                 .expectStatus().isNotFound();
+
         Mockito.verify(orderService).deleteOrder(1L);
     }
 }

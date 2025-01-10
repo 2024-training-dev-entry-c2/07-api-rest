@@ -1,4 +1,3 @@
-// java/com/api_restaurant/models/Menu.java
 package com.api_restaurant.models;
 
 import com.api_restaurant.observer.Observable;
@@ -25,11 +24,6 @@ public class Menu implements Observer {
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
     private List<Dish> dishes = new ArrayList<>();
-
-    public Menu(List<Dish> dishes, String name) {
-        this.dishes = dishes;
-        this.name = name;
-    }
 
     public Menu(String name) {
         this.name = name;

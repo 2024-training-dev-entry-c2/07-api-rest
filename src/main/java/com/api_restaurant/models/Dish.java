@@ -1,4 +1,3 @@
-// java/com/api_restaurant/models/Dish.java
 package com.api_restaurant.models;
 
 import com.api_restaurant.observer.Observable;
