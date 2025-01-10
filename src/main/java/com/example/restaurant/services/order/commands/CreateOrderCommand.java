@@ -32,7 +32,7 @@ public class CreateOrderCommand {
     order.setCustomer(customer);
     List<Dish> dishes = dishRepository.findAllById(orderRequestDTO.getDishIds());
     order.setDishes(dishes);
-    order.setTotal(calculateTotal(order));
+    order.setTotalOrderPrice(calculateTotal(order));
     orderRepository.save(order);
     return orderMapper.toDTO(order);
   }

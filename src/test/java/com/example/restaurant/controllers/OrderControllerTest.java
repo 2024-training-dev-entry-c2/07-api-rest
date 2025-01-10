@@ -33,14 +33,14 @@ class OrderControllerTest {
   void createOrder() {
 
     CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-    customerResponseDTO.setId(1L);
+    customerResponseDTO.setCustomerId(1L);
     customerResponseDTO.setName("John");
     customerResponseDTO.setLastName("Doe");
     customerResponseDTO.setEmail("doe@example.com");
     customerResponseDTO.setPhone("+1 223-3343-332");
 
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setId(1L);
+    dishResponseDTO1.setCustomerId(1L);
     dishResponseDTO1.setName("Ceviche de camarones");
     dishResponseDTO1.setPrice(12000.0f);
 
@@ -49,7 +49,7 @@ class OrderControllerTest {
     orderRequestDTO.setDishIds(List.of(1L));
 
     OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
-    orderResponseDTO.setId(1L);
+    orderResponseDTO.setOrderId(1L);
     orderResponseDTO.setCustomer(customerResponseDTO);
     orderResponseDTO.setDishes(List.of(dishResponseDTO1));
 
@@ -63,7 +63,7 @@ class OrderControllerTest {
             .expectStatus().isCreated()
             .expectBody(OrderResponseDTO.class)
             .value(d -> {
-              assertEquals(orderResponseDTO.getId(), d.getId());
+              assertEquals(orderResponseDTO.getOrderId(), d.getOrderId());
               assertEquals(orderResponseDTO.getCustomer(), d.getCustomer());
               assertEquals(orderResponseDTO.getDishes(), d.getDishes());
             });
@@ -76,19 +76,19 @@ class OrderControllerTest {
   void getOrderById() {
 
     CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-    customerResponseDTO.setId(1L);
+    customerResponseDTO.setCustomerId(1L);
     customerResponseDTO.setName("John");
     customerResponseDTO.setLastName("Doe");
     customerResponseDTO.setEmail("doe@example.com");
     customerResponseDTO.setPhone("+1 223-3343-332");
 
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setId(1L);
+    dishResponseDTO1.setCustomerId(1L);
     dishResponseDTO1.setName("Ceviche de camarones");
     dishResponseDTO1.setPrice(12000.0f);
 
     OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
-    orderResponseDTO.setId(1L);
+    orderResponseDTO.setOrderId(1L);
     orderResponseDTO.setCustomer(customerResponseDTO);
     orderResponseDTO.setDishes(List.of(dishResponseDTO1));
 
@@ -101,7 +101,7 @@ class OrderControllerTest {
             .expectStatus().isOk()
             .expectBody(OrderResponseDTO.class)
             .value(d -> {
-              assertEquals(orderResponseDTO.getId(), d.getId());
+              assertEquals(orderResponseDTO.getOrderId(), d.getOrderId());
               assertEquals(orderResponseDTO.getCustomer(), d.getCustomer());
               assertEquals(orderResponseDTO.getDishes(), d.getDishes());
             });
@@ -114,19 +114,19 @@ class OrderControllerTest {
   void updateOrder() {
 
     CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-    customerResponseDTO.setId(1L);
+    customerResponseDTO.setCustomerId(1L);
     customerResponseDTO.setName("John");
     customerResponseDTO.setLastName("Doe");
     customerResponseDTO.setEmail("doe@example.com");
     customerResponseDTO.setPhone("+1 223-3343-332");
 
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setId(1L);
+    dishResponseDTO1.setCustomerId(1L);
     dishResponseDTO1.setName("Ceviche de camarones");
     dishResponseDTO1.setPrice(12000.0f);
 
     OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
-    orderResponseDTO.setId(1L);
+    orderResponseDTO.setOrderId(1L);
     orderResponseDTO.setCustomer(customerResponseDTO);
     orderResponseDTO.setDishes(List.of(dishResponseDTO1));
 
@@ -144,7 +144,7 @@ class OrderControllerTest {
             .expectStatus().isOk()
             .expectBody(OrderResponseDTO.class)
             .value(d -> {
-              assertEquals(orderResponseDTO.getId(), d.getId());
+              assertEquals(orderResponseDTO.getOrderId(), d.getOrderId());
               assertEquals(orderResponseDTO.getCustomer(), d.getCustomer());
               assertEquals(orderResponseDTO.getDishes(), d.getDishes());
             });
@@ -184,11 +184,11 @@ class OrderControllerTest {
             .expectBodyList(OrderResponseDTO.class)
             .hasSize(2)
             .value(d -> {
-              assertEquals(1L, d.get(0).getId());
+              assertEquals(1L, d.get(0).getOrderId());
               assertEquals("John", d.get(0).getCustomer().getName());
               assertEquals("Brownie", d.get(0).getDishes().stream().toList().get(0).getName());
               assertEquals("Malteada de fresa", d.get(0).getDishes().stream().toList().get(1).getName());
-              assertEquals(2L, d.get(1).getId());
+              assertEquals(2L, d.get(1).getOrderId());
               assertEquals("Jane", d.get(1).getCustomer().getName());
               assertEquals("Tarta de limon", d.get(1).getDishes().stream().toList().get(0).getName());
               assertEquals("Malteada de fresa", d.get(1).getDishes().stream().toList().get(1).getName());
@@ -200,12 +200,12 @@ class OrderControllerTest {
 
   public List<DishResponseDTO> getDishList1() {
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setId(1L);
+    dishResponseDTO1.setCustomerId(1L);
     dishResponseDTO1.setName("Brownie");
     dishResponseDTO1.setPrice(10000.0f);
 
     DishResponseDTO dishResponseDTO2 = new DishResponseDTO();
-    dishResponseDTO2.setId(2L);
+    dishResponseDTO2.setCustomerId(2L);
     dishResponseDTO2.setName("Malteada de fresa");
     dishResponseDTO2.setPrice(20000.0f);
 
@@ -214,12 +214,12 @@ class OrderControllerTest {
 
   public List<DishResponseDTO> getDishList2() {
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setId(3L);
+    dishResponseDTO1.setCustomerId(3L);
     dishResponseDTO1.setName("Tarta de limon");
     dishResponseDTO1.setPrice(30000.0f);
 
     DishResponseDTO dishResponseDTO2 = new DishResponseDTO();
-    dishResponseDTO2.setId(2L);
+    dishResponseDTO2.setCustomerId(2L);
     dishResponseDTO2.setName("Malteada de fresa");
     dishResponseDTO2.setPrice(20000.0f);
 
@@ -228,10 +228,10 @@ class OrderControllerTest {
 
   public List<OrderResponseDTO> getOrderList() {
     OrderResponseDTO orderResponseDTO1 = new OrderResponseDTO();
-    orderResponseDTO1.setId(1L);
+    orderResponseDTO1.setOrderId(1L);
     orderResponseDTO1.setCustomer(
             new CustomerResponseDTO() {{
-              setId(1L);
+              setCustomerId(1L);
               setName("John");
               setLastName("Doe");
               setEmail("doe@example.com");
@@ -241,10 +241,10 @@ class OrderControllerTest {
     orderResponseDTO1.setDishes(getDishList1());
 
     OrderResponseDTO orderResponseDTO2 = new OrderResponseDTO();
-    orderResponseDTO2.setId(2L);
+    orderResponseDTO2.setOrderId(2L);
     orderResponseDTO2.setCustomer(
             new CustomerResponseDTO() {{
-              setId(2L);
+              setCustomerId(2L);
               setName("Jane");
               setLastName("Doe");
               setEmail("doe@gmail.com");

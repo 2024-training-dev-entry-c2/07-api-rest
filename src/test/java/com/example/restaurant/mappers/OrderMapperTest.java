@@ -15,8 +15,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class OrderMapperTest {
 
@@ -27,7 +28,7 @@ class OrderMapperTest {
   @DisplayName("Convertir de RequestDTO a entidad")
   void toEntity() {
     Dish dish = new Dish();
-    dish.setId(1L);
+    dish.setDishId(1L);
     dish.setName("Dish 1");
     dish.setPrice(10.0f);
 
@@ -37,14 +38,14 @@ class OrderMapperTest {
     orderRequestDTO.setDate(new Date());
 
     Customer customer = new Customer();
-    customer.setId(1L);
+    customer.setCustomerId(1L);
 
     when(dishRepository.findById(1L)).thenReturn(Optional.of(dish));
 
     Order order = orderMapper.toEntity(orderRequestDTO);
     order.setCustomer(customer);
 
-    assertEquals(1L, order.getDishes().get(0).getId());
+    assertEquals(1L, order.getDishes().get(0).getDishId());
     assertEquals("Dish 1", order.getDishes().get(0).getName());
     assertEquals(10.0f, order.getDishes().get(0).getPrice());
   }
@@ -57,11 +58,11 @@ class OrderMapperTest {
     dish.setPrice(10.0f);
 
     Customer customer = new Customer();
-    customer.setId(1L);
+    customer.setCustomerId(1L);
     customer.setOrders(Collections.emptyList());
 
     CustomerResponseDTO customerDTO = new CustomerResponseDTO();
-    customerDTO.setId(1L);
+    customerDTO.setCustomerId(1L);
 
     Order order = new Order();
     order.setCustomer(customer);
@@ -71,7 +72,7 @@ class OrderMapperTest {
     OrderResponseDTO responseDTO = orderMapper.toDTO(order);
     responseDTO.setCustomer(customerDTO);
 
-    assertEquals(1L, responseDTO.getCustomer().getId());
+    assertEquals(1L, responseDTO.getCustomer().getCustomerId());
     assertEquals("Dish 1", responseDTO.getDishes().get(0).getName());
     assertEquals(10.0f, responseDTO.getDishes().get(0).getPrice());
   }

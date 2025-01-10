@@ -28,8 +28,8 @@ public class Order {
 
   @Id
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-  private Long id;
-  private Float total;
+  private Long orderId;
+  private Float totalOrderPrice;
 
   @Temporal(TemporalType.TIMESTAMP)
   private Date date;
@@ -45,5 +45,12 @@ public class Order {
           inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id")
   )
   private List<Dish> dishes;
+
+  public Order(Long orderId, Date date, Customer customer, List<Dish> dishes) {
+    this.orderId = orderId;
+    this.date = date;
+    this.customer = customer;
+    this.dishes = dishes;
+  }
 
 }

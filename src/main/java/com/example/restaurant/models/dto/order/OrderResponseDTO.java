@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 public class OrderResponseDTO {
-  private Long id;
+  private Long orderId;
   private Float total;
   private Date date;
   private CustomerResponseDTO customer;

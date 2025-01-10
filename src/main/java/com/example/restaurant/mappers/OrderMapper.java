@@ -24,7 +24,7 @@ public class OrderMapper {
     Order order = new Order();
     order.setDate(dto.getDate());
     Customer customer = new Customer();
-    customer.setId(dto.getCustomerId());
+    customer.setCustomerId(dto.getCustomerId());
     order.setCustomer(customer);
     List<Dish> dishes = dto.getDishIds().stream()
             .map(dishId -> dishRepository.findById(dishId)
@@ -36,8 +36,8 @@ public class OrderMapper {
 
   public OrderResponseDTO toDTO(Order order) {
     OrderResponseDTO dto = new OrderResponseDTO();
-    dto.setId(order.getId());
-    dto.setTotal(order.getTotal());
+    dto.setOrderId(order.getOrderId());
+    dto.setTotal(order.getTotalOrderPrice());
     dto.setDate(order.getDate());
     dto.setCustomer(customerMapper.toDTO(order.getCustomer()));
     dto.setDishes(order.getDishes().stream()
