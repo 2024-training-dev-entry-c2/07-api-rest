@@ -37,4 +37,10 @@ public class Dish {
     this.name = name;
     this.price = price;
   }
+
+  public Dish(Long id, String name, Float price) {
+    this.id = id;
+    this.name = name;
+    this.price = price;
+  }
 }
