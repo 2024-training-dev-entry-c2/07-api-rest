@@ -56,7 +56,7 @@ class UpdateDishCommandTest {
         updatedDish.setPrice(15.0f);
 
         DishResponseDTO dishResponseDTO = new DishResponseDTO();
-        dishResponseDTO.setCustomerId(dishId);
+        dishResponseDTO.setDishId(dishId);
         dishResponseDTO.setName("Updated Dish");
         dishResponseDTO.setPrice(15.0f);
 

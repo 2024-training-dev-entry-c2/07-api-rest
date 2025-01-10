@@ -36,7 +36,7 @@ class MenuControllerTest {
     MenuRequestDTO menuRequestDTO = new MenuRequestDTO();
     menuRequestDTO.setName("Menu 1");
     menuRequestDTO.setDescription("Description 1");
-    menuRequestDTO.setDishIds(getDishList1().stream().map(DishResponseDTO::getCustomerId).toList());
+    menuRequestDTO.setDishIds(getDishList1().stream().map(DishResponseDTO::getDishId).toList());
 
     MenuResponseDTO menuResponseDTO = new MenuResponseDTO();
     menuResponseDTO.setName("Menu 1");
@@ -107,7 +107,7 @@ class MenuControllerTest {
     MenuRequestDTO menuRequestDTO = new MenuRequestDTO();
     menuRequestDTO.setName("Menu 1");
     menuRequestDTO.setDescription("Description 1");
-    menuRequestDTO.setDishIds(getDishList1().stream().map(DishResponseDTO::getCustomerId).toList());
+    menuRequestDTO.setDishIds(getDishList1().stream().map(DishResponseDTO::getDishId).toList());
 
     when(menuService.updateMenu(anyLong(), any(MenuRequestDTO.class))).thenReturn(menuResponseDTO);
 
@@ -189,12 +189,12 @@ class MenuControllerTest {
 
   public List<DishResponseDTO> getDishList1() {
     DishResponseDTO dish1 = new DishResponseDTO();
-    dish1.setCustomerId(1L);
+    dish1.setDishId(1L);
     dish1.setName("Ceviche de camarones");
     dish1.setPrice(12000.0f);
 
     DishResponseDTO dish2 = new DishResponseDTO();
-    dish2.setCustomerId(2L);
+    dish2.setDishId(2L);
     dish2.setName("Cangrejo hervido");
     dish2.setPrice(10000.0f);
 
@@ -203,12 +203,12 @@ class MenuControllerTest {
 
   public List<DishResponseDTO> getDishList2() {
     DishResponseDTO dish1 = new DishResponseDTO();
-    dish1.setCustomerId(3L);
+    dish1.setDishId(3L);
     dish1.setName("Torta de chocolate");
     dish1.setPrice(12500.0f);
 
     DishResponseDTO dish2 = new DishResponseDTO();
-    dish2.setCustomerId(4L);
+    dish2.setDishId(4L);
     dish2.setName("Gelatina de fresa");
     dish2.setPrice(11000.0f);
 

@@ -42,10 +42,10 @@ class ListDishesCommandTest {
 
         assertNotNull(dishesResponseDTO);
         assertEquals(2, dishesResponseDTO.size());
-        assertEquals(1L, dishesResponseDTO.get(0).getCustomerId());
+        assertEquals(1L, dishesResponseDTO.get(0).getDishId());
         assertEquals("Dish 1", dishesResponseDTO.get(0).getName());
         assertEquals(10f, dishesResponseDTO.get(0).getPrice());
-        assertEquals(2L, dishesResponseDTO.get(1).getCustomerId());
+        assertEquals(2L, dishesResponseDTO.get(1).getDishId());
         assertEquals("Dish 2", dishesResponseDTO.get(1).getName());
         assertEquals(20f, dishesResponseDTO.get(1).getPrice());
     }

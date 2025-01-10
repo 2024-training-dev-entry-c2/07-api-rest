@@ -40,7 +40,7 @@ class OrderControllerTest {
     customerResponseDTO.setPhone("+1 223-3343-332");
 
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setCustomerId(1L);
+    dishResponseDTO1.setDishId(1L);
     dishResponseDTO1.setName("Ceviche de camarones");
     dishResponseDTO1.setPrice(12000.0f);
 
@@ -83,7 +83,7 @@ class OrderControllerTest {
     customerResponseDTO.setPhone("+1 223-3343-332");
 
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setCustomerId(1L);
+    dishResponseDTO1.setDishId(1L);
     dishResponseDTO1.setName("Ceviche de camarones");
     dishResponseDTO1.setPrice(12000.0f);
 
@@ -121,7 +121,7 @@ class OrderControllerTest {
     customerResponseDTO.setPhone("+1 223-3343-332");
 
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setCustomerId(1L);
+    dishResponseDTO1.setDishId(1L);
     dishResponseDTO1.setName("Ceviche de camarones");
     dishResponseDTO1.setPrice(12000.0f);
 
@@ -200,12 +200,12 @@ class OrderControllerTest {
 
   public List<DishResponseDTO> getDishList1() {
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setCustomerId(1L);
+    dishResponseDTO1.setDishId(1L);
     dishResponseDTO1.setName("Brownie");
     dishResponseDTO1.setPrice(10000.0f);
 
     DishResponseDTO dishResponseDTO2 = new DishResponseDTO();
-    dishResponseDTO2.setCustomerId(2L);
+    dishResponseDTO2.setDishId(2L);
     dishResponseDTO2.setName("Malteada de fresa");
     dishResponseDTO2.setPrice(20000.0f);
 
@@ -214,12 +214,12 @@ class OrderControllerTest {
 
   public List<DishResponseDTO> getDishList2() {
     DishResponseDTO dishResponseDTO1 = new DishResponseDTO();
-    dishResponseDTO1.setCustomerId(3L);
+    dishResponseDTO1.setDishId(3L);
     dishResponseDTO1.setName("Tarta de limon");
     dishResponseDTO1.setPrice(30000.0f);
 
     DishResponseDTO dishResponseDTO2 = new DishResponseDTO();
-    dishResponseDTO2.setCustomerId(2L);
+    dishResponseDTO2.setDishId(2L);
     dishResponseDTO2.setName("Malteada de fresa");
     dishResponseDTO2.setPrice(20000.0f);
 

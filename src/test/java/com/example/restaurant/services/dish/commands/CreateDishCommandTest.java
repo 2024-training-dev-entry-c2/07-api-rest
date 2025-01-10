@@ -47,7 +47,7 @@ class CreateDishCommandTest {
         savedDish.setPrice(10.0f);
 
         DishResponseDTO dishResponseDTO = new DishResponseDTO();
-        dishResponseDTO.setCustomerId(1L);
+        dishResponseDTO.setDishId(1L);
         dishResponseDTO.setName("Test Dish");
         dishResponseDTO.setPrice(10.0f);
 

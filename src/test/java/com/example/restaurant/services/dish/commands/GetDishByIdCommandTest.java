@@ -37,7 +37,7 @@ class GetDishByIdCommandTest {
         Dish dish = new Dish(1L, "Pizza", 10000.0f);
 
         DishResponseDTO dishResponseDTO = new DishResponseDTO();
-        dishResponseDTO.setCustomerId(1L);
+        dishResponseDTO.setDishId(1L);
         dishResponseDTO.setName("Pizza");
         dishResponseDTO.setPrice(10000.0f);
 
