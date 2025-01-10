@@ -37,7 +37,7 @@ public class OrderMapper {
   public OrderResponseDTO toDTO(Order order) {
     OrderResponseDTO dto = new OrderResponseDTO();
     dto.setOrderId(order.getOrderId());
-    dto.setTotal(order.getTotalOrderPrice());
+    dto.setTotalOrderPrice(order.getTotalOrderPrice());
     dto.setDate(order.getDate());
     dto.setCustomer(customerMapper.toDTO(order.getCustomer()));
     dto.setDishes(order.getDishes().stream()
