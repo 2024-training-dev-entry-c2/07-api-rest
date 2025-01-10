@@ -1,6 +1,7 @@
 package com.example.restaurant.models;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,7 @@ import java.util.List;
 public class Order {
 
   @Id
+  @Column(name = "order_id")
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
   private Long orderId;
   private Float totalOrderPrice;
@@ -41,8 +43,8 @@ public class Order {
   @ManyToMany(fetch = FetchType.EAGER, targetEntity = Dish.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
           name = "order_dish",
-          joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "orderId"),
-          inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "dishId")
+          joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "order_id"),
+          inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "dish_id")
   )
   private List<Dish> dishes;
 
