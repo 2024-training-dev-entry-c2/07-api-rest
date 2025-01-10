@@ -22,7 +22,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long customerId;
 
     @Column(name = "first_name", nullable = false)
     private String name;
@@ -50,8 +50,8 @@ public class Customer {
         this.orders = new ArrayList<>();
     }
 
-    public Customer(Long id, String name, String lastName, String email, String phone) {
-        this.id = id;
+    public Customer(Long customerId, String name, String lastName, String email, String phone) {
+        this.customerId = customerId;
         this.name = name;
         this.lastName = lastName;
         this.email = email;

@@ -122,7 +122,7 @@ class CustomerControllerTest {
   void getCustomerById() {
 
     CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-    customerResponseDTO.setId(1L);
+    customerResponseDTO.setCustomerId(1L);
     customerResponseDTO.setName("John");
     customerResponseDTO.setLastName("Doe");
     customerResponseDTO.setEmail("doe@example.com");
@@ -138,7 +138,7 @@ class CustomerControllerTest {
             .expectHeader().contentType(MediaType.APPLICATION_JSON)
             .expectBody(CustomerResponseDTO.class)
             .value(d -> {
-              assertEquals(customerResponseDTO.getId(), d.getId());
+              assertEquals(customerResponseDTO.getCustomerId(), d.getCustomerId());
               assertEquals(customerResponseDTO.getName(), d.getName());
               assertEquals(customerResponseDTO.getLastName(), d.getLastName());
               assertEquals(customerResponseDTO.getEmail(), d.getEmail());
@@ -171,14 +171,14 @@ class CustomerControllerTest {
   public List<CustomerResponseDTO> getCustomerList() {
 
     CustomerResponseDTO customer1 = new CustomerResponseDTO();
-    customer1.setId(1L);
+    customer1.setCustomerId(1L);
     customer1.setName("John");
     customer1.setLastName("Doe");
     customer1.setEmail("doe@example.com");
     customer1.setPhone("+1 223-3343-332");
 
     CustomerResponseDTO customer2 = new CustomerResponseDTO();
-    customer2.setId(2L);
+    customer2.setCustomerId(2L);
     customer2.setName("Jane");
     customer2.setLastName("Doe");
     customer2.setEmail("doe@gmail.com");

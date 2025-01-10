@@ -48,21 +48,21 @@ class UpdateCustomerCommandTest {
         customerRequestDTO.setPhone("123456789");
 
         Customer existingCustomer = new Customer();
-        existingCustomer.setId(customerId);
+        existingCustomer.setCustomerId(customerId);
         existingCustomer.setName("Old Name");
         existingCustomer.setLastName("Old LastName");
         existingCustomer.setEmail("old@example.com");
         existingCustomer.setPhone("987654321");
 
         Customer updatedCustomer = new Customer();
-        updatedCustomer.setId(customerId);
+        updatedCustomer.setCustomerId(customerId);
         updatedCustomer.setName("Updated Name");
         updatedCustomer.setLastName("Updated LastName");
         updatedCustomer.setEmail("updated@example.com");
         updatedCustomer.setPhone("123456789");
 
         CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-        customerResponseDTO.setId(customerId);
+        customerResponseDTO.setCustomerId(customerId);
         customerResponseDTO.setName("Updated Name");
         customerResponseDTO.setLastName("Updated LastName");
         customerResponseDTO.setEmail("updated@example.com");

@@ -49,14 +49,14 @@ class CreateCustomerCommandTest {
         customer.setPhone("+1 223-3343-332");
 
         Customer savedCustomer = new Customer();
-        savedCustomer.setId(1L);
+        savedCustomer.setCustomerId(1L);
         savedCustomer.setName("John");
         savedCustomer.setLastName("Doe");
         savedCustomer.setEmail("johndoemaster@gmail.com");
         savedCustomer.setPhone("+1 223-3343-332");
 
         CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-        customerResponseDTO.setId(1L);
+        customerResponseDTO.setCustomerId(1L);
         customerResponseDTO.setName("John");
         customerResponseDTO.setLastName("Doe");
         customerResponseDTO.setEmail("johndoemaster@gmail.com");

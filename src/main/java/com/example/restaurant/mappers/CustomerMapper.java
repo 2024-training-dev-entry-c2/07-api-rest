@@ -20,13 +20,13 @@ public class CustomerMapper {
 
   public CustomerResponseDTO toDTO(Customer customer) {
     CustomerResponseDTO dto = new CustomerResponseDTO();
-    dto.setId(customer.getId());
+    dto.setCustomerId(customer.getCustomerId());
     dto.setName(customer.getName());
     dto.setLastName(customer.getLastName());
     dto.setEmail(customer.getEmail());
     dto.setPhone(customer.getPhone());
     dto.setOrderIds(customer.getOrders().stream()
-            .map(Order::getId)
+            .map(Order::getOrderId)
             .toList());
     return dto;
   }

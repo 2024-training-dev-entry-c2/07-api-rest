@@ -15,7 +15,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class GetCustomerByIdCommandTest {
 
@@ -35,11 +37,11 @@ class GetCustomerByIdCommandTest {
     void execute() {
         Long customerId = 1L;
         Customer customer = new Customer();
-        customer.setId(customerId);
+        customer.setCustomerId(customerId);
         customer.setName("John Doe");
 
         CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-        customerResponseDTO.setId(customerId);
+        customerResponseDTO.setCustomerId(customerId);
         customerResponseDTO.setName("John Doe");
 
         when(customerRepository.findById(anyLong())).thenReturn(Optional.of(customer));

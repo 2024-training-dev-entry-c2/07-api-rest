@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class CustomerResponseDTO {
-    private Long id;
+    private Long customerId;
     private String name;
     private String lastName;
     private String email;

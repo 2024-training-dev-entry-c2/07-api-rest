@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CustomerMapperTest {
   private final CustomerMapper customerMapper = new CustomerMapper();
@@ -34,7 +34,7 @@ class CustomerMapperTest {
   @DisplayName("Convertir de Entidad a ResponseDTO")
   void toDTO() {
     Customer customer = new Customer();
-    customer.setId(1L);
+    customer.setCustomerId(1L);
     customer.setName("John");
     customer.setLastName("Doe");
     customer.setEmail("doe@example.com");
@@ -43,7 +43,7 @@ class CustomerMapperTest {
 
     CustomerResponseDTO responseDTO = customerMapper.toDTO(customer);
 
-    assertEquals(1L, responseDTO.getId());
+    assertEquals(1L, responseDTO.getCustomerId());
     assertEquals("John", responseDTO.getName());
     assertEquals("Doe", responseDTO.getLastName());
     assertEquals("doe@example.com", responseDTO.getEmail());
