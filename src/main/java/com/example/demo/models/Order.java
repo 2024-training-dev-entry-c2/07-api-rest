@@ -44,6 +44,10 @@ public class Order {
     @Column(name = "total_price", nullable = false)
     private Double totalPrice;
 
-
-
+    public Order(Long id, Client client, LocalDate localDate, List<Dishfood> dishfoods) {
+        this.id = id;
+        this.client = client;
+        this.localDate = localDate;
+        this.dishfoods = dishfoods;
+    }
 }

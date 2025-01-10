@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.DTO.converterDTO.MenuConverter;
 import com.example.demo.DTO.menu.MenuRequestDTO;
 import com.example.demo.DTO.menu.MenuResponseDTO;
+import com.example.demo.models.Dishfood;
 import com.example.demo.models.Menu;
 import com.example.demo.repositories.MenuRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,9 +106,23 @@ class MenuServiceTest {
     }
     private List<Menu> getMenuList() {
         return List.of(
-                Menu.builder().id(1L).name("Menu verano").build(),
-                Menu.builder().id(2L).name("Menu mexicano").build(),
-                Menu.builder().id(3L).name("Menu peruano").build()
+                Menu.builder().id(1L).name("Menu verano")
+                                .dishfoods(getDishfoodList(1L))
+                        .build(),
+                Menu.builder().id(2L).name("Menu mexicano").dishfoods(getDishfoodList(2L))
+                        .build(),
+                Menu.builder().id(3L).name("Menu peruano").dishfoods(getDishfoodList(3L))
+                        .build()
+        );
+
+    }
+    private List<Dishfood> getDishfoodList(Long id) {
+        Menu menu = new Menu(id, "Menu prueba", List.of());
+        return List.of(
+                Dishfood.builder().id(1L).name("Pasta").price(12.5).isPopular(false).menu(menu).build(),
+                Dishfood.builder().id(2L).name("Pizza").price(17.5).isPopular(true).menu(menu).build(),
+                Dishfood.builder().id(3L).name("hamburguesa").price(19.5).isPopular(false).menu(menu).build()
+
         );
 
     }

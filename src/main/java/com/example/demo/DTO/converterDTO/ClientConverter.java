@@ -3,6 +3,10 @@ package com.example.demo.DTO.converterDTO;
 import com.example.demo.DTO.client.ClientRequestDTO;
 import com.example.demo.DTO.client.ClientResponseDTO;
 import com.example.demo.models.Client;
+import com.example.demo.models.Order;
+
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class ClientConverter {
 
@@ -16,8 +20,8 @@ public class ClientConverter {
                 .name(client.getName())
                 .email(client.getEmail())
                 .isOften(client.getIsOften())
-//                .orderIds(client.getOrderList() == null ? Collections.emptyList() : client.getOrderList()
-//                        .stream().map(Order::getId).collect(Collectors.toList())) // Solo IDs
+                .orderIds(client.getOrderList() == null ? Collections.emptyList() : client.getOrderList()
+                        .stream().map(Order::getId).collect(Collectors.toList())) // Solo IDs
                 .build();
     }
 
