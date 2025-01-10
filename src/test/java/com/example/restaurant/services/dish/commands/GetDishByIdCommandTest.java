@@ -14,7 +14,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class GetDishByIdCommandTest {
 
@@ -35,7 +37,7 @@ class GetDishByIdCommandTest {
         Dish dish = new Dish(1L, "Pizza", 10000.0f);
 
         DishResponseDTO dishResponseDTO = new DishResponseDTO();
-        dishResponseDTO.setId(1L);
+        dishResponseDTO.setCustomerId(1L);
         dishResponseDTO.setName("Pizza");
         dishResponseDTO.setPrice(10000.0f);
 

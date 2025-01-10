@@ -4,13 +4,13 @@ import lombok.Data;
 
 @Data
 public class DishResponseDTO {
-    private Long id;
+    private Long customerId;
     private String name;
     private Float price;
 //    private Long menuId; // Incluido para información de referencia
 
-    public DishResponseDTO(Long id, String name, Float price) {
-        this.id = id;
+    public DishResponseDTO(Long customerId, String name, Float price) {
+        this.customerId = customerId;
         this.name = name;
         this.price = price;
     }

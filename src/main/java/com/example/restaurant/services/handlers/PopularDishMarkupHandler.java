@@ -13,7 +13,7 @@ public class PopularDishMarkupHandler extends AbstractPriceHandler {
 
   @Override
   public Float calculatePrice(Float price, Order order, Dish dish) {
-    Long dishOrdersCount = dishRepository.countOrdersById(dish.getId());
+    Long dishOrdersCount = dishRepository.countOrdersById(dish.getDishId());
     if (dishOrdersCount >= 100) {
       price *= 1.0573f;
     }

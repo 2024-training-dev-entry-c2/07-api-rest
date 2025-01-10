@@ -20,7 +20,7 @@ public class Dish {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long dishId;
 
   @Column(nullable = false)
   private String name;
@@ -38,8 +38,8 @@ public class Dish {
     this.price = price;
   }
 
-  public Dish(Long id, String name, Float price) {
-    this.id = id;
+  public Dish(Long dishId, String name, Float price) {
+    this.dishId = dishId;
     this.name = name;
     this.price = price;
   }

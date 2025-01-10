@@ -18,7 +18,7 @@ public class PopularDishObserver implements OrderObserver {
   @Override
   public void onOrderCreated(Order order) {
     for (Dish dish : order.getDishes()) {
-      Long dishOrdersQuantity = dishRepository.countOrdersById(dish.getId());
+      Long dishOrdersQuantity = dishRepository.countOrdersById(dish.getDishId());
       Boolean isPopularDish = dishOrdersQuantity >= 100;
       log.info("{}{} es popular (ha sido ordenado más de 100 veces)", isPopularDish, dish.getName());
     }

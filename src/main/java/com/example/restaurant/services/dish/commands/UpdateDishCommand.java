@@ -24,7 +24,7 @@ public class UpdateDishCommand {
     if (existingDish.isEmpty()) {
       throw new RuntimeException("No se encontró plato con ID: " + dishId);
     }
-    dish1.setId(dishId);
+    dish1.setDishId(dishId);
     Dish updatedDish = dishRepository.save(dish1);
     return dishMapper.toDTO(updatedDish);
   }

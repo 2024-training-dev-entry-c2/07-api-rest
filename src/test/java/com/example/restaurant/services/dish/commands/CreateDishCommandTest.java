@@ -42,12 +42,12 @@ class CreateDishCommandTest {
         dish.setPrice(10.0f);
 
         Dish savedDish = new Dish();
-        savedDish.setId(1L);
+        savedDish.setDishId(1L);
         savedDish.setName("Test Dish");
         savedDish.setPrice(10.0f);
 
         DishResponseDTO dishResponseDTO = new DishResponseDTO();
-        dishResponseDTO.setId(1L);
+        dishResponseDTO.setCustomerId(1L);
         dishResponseDTO.setName("Test Dish");
         dishResponseDTO.setPrice(10.0f);
 

@@ -17,7 +17,7 @@ public class DishMapper {
   }
   public DishResponseDTO toDTO(Dish dish) {
     DishResponseDTO dto = new DishResponseDTO();
-    dto.setId(dish.getId());
+    dto.setCustomerId(dish.getDishId());
     dto.setName(dish.getName());
     dto.setPrice(dish.getPrice());
     return dto;

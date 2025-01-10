@@ -12,7 +12,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,10 +42,10 @@ class ListDishesCommandTest {
 
         assertNotNull(dishesResponseDTO);
         assertEquals(2, dishesResponseDTO.size());
-        assertEquals(1L, dishesResponseDTO.get(0).getId());
+        assertEquals(1L, dishesResponseDTO.get(0).getCustomerId());
         assertEquals("Dish 1", dishesResponseDTO.get(0).getName());
         assertEquals(10f, dishesResponseDTO.get(0).getPrice());
-        assertEquals(2L, dishesResponseDTO.get(1).getId());
+        assertEquals(2L, dishesResponseDTO.get(1).getCustomerId());
         assertEquals("Dish 2", dishesResponseDTO.get(1).getName());
         assertEquals(20f, dishesResponseDTO.get(1).getPrice());
     }
