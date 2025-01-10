@@ -20,34 +20,42 @@ import java.util.List;
 @NoArgsConstructor
 public class Customer {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(name = "first_name", nullable = false)
-  private String name;
+    @Column(name = "first_name", nullable = false)
+    private String name;
 
-  @Column(name = "last_name")
-  private String lastName;
+    @Column(name = "last_name")
+    private String lastName;
 
-  @Column(nullable = false, unique = true)
-  private String email;
+    @Column(nullable = false, unique = true)
+    private String email;
 
-  private String phone;
+    private String phone;
 
-  @OneToMany(
-          targetEntity = Order.class,
-          fetch = FetchType.LAZY,
-          mappedBy = "customer"
-  )
-  private List<Order> orders;
+    @OneToMany(
+            targetEntity = Order.class,
+            fetch = FetchType.LAZY,
+            mappedBy = "customer"
+    )
+    private List<Order> orders;
 
-  public Customer(String name, String lastName, String email, String phone) {
-    this.name = name;
-    this.lastName = lastName;
-    this.email = email;
-    this.phone = phone;
-    this.orders = new ArrayList<>();
-  }
+    public Customer(String name, String lastName, String email, String phone) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.orders = new ArrayList<>();
+    }
 
+    public Customer(Long id, String name, String lastName, String email, String phone) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.orders = new ArrayList<>();
+    }
 }
