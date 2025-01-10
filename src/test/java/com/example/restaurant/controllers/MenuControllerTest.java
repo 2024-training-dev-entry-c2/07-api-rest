@@ -36,7 +36,7 @@ class MenuControllerTest {
     MenuRequestDTO menuRequestDTO = new MenuRequestDTO();
     menuRequestDTO.setName("Menu 1");
     menuRequestDTO.setDescription("Description 1");
-    menuRequestDTO.setDishIds(getDishList1().stream().map(DishResponseDTO::getId).toList());
+    menuRequestDTO.setDishIds(getDishList1().stream().map(DishResponseDTO::getCustomerId).toList());
 
     MenuResponseDTO menuResponseDTO = new MenuResponseDTO();
     menuResponseDTO.setName("Menu 1");
@@ -69,7 +69,7 @@ class MenuControllerTest {
   void getMenuById() {
 
     MenuResponseDTO menuResponseDTO = new MenuResponseDTO();
-    menuResponseDTO.setId(1L);
+    menuResponseDTO.setMenuId(1L);
     menuResponseDTO.setName("Menu 1");
     menuResponseDTO.setDescription("Description 1");
     menuResponseDTO.setDishes(getDishList1());
@@ -99,7 +99,7 @@ class MenuControllerTest {
   void updateMenu() {
 
     MenuResponseDTO menuResponseDTO = new MenuResponseDTO();
-    menuResponseDTO.setId(1L);
+    menuResponseDTO.setMenuId(1L);
     menuResponseDTO.setName("Menu 1");
     menuResponseDTO.setDescription("Description 1");
     menuResponseDTO.setDishes(getDishList1());
@@ -107,7 +107,7 @@ class MenuControllerTest {
     MenuRequestDTO menuRequestDTO = new MenuRequestDTO();
     menuRequestDTO.setName("Menu 1");
     menuRequestDTO.setDescription("Description 1");
-    menuRequestDTO.setDishIds(getDishList1().stream().map(DishResponseDTO::getId).toList());
+    menuRequestDTO.setDishIds(getDishList1().stream().map(DishResponseDTO::getCustomerId).toList());
 
     when(menuService.updateMenu(anyLong(), any(MenuRequestDTO.class))).thenReturn(menuResponseDTO);
 
@@ -172,14 +172,14 @@ class MenuControllerTest {
   public List<MenuResponseDTO> getMenuList() {
 
     MenuResponseDTO menu1 = new MenuResponseDTO();
-    menu1.setId(1L);
+    menu1.setMenuId(1L);
     menu1.setName("Productos del mar");
     menu1.setDescription("Menu de productos del mar de la región");
     menu1.setDishes(getDishList1());
 
 
     MenuResponseDTO menu2 = new MenuResponseDTO();
-    menu2.setId(2L);
+    menu2.setMenuId(2L);
     menu2.setName("Postres");
     menu2.setDescription("Menu de postres");
     menu2.setDishes(getDishList2());
@@ -189,12 +189,12 @@ class MenuControllerTest {
 
   public List<DishResponseDTO> getDishList1() {
     DishResponseDTO dish1 = new DishResponseDTO();
-    dish1.setId(1L);
+    dish1.setCustomerId(1L);
     dish1.setName("Ceviche de camarones");
     dish1.setPrice(12000.0f);
 
     DishResponseDTO dish2 = new DishResponseDTO();
-    dish2.setId(2L);
+    dish2.setCustomerId(2L);
     dish2.setName("Cangrejo hervido");
     dish2.setPrice(10000.0f);
 
@@ -203,12 +203,12 @@ class MenuControllerTest {
 
   public List<DishResponseDTO> getDishList2() {
     DishResponseDTO dish1 = new DishResponseDTO();
-    dish1.setId(3L);
+    dish1.setCustomerId(3L);
     dish1.setName("Torta de chocolate");
     dish1.setPrice(12500.0f);
 
     DishResponseDTO dish2 = new DishResponseDTO();
-    dish2.setId(4L);
+    dish2.setCustomerId(4L);
     dish2.setName("Gelatina de fresa");
     dish2.setPrice(11000.0f);
 

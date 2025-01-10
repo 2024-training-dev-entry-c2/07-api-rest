@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,12 +44,12 @@ class CreateMenuCommandTest {
         menu.setDescription("Platos variados de la temporada de otoño");
 
         Menu savedMenu = new Menu();
-        savedMenu.setId(1L);
+        savedMenu.setMenuId(1L);
         savedMenu.setName("Menu de otoño");
         savedMenu.setDescription("Platos variados de la temporada de otoño");
 
         MenuResponseDTO menuResponseDTO = new MenuResponseDTO();
-        menuResponseDTO.setId(1L);
+        menuResponseDTO.setMenuId(1L);
         menuResponseDTO.setName("Menu de otoño");
 
         when(menuMapper.toEntity(any(MenuRequestDTO.class))).thenReturn(menu);

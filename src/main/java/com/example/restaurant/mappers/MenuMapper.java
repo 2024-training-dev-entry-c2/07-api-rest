@@ -26,12 +26,12 @@ public class MenuMapper {
   }
 
   public MenuResponseDTO toDTO(Menu menu) {
-    List<DishResponseDTO> MappedDishes = menu.getDishes().stream().map(dish -> dishMapper.toDTO(dish)).toList();
+    List<DishResponseDTO> mappedDishes = menu.getDishes().stream().map(dish -> dishMapper.toDTO(dish)).toList();
     MenuResponseDTO dto = new MenuResponseDTO();
-    dto.setId(menu.getId());
+    dto.setMenuId(menu.getMenuId());
     dto.setName(menu.getName());
     dto.setDescription(menu.getDescription());
-    dto.setDishes(MappedDishes);
+    dto.setDishes(mappedDishes);
     return dto;
   }
 }

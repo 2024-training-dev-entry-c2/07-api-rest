@@ -7,13 +7,13 @@ import java.util.List;
 
 @Data
 public class MenuResponseDTO {
-  private Long id;
+  private Long menuId;
   private String name;
   private String description;
   private List<DishResponseDTO> dishes;
 
-  public MenuResponseDTO(Long id, String name, String description) {
-    this.id = id;
+  public MenuResponseDTO(Long menuId, String name, String description) {
+    this.menuId = menuId;
     this.name = name;
     this.description = description;
   }

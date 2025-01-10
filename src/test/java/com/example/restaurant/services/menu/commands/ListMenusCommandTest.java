@@ -13,8 +13,11 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 class ListMenusCommandTest {
   private final MenuRepository menuRepository = mock(MenuRepository.class);
@@ -36,12 +39,12 @@ class ListMenusCommandTest {
     Dish dish2 = new Dish(2L, "Dish 2", 20.0f);
 
     MenuResponseDTO menu1ResponseDTO = new MenuResponseDTO();
-    menu1ResponseDTO.setId(1L);
+    menu1ResponseDTO.setMenuId(1L);
     menu1ResponseDTO.setName("Menu 1");
     menu1ResponseDTO.setDescription("Descripcion 1");
 
     MenuResponseDTO menu2ResponseDTO = new MenuResponseDTO();
-    menu2ResponseDTO.setId(2L);
+    menu2ResponseDTO.setMenuId(2L);
     menu2ResponseDTO.setName("Menu 2");
     menu2ResponseDTO.setDescription("Descripcion 2");
 
@@ -52,12 +55,14 @@ class ListMenusCommandTest {
     List<MenuResponseDTO> result = listMenusCommand.execute();
 
     assertEquals(2, result.size());
-    assertEquals(1L, result.get(0).getId());
+    assertEquals(1L, result.get(0).getMenuId());
     assertEquals("Menu 1", result.get(0).getName());
     assertEquals("Descripcion 1", result.get(0).getDescription());
-    assertEquals(2L, result.get(1).getId());
+    assertEquals(2L, result.get(1).getMenuId());
     assertEquals("Menu 2", result.get(1).getName());
     assertEquals("Descripcion 2", result.get(1).getDescription());
+
+    verify(menuRepository).findAll();
   }
 
   public List<Menu> getMenuList() {

@@ -23,7 +23,7 @@ public class Menu {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long menuId;
 
   @Column(nullable = false)
   private String name;
@@ -38,8 +38,8 @@ public class Menu {
   )
   private List<Dish> dishes;
 
-  public Menu(Long id, String name, String description) {
-    this.id = id;
+  public Menu(Long menuId, String name, String description) {
+    this.menuId = menuId;
     this.name = name;
     this.description = description;
   }
