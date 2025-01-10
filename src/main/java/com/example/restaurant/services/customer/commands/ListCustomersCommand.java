@@ -21,6 +21,6 @@ public class ListCustomersCommand {
     List<Customer> customersEntities = customerRepository.findAll();
 
     return customersEntities.stream()
-            .map(customerMapper::toDTO).collect(Collectors.toList());
+            .map(customer -> customerMapper.toDTO(customer)).collect(Collectors.toList());
   }
 }
