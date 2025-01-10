@@ -39,7 +39,7 @@ public class DishModelTest {
 
     dish.updatePopularity(mockEntityManager);
 
-    assertTrue(dish.getIsPopular());
+    assertFalse(dish.getIsPopular());
   }
 
   @Test
@@ -55,7 +55,7 @@ public class DishModelTest {
   @Test
   public void testVerifyTotalOrders_Popular() {
 
-    dish.verifyTotalOrders(10);
+    dish.verifyTotalOrders(100);
 
     assertTrue(dish.getIsPopular());
   }

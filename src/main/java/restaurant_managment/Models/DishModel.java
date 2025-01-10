@@ -39,7 +39,7 @@ public class DishModel {
   }
 
   public void verifyTotalOrders(Integer totalOrders) {
-    if (totalOrders >= 10) {
+    if (totalOrders >= 100) {
       setIsPopular(true);
     }
   }

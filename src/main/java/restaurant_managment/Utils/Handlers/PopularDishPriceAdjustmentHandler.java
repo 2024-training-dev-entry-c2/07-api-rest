@@ -14,30 +14,20 @@ public class PopularDishPriceAdjustmentHandler implements PriceHandler {
 
   @Override
   public Double handle(OrderModel order) {
-    Double totalPrice = calculateTotalPrice(order);
-    order.setTotalPrice(totalPrice);
-    return handleNext(order, totalPrice);
-  }
-
-  private Double calculateTotalPrice(OrderModel order) {
     Double totalPrice = order.getTotalPrice();
+
     for (DishModel dish : order.getDishes()) {
-      totalPrice += applyPriceAdjustment(dish);
+      if (dish.getIsPopular()) {
+        totalPrice += dish.getPrice() * 0.0573;
+      }
     }
-    return totalPrice;
-  }
 
-  private Double applyPriceAdjustment(DishModel dish) {
-    if (dish.getIsPopular()) {
-      return dish.getPrice() * 0.0573;
-    }
-    return 0.0;
-  }
+    order.setTotalPrice(totalPrice);
 
-  private Double handleNext(OrderModel order, Double totalPrice) {
     if (nextHandler != null) {
       return nextHandler.handle(order);
     }
+
     return totalPrice;
   }
 }
