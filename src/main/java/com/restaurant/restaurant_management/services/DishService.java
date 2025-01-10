@@ -40,7 +40,7 @@ public class DishService {
       x.setMenu(dish.getMenu());
       x.setActive(dish.getActive());
       return dishRepository.save(x);
-    }).orElseThrow(()-> new RuntimeException("Dish con el id "+id+" no pudo ser actualizado"));
+    }).orElseThrow(()-> new RuntimeException("Plato con el id "+id+" no pudo ser actualizado"));
   }
 
 }

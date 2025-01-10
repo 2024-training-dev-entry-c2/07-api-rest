@@ -8,6 +8,7 @@ import com.restaurant.restaurant_management.services.chainOfResponsibility.Price
 import com.restaurant.restaurant_management.services.chainOfResponsibility.SumOrderDetailsHandler;
 import com.restaurant.restaurant_management.services.observer.EventManager;
 import com.restaurant.restaurant_management.services.observer.FrequentClientObserver;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @Service
 public class OrderService {
   private final OrderRepository orderRepository;
+  @Setter
   private PriceHandler priceHandlerChain;
   private final EventManager eventManager =  new EventManager("NewOrder", "DishOrdered");
 
@@ -69,4 +71,5 @@ public class OrderService {
       orderRepository.save(x);
     });
   }
+
 }

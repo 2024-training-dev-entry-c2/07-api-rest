@@ -15,6 +15,7 @@ import com.restaurant.restaurant_management.services.DishService;
 import com.restaurant.restaurant_management.services.OrderDetailService;
 import com.restaurant.restaurant_management.services.OrderService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.MediaType;
@@ -90,6 +91,7 @@ class OrderControllerTest {
   }
 
   @Test
+  @DisplayName("Save Order")
   void saveOrder() {
     when(clientService.getClient(any(Long.class))).thenReturn(Optional.of(client));
     when(orderService.saveOrder(any(ClientOrder.class))).thenReturn(order);
@@ -118,6 +120,7 @@ class OrderControllerTest {
   }
 
   @Test
+  @DisplayName("Save Order - No Client")
   void saveOrder_NoClient() {
     when(clientService.getClient(any(Long.class))).thenReturn(Optional.empty());
     webTestClient.post()
@@ -133,6 +136,7 @@ class OrderControllerTest {
   }
 
   @Test
+  @DisplayName("Get Order")
   void getOrder() {
     when(orderService.getOrder(any(Long.class))).thenReturn(Optional.of(order));
 
@@ -153,6 +157,7 @@ class OrderControllerTest {
   }
 
   @Test
+  @DisplayName("Get Orders By Date")
   void getOrdersByDate() {
     when(orderService.findOrdersByDate(any(LocalDate.class))).thenReturn(orderList);
 
@@ -176,6 +181,7 @@ class OrderControllerTest {
   }
 
   @Test
+  @DisplayName("Update Order")
   void updateOrder() {
     when(clientService.getClient(any(Long.class))).thenReturn(Optional.of(client));
     when(orderService.updateOrder(any(Long.class), any(ClientOrder.class))).thenReturn(order);
@@ -199,6 +205,7 @@ class OrderControllerTest {
   }
 
   @Test
+  @DisplayName("Update Order - No Client")
   void updateOrder_NoClient() {
     when(clientService.getClient(any(Long.class))).thenReturn(Optional.empty());
     webTestClient.put()
@@ -213,6 +220,7 @@ class OrderControllerTest {
   }
 
   @Test
+  @DisplayName("Delete Order")
   void deleteOrder() {
     doNothing().when(orderService).deleteOrder(any(Long.class));
 
