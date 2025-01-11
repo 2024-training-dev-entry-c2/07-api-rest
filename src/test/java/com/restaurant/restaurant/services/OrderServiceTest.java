@@ -7,9 +7,9 @@ import com.restaurant.restaurant.exceptions.ResourceNotFoundException;
 import com.restaurant.restaurant.models.ClientModel;
 import com.restaurant.restaurant.models.DishModel;
 import com.restaurant.restaurant.models.OrderModel;
-import com.restaurant.restaurant.repositories.ClientRepository;
-import com.restaurant.restaurant.repositories.DishRepository;
-import com.restaurant.restaurant.repositories.OrderRepository;
+import com.restaurant.restaurant.repositories.IClientRepository;
+import com.restaurant.restaurant.repositories.IDishRepository;
+import com.restaurant.restaurant.repositories.IOrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderServiceTest {
 
   @Mock
-  private OrderRepository orderRepository;
+  private IOrderRepository IOrderRepository;
 
   @Mock
-  private ClientRepository clientRepository;
+  private IClientRepository IClientRepository;
 
   @Mock
-  private DishRepository dishRepository;
+  private IDishRepository IDishRepository;
 
   @InjectMocks
   private OrderService orderService;
@@ -78,7 +78,7 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test findAll() - Should return all orders")
   void findAll() {
-    when(orderRepository.findAll()).thenReturn(List.of(orderModel));
+    when(IOrderRepository.findAll()).thenReturn(List.of(orderModel));
 
     List<OrderDTO> orders = orderService.findAll();
 
@@ -90,7 +90,7 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test findById() - Should return order by id")
   void findById() {
-    when(orderRepository.findById(anyLong())).thenReturn(Optional.of(orderModel));
+    when(IOrderRepository.findById(anyLong())).thenReturn(Optional.of(orderModel));
 
     OrderDTO foundOrder = orderService.findById(1L);
 
@@ -101,7 +101,7 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test findById() - Should throw ResourceNotFoundException if order does not exist")
   void findByIdNotFound() {
-    when(orderRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IOrderRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       orderService.findById(999L);
@@ -113,8 +113,8 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test findByClientId() - Should return orders by client id")
   void findByClientId() {
-    when(clientRepository.existsById(anyLong())).thenReturn(true);
-    when(orderRepository.findByClientId(anyLong())).thenReturn(List.of(orderModel));
+    when(IClientRepository.existsById(anyLong())).thenReturn(true);
+    when(IOrderRepository.findByClientId(anyLong())).thenReturn(List.of(orderModel));
 
     List<OrderDTO> orders = orderService.findByClientId(1L);
 
@@ -126,7 +126,7 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test findByClientId() - Should throw ResourceNotFoundException if client does not exist")
   void findByClientIdClientNotFound() {
-    when(clientRepository.existsById(anyLong())).thenReturn(false);
+    when(IClientRepository.existsById(anyLong())).thenReturn(false);
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       orderService.findByClientId(999L);
@@ -138,9 +138,9 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test createOrder() - Should create and return a new order")
   void createOrder() {
-    when(clientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
-    when(orderRepository.save(any(OrderModel.class))).thenReturn(orderModel);
+    when(IClientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IOrderRepository.save(any(OrderModel.class))).thenReturn(orderModel);
 
     OrderDTO createdOrder = orderService.createOrder(createOrderDTO);
 
@@ -152,7 +152,7 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test createOrder() - Should throw ResourceNotFoundException if client is not found")
   void createOrderClientNotFound() {
-    when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IClientRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       orderService.createOrder(createOrderDTO);
@@ -164,8 +164,8 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test createOrder() - Should throw ResourceNotFoundException if dish is not found")
   void createOrderDishNotFound() {
-    when(clientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IClientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       orderService.createOrder(createOrderDTO);
@@ -178,7 +178,7 @@ class OrderServiceTest {
   @DisplayName("Test createOrder() - Should throw BusinessException if dish list is empty")
   void createOrderEmptyDishList() {
     createOrderDTO.setDishIds(List.of());
-    when(clientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
+    when(IClientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
 
     BusinessException exception = assertThrows(BusinessException.class, () -> {
       orderService.createOrder(createOrderDTO);
@@ -190,11 +190,11 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test createOrder() - Should successfully create an order and update the state of the client and dish")
   void createOrderSuccess() {
-    when(clientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
-    when(orderRepository.save(any(OrderModel.class))).thenReturn(orderModel);
-    when(orderRepository.countOrdersByClientId(anyLong())).thenReturn(10); // Cliente con más de 10 pedidos
-    when(orderRepository.countOrdersByDishId(anyLong())).thenReturn(100); // Plato con más de 100 ventas
+    when(IClientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IOrderRepository.save(any(OrderModel.class))).thenReturn(orderModel);
+    when(IOrderRepository.countOrdersByClientId(anyLong())).thenReturn(10); // Cliente con más de 10 pedidos
+    when(IOrderRepository.countOrdersByDishId(anyLong())).thenReturn(100); // Plato con más de 100 ventas
 
     OrderDTO createdOrder = orderService.createOrder(createOrderDTO);
 
@@ -204,19 +204,19 @@ class OrderServiceTest {
 
     // Verificamos que se haya actualizado el tipo de cliente
     assertEquals(com.restaurant.restaurant.enums.ClientType.FRECUENT, clientModel.getType());
-    verify(clientRepository, times(1)).save(clientModel);
+    verify(IClientRepository, times(1)).save(clientModel);
 
     // Verificamos que el plato haya sido actualizado a "POPULAR"
     assertEquals(com.restaurant.restaurant.enums.DishType.POPULAR, dishModel.getType());
-    verify(dishRepository, times(1)).save(dishModel);
+    verify(IDishRepository, times(1)).save(dishModel);
   }
 
   @Test
   @DisplayName("Test updateOrder() - Should update and return the order")
   void updateOrder() {
-    when(orderRepository.findById(anyLong())).thenReturn(Optional.of(orderModel));
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
-    when(orderRepository.save(any(OrderModel.class))).thenReturn(orderModel);
+    when(IOrderRepository.findById(anyLong())).thenReturn(Optional.of(orderModel));
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IOrderRepository.save(any(OrderModel.class))).thenReturn(orderModel);
 
     OrderDTO updatedOrderDTO = new OrderDTO(1L, 1L, List.of(1L), LocalDateTime.now(), 10.0);
     OrderDTO updatedOrder = orderService.updateOrder(1L, updatedOrderDTO);
@@ -228,7 +228,7 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test updateOrder() - Should throw ResourceNotFoundException if order does not exist")
   void updateOrderNotFound() {
-    when(orderRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IOrderRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       orderService.updateOrder(999L, orderDTO);
@@ -240,18 +240,18 @@ class OrderServiceTest {
   @Test
   @DisplayName("Test deleteOrder() - Should delete an order")
   void deleteOrder() {
-    when(orderRepository.existsById(anyLong())).thenReturn(true);
-    doNothing().when(orderRepository).deleteById(anyLong());
+    when(IOrderRepository.existsById(anyLong())).thenReturn(true);
+    doNothing().when(IOrderRepository).deleteById(anyLong());
 
     orderService.deleteOrder(1L);
 
-    verify(orderRepository, times(1)).deleteById(1L);
+    verify(IOrderRepository, times(1)).deleteById(1L);
   }
 
   @Test
   @DisplayName("Test deleteOrder() - Should throw ResourceNotFoundException if order does not exist")
   void deleteOrderNotFound() {
-    when(orderRepository.existsById(anyLong())).thenReturn(false);
+    when(IOrderRepository.existsById(anyLong())).thenReturn(false);
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       orderService.deleteOrder(999L);

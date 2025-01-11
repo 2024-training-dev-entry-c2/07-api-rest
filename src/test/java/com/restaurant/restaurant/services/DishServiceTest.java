@@ -4,8 +4,7 @@ import com.restaurant.restaurant.dtos.DishDTO;
 import com.restaurant.restaurant.enums.DishType;
 import com.restaurant.restaurant.exceptions.ResourceNotFoundException;
 import com.restaurant.restaurant.models.DishModel;
-import com.restaurant.restaurant.repositories.DishRepository;
-import com.restaurant.restaurant.utils.UtilCost;
+import com.restaurant.restaurant.repositories.IDishRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DishServiceTest {
 
   @Mock
-  private DishRepository dishRepository;
+  private IDishRepository IDishRepository;
 
   @InjectMocks
   private DishService dishService;
@@ -49,7 +48,7 @@ class DishServiceTest {
   @Test
   @DisplayName("Test findAll() - Should return all dishes")
   void findAll() {
-    when(dishRepository.findAll()).thenReturn(List.of(dishModel));
+    when(IDishRepository.findAll()).thenReturn(List.of(dishModel));
 
     List<DishDTO> dishDTOs = dishService.findAll();
 
@@ -61,7 +60,7 @@ class DishServiceTest {
   @Test
   @DisplayName("Test findById() - Should return dish by id")
   void findById() {
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
 
     DishDTO foundDish = dishService.findById(1L);
 
@@ -72,7 +71,7 @@ class DishServiceTest {
   @Test
   @DisplayName("Test findById() - Should throw ResourceNotFoundException if dish does not exist")
   void findByIdNotFound() {
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       dishService.findById(999L);
@@ -84,7 +83,7 @@ class DishServiceTest {
   @Test
   @DisplayName("Test createDish() - Should create and return a dish")
   void createDish() {
-    when(dishRepository.save(any(DishModel.class))).thenReturn(dishModel);
+    when(IDishRepository.save(any(DishModel.class))).thenReturn(dishModel);
 
     DishDTO createdDish = dishService.createDish(dishDTO);
 
@@ -96,8 +95,8 @@ class DishServiceTest {
   @Test
   @DisplayName("Test updateDish() - Should update and return the dish")
   void updateDish() {
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
-    when(dishRepository.save(any(DishModel.class))).thenReturn(dishModel);
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IDishRepository.save(any(DishModel.class))).thenReturn(dishModel);
 
     dishDTO.setPrice(12.0);
     DishDTO updatedDish = dishService.updateDish(1L, dishDTO);
@@ -110,8 +109,8 @@ class DishServiceTest {
   @DisplayName("Test updateDish() - Should apply increment if dish is of type POPULAR")
   void updateDishWithPriceIncrement() {
     dishModel.setType(DishType.POPULAR);
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
-    when(dishRepository.save(any(DishModel.class))).thenReturn(dishModel);
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IDishRepository.save(any(DishModel.class))).thenReturn(dishModel);
 
     dishDTO.setPrice(10.0);
     DishDTO updatedDish = dishService.updateDish(1L, dishDTO);
@@ -123,7 +122,7 @@ class DishServiceTest {
   @Test
   @DisplayName("Test updateDish() - Should throw ResourceNotFoundException if dish does not exist")
   void updateDishNotFound() {
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       dishService.updateDish(999L, dishDTO);
@@ -135,18 +134,18 @@ class DishServiceTest {
   @Test
   @DisplayName("Test deleteDish() - Should delete a dish successfully")
   void deleteDish() {
-    when(dishRepository.existsById(anyLong())).thenReturn(true);
-    doNothing().when(dishRepository).deleteById(anyLong());
+    when(IDishRepository.existsById(anyLong())).thenReturn(true);
+    doNothing().when(IDishRepository).deleteById(anyLong());
 
     dishService.deleteDish(1L);
 
-    verify(dishRepository, times(1)).deleteById(1L);
+    verify(IDishRepository, times(1)).deleteById(1L);
   }
 
   @Test
   @DisplayName("Test deleteDish() - Should throw ResourceNotFoundException if dish does not exist")
   void deleteDishNotFound() {
-    when(dishRepository.existsById(anyLong())).thenReturn(false);
+    when(IDishRepository.existsById(anyLong())).thenReturn(false);
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       dishService.deleteDish(999L);
@@ -159,7 +158,7 @@ class DishServiceTest {
   @DisplayName("Test isPopular() - Should return true if dish is popular")
   void isPopular() {
     dishModel.setType(DishType.POPULAR);
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
 
     boolean isPopular = dishService.isPopular(1L);
 
@@ -170,7 +169,7 @@ class DishServiceTest {
   @DisplayName("Test isPopular() - Should return false if dish is not popular")
   void isPopularNotPopular() {
     dishModel.setType(DishType.COMUN);
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
 
     boolean isPopular = dishService.isPopular(1L);
 
@@ -180,7 +179,7 @@ class DishServiceTest {
   @Test
   @DisplayName("Test isPopular() - Should return false if dish does not exist")
   void isPopularDishNotFound() {
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     boolean isPopular = dishService.isPopular(999L);
 

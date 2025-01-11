@@ -9,9 +9,9 @@ import com.restaurant.restaurant.enums.ClientType;
 import com.restaurant.restaurant.models.DishModel;
 import com.restaurant.restaurant.enums.DishType;
 import com.restaurant.restaurant.models.OrderModel;
-import com.restaurant.restaurant.repositories.ClientRepository;
-import com.restaurant.restaurant.repositories.DishRepository;
-import com.restaurant.restaurant.repositories.OrderRepository;
+import com.restaurant.restaurant.repositories.IClientRepository;
+import com.restaurant.restaurant.repositories.IDishRepository;
+import com.restaurant.restaurant.repositories.IOrderRepository;
 import com.restaurant.restaurant.utils.UtilCost;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,33 +24,33 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
-  private final OrderRepository orderRepository;
-  private final ClientRepository clientRepository;
-  private final DishRepository dishRepository;
+  private final IOrderRepository IOrderRepository;
+  private final IClientRepository IClientRepository;
+  private final IDishRepository IDishRepository;
 
 
   @Transactional
   public List<OrderDTO> findAll(){
-    return orderRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+    return IOrderRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
   @Transactional
   public OrderDTO findById(Long id){
-    return orderRepository.findById(id).map(this::convertToDto).orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
+    return IOrderRepository.findById(id).map(this::convertToDto).orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
   }
 
   @Transactional
   public List<OrderDTO> findByClientId(Long clientId){
-    if(!clientRepository.existsById(clientId)){
+    if(!IClientRepository.existsById(clientId)){
       throw new ResourceNotFoundException("Client not found with id " + clientId);
     }
-    return orderRepository.findByClientId(clientId).stream().map(this::convertToDto).collect(Collectors.toList());
+    return IOrderRepository.findByClientId(clientId).stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
   @Transactional
   public OrderDTO createOrder(CreateOrderDTO createOrderDTO){
-    ClientModel clientModel = clientRepository.findById(createOrderDTO.getClientId()).orElseThrow(() -> new ResourceNotFoundException("Client not found"));
-    List<DishModel> dishModels = createOrderDTO.getDishIds().stream().map(id -> dishRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dish not found " + id))).collect(Collectors.toList());
+    ClientModel clientModel = IClientRepository.findById(createOrderDTO.getClientId()).orElseThrow(() -> new ResourceNotFoundException("Client not found"));
+    List<DishModel> dishModels = createOrderDTO.getDishIds().stream().map(id -> IDishRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dish not found " + id))).collect(Collectors.toList());
 
     if(dishModels.isEmpty()){
       throw new BusinessException("Dish list cannot be empty");
@@ -63,7 +63,7 @@ public class OrderService {
 
     Double totalCost = calculateTotalCost(dishModels, clientModel);
     orderModel.setTotalCost(totalCost);
-    OrderModel savedOrder = orderRepository.save(orderModel);
+    OrderModel savedOrder = IOrderRepository.save(orderModel);
     updateStateClient(clientModel);
     dishModels.forEach(this::updateStateDish);
     return convertToDto(savedOrder);
@@ -71,9 +71,9 @@ public class OrderService {
 
   @Transactional
   public OrderDTO updateOrder(Long id, OrderDTO orderDTO){
-    OrderModel orderModel = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
+    OrderModel orderModel = IOrderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
 
-    List<DishModel> dishModels = orderDTO.getDishIds().stream().map(dishId -> dishRepository.findById(dishId).orElseThrow(() -> new ResourceNotFoundException("Dish not found with id " + dishId))).collect(Collectors.toList());
+    List<DishModel> dishModels = orderDTO.getDishIds().stream().map(dishId -> IDishRepository.findById(dishId).orElseThrow(() -> new ResourceNotFoundException("Dish not found with id " + dishId))).collect(Collectors.toList());
 
     if(dishModels.isEmpty()){
       throw new BusinessException("Dish list cannot be empty");
@@ -83,15 +83,15 @@ public class OrderService {
     Double totalCost = calculateTotalCost(dishModels, orderModel.getClient());
     orderModel.setTotalCost(totalCost);
 
-    return convertToDto(orderRepository.save(orderModel));
+    return convertToDto(IOrderRepository.save(orderModel));
   }
 
   @Transactional
   public void deleteOrder(Long id){
-    if(!orderRepository.existsById(id)){
+    if(!IOrderRepository.existsById(id)){
       throw new ResourceNotFoundException("Order not found with id " + id);
     }
-    orderRepository.deleteById(id);
+    IOrderRepository.deleteById(id);
   }
 
   private Double calculateTotalCost(List<DishModel> dishModels, ClientModel clientModel){
@@ -103,19 +103,19 @@ public class OrderService {
   }
 
   protected void updateStateClient(ClientModel clientModel){
-    Long countOrders = Long.valueOf(orderRepository.countOrdersByClientId(clientModel.getId()));
+    Long countOrders = Long.valueOf(IOrderRepository.countOrdersByClientId(clientModel.getId()));
     if(countOrders >= 10 && clientModel.getType().equals(ClientType.COMUN)){
       clientModel.setType(ClientType.FRECUENT);
-      clientRepository.save(clientModel);
+      IClientRepository.save(clientModel);
     }
   }
 
   private void updateStateDish(DishModel dishModel){
-    Long salesCount = Long.valueOf(orderRepository.countOrdersByDishId(dishModel.getId()));
+    Long salesCount = Long.valueOf(IOrderRepository.countOrdersByDishId(dishModel.getId()));
     if(salesCount >= 100 && dishModel.getType().equals(DishType.COMUN)){
       dishModel.setType(DishType.POPULAR);
       dishModel.setPrice(UtilCost.applyIncrDishPopular(dishModel.getPrice()));
-      dishRepository.save(dishModel);
+      IDishRepository.save(dishModel);
     }
   }
 

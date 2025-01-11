@@ -1,6 +1,7 @@
 package com.restaurant.restaurant.controllers;
 
 import com.restaurant.restaurant.dtos.ClientDTO;
+import com.restaurant.restaurant.enums.ClientType;
 import com.restaurant.restaurant.services.ClientService;
 import com.restaurant.restaurant.utils.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -48,6 +50,21 @@ public class ClientController {
     ClientDTO updatedClient = clientService.updateClient(id, clientDTO);
     return new ResponseEntity<>(ApiResponse.success("Success Updated Client", updatedClient), HttpStatus.OK);
  }
+
+  @PutMapping("/{id}/type")
+  public ResponseEntity<ApiResponse<ClientDTO>> updateClientType(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+    String typeString = requestBody.get("type");
+
+    ClientType newType;
+    try {
+      newType = ClientType.valueOf(typeString.toUpperCase());
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException("Invalid client type: " + typeString);
+    }
+    ClientDTO updatedClient = clientService.updateClientType(id, newType);
+
+    return ResponseEntity.ok(ApiResponse.success("Success Updated Client Type", updatedClient));
+  }
 
  @DeleteMapping("/{id}")
   public ResponseEntity<ApiResponse<Void>> deleteClient(@PathVariable Long id){

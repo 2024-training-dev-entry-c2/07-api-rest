@@ -4,7 +4,7 @@ import com.restaurant.restaurant.dtos.DishDTO;
 import com.restaurant.restaurant.exceptions.ResourceNotFoundException;
 import com.restaurant.restaurant.models.DishModel;
 import com.restaurant.restaurant.enums.DishType;
-import com.restaurant.restaurant.repositories.DishRepository;
+import com.restaurant.restaurant.repositories.IDishRepository;
 import com.restaurant.restaurant.utils.UtilCost;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +16,16 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DishService {
-  private final DishRepository dishRepository;
+  private final IDishRepository IDishRepository;
 
   @Transactional
   public List<DishDTO> findAll(){
-    return dishRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+    return IDishRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
   @Transactional
   public DishDTO findById(Long id){
-    return dishRepository.findById(id).map(this::convertToDto).orElseThrow(() -> new ResourceNotFoundException("Dish not found with id " + id));
+    return IDishRepository.findById(id).map(this::convertToDto).orElseThrow(() -> new ResourceNotFoundException("Dish not found with id " + id));
   }
 
   @Transactional
@@ -35,12 +35,12 @@ public class DishService {
     dishModel.setPrice(dishDTO.getPrice());
     dishModel.setType(DishType.COMUN);
 
-    return convertToDto(dishRepository.save(dishModel));
+    return convertToDto(IDishRepository.save(dishModel));
   }
 
   @Transactional
   public DishDTO updateDish(Long id, DishDTO dishDTO){
-    DishModel dishModel = dishRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dish not found with id " + id));
+    DishModel dishModel = IDishRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dish not found with id " + id));
     dishModel.setName(dishDTO.getName());
     if(dishModel.getType().equals(DishType.POPULAR)){
       dishModel.setPrice(UtilCost.applyIncrDishPopular(dishDTO.getPrice()));
@@ -48,20 +48,20 @@ public class DishService {
     else{
       dishModel.setPrice(dishDTO.getPrice());
     }
-    return convertToDto(dishRepository.save(dishModel));
+    return convertToDto(IDishRepository.save(dishModel));
   }
 
   @Transactional
   public void deleteDish(Long id){
-    if(!dishRepository.existsById(id)){
+    if(!IDishRepository.existsById(id)){
       throw new ResourceNotFoundException("Dish not found with id " + id);
     }
-    dishRepository.deleteById(id);
+    IDishRepository.deleteById(id);
   }
 
   @Transactional
   public boolean isPopular(Long id){
-    return dishRepository.findById(id).map(dishModel -> dishModel.getType().equals(DishType.POPULAR)).orElse(false);
+    return IDishRepository.findById(id).map(dishModel -> dishModel.getType().equals(DishType.POPULAR)).orElse(false);
   }
 
   private DishDTO convertToDto(DishModel dishModel) {

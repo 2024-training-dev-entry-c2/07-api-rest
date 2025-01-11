@@ -3,7 +3,7 @@ package com.restaurant.restaurant.services;
 import com.restaurant.restaurant.dtos.ClientDTO;
 import com.restaurant.restaurant.exceptions.ResourceNotFoundException;
 import com.restaurant.restaurant.models.ClientModel;
-import com.restaurant.restaurant.repositories.ClientRepository;
+import com.restaurant.restaurant.repositories.IClientRepository;
 import com.restaurant.restaurant.enums.ClientType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ClientServiceTest {
 
   @Mock
-  private ClientRepository clientRepository;
+  private IClientRepository IClientRepository;
 
   @InjectMocks
   private ClientService clientService;
@@ -50,7 +50,7 @@ class ClientServiceTest {
   @Test
   @DisplayName("Test findAll() - Should return all clients")
   void findAll() {
-    when(clientRepository.findAll()).thenReturn(List.of(clientModel));
+    when(IClientRepository.findAll()).thenReturn(List.of(clientModel));
 
     List<ClientDTO> clientDTOs = clientService.findAll();
 
@@ -62,7 +62,7 @@ class ClientServiceTest {
   @Test
   @DisplayName("Test findById() - Should return client by id")
   void findById() {
-    when(clientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
+    when(IClientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
 
     ClientDTO foundClient = clientService.findById(1L);
 
@@ -73,7 +73,7 @@ class ClientServiceTest {
   @Test
   @DisplayName("Test findById() - Should throw ResourceNotFoundException if client does not exist")
   void findByIdNotFound() {
-    when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IClientRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       clientService.findById(999L);
@@ -85,7 +85,7 @@ class ClientServiceTest {
   @Test
   @DisplayName("Test createClient() - Should create and return a client")
   void createClient() {
-    when(clientRepository.save(any(ClientModel.class))).thenReturn(clientModel);
+    when(IClientRepository.save(any(ClientModel.class))).thenReturn(clientModel);
 
     ClientDTO createdClient = clientService.createClient(clientDTO);
 
@@ -97,8 +97,8 @@ class ClientServiceTest {
   @Test
   @DisplayName("Test updateClient() - Should update and return the client")
   void updateClient() {
-    when(clientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
-    when(clientRepository.save(any(ClientModel.class))).thenReturn(clientModel);
+    when(IClientRepository.findById(anyLong())).thenReturn(Optional.of(clientModel));
+    when(IClientRepository.save(any(ClientModel.class))).thenReturn(clientModel);
 
     clientDTO.setPhone("987654321");
     ClientDTO updatedClient = clientService.updateClient(1L, clientDTO);
@@ -110,7 +110,7 @@ class ClientServiceTest {
   @Test
   @DisplayName("Test updateClient() - Should throw ResourceNotFoundException if client does not exist")
   void updateClientNotFound() {
-    when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IClientRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       clientService.updateClient(999L, clientDTO);
@@ -122,18 +122,18 @@ class ClientServiceTest {
   @Test
   @DisplayName("Test deleteClient() - Should delete a client successfully")
   void deleteClient() {
-    when(clientRepository.existsById(anyLong())).thenReturn(true);
-    doNothing().when(clientRepository).deleteById(anyLong());
+    when(IClientRepository.existsById(anyLong())).thenReturn(true);
+    doNothing().when(IClientRepository).deleteById(anyLong());
 
     clientService.deleteClient(1L);
 
-    verify(clientRepository, times(1)).deleteById(1L);
+    verify(IClientRepository, times(1)).deleteById(1L);
   }
 
   @Test
   @DisplayName("Test deleteClient() - Should throw ResourceNotFoundException if client does not exist")
   void deleteClientNotFound() {
-    when(clientRepository.existsById(anyLong())).thenReturn(false);
+    when(IClientRepository.existsById(anyLong())).thenReturn(false);
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       clientService.deleteClient(999L);

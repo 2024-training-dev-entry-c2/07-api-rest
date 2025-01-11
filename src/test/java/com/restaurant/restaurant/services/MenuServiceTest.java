@@ -4,8 +4,8 @@ import com.restaurant.restaurant.dtos.DishDTO;
 import com.restaurant.restaurant.dtos.MenuDTO;
 import com.restaurant.restaurant.models.DishModel;
 import com.restaurant.restaurant.models.MenuModel;
-import com.restaurant.restaurant.repositories.DishRepository;
-import com.restaurant.restaurant.repositories.MenuRepository;
+import com.restaurant.restaurant.repositories.IDishRepository;
+import com.restaurant.restaurant.repositories.IMenuRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,10 +25,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class MenuServiceTest {
 
   @Mock
-  private MenuRepository menuRepository;
+  private IMenuRepository IMenuRepository;
 
   @Mock
-  private DishRepository dishRepository;
+  private IDishRepository IDishRepository;
 
   @InjectMocks
   private MenuService menuService;
@@ -62,7 +62,7 @@ class MenuServiceTest {
   @Test
   @DisplayName("Test findAll() - Should return all menus")
   void findAll() {
-    when(menuRepository.findAll()).thenReturn(List.of(menuModel));
+    when(IMenuRepository.findAll()).thenReturn(List.of(menuModel));
 
     List<MenuDTO> menus = menuService.findAll();
 
@@ -74,7 +74,7 @@ class MenuServiceTest {
   @Test
   @DisplayName("Test findById() - Should return menu by id")
   void findById() {
-    when(menuRepository.findById(anyLong())).thenReturn(Optional.of(menuModel));
+    when(IMenuRepository.findById(anyLong())).thenReturn(Optional.of(menuModel));
 
     MenuDTO foundMenu = menuService.findById(1L);
 
@@ -85,7 +85,7 @@ class MenuServiceTest {
   @Test
   @DisplayName("Test findById() - Should throw RuntimeException if menu does not exist")
   void findByIdNotFound() {
-    when(menuRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IMenuRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
       menuService.findById(999L);
@@ -97,8 +97,8 @@ class MenuServiceTest {
   @Test
   @DisplayName("Test createMenu() - Should create and return a menu")
   void createMenu() {
-    when(menuRepository.save(any(MenuModel.class))).thenReturn(menuModel);
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IMenuRepository.save(any(MenuModel.class))).thenReturn(menuModel);
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
 
     MenuDTO createdMenu = menuService.createMenu(menuDTO);
 
@@ -111,7 +111,7 @@ class MenuServiceTest {
   @DisplayName("Test createMenu() - Should throw RuntimeException if dish is not found")
   void createMenuDishNotFound() {
     MenuDTO invalidMenuDTO = new MenuDTO(1L, "Dinner Menu", "A variety of dishes for dinner", List.of(new DishDTO(999L, "Invalid Dish", 15.0, com.restaurant.restaurant.enums.DishType.COMUN)));
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
       menuService.createMenu(invalidMenuDTO);
@@ -123,9 +123,9 @@ class MenuServiceTest {
   @Test
   @DisplayName("Test updateMenu() - Should update and return the menu")
   void updateMenu() {
-    when(menuRepository.findById(anyLong())).thenReturn(Optional.of(menuModel));
-    when(menuRepository.save(any(MenuModel.class))).thenReturn(menuModel);
-    when(dishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
+    when(IMenuRepository.findById(anyLong())).thenReturn(Optional.of(menuModel));
+    when(IMenuRepository.save(any(MenuModel.class))).thenReturn(menuModel);
+    when(IDishRepository.findById(anyLong())).thenReturn(Optional.of(dishModel));
 
     MenuDTO updatedMenuDTO = new MenuDTO(1L, "Updated Lunch Menu", "A variety of updated dishes.", List.of(dishDTO));
     MenuDTO updatedMenu = menuService.updateMenu(1L, updatedMenuDTO);
@@ -138,7 +138,7 @@ class MenuServiceTest {
   @Test
   @DisplayName("Test updateMenu() - Should throw RuntimeException if menu does not exist")
   void updateMenuNotFound() {
-    when(menuRepository.findById(anyLong())).thenReturn(Optional.empty());
+    when(IMenuRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
       menuService.updateMenu(999L, menuDTO);
@@ -150,18 +150,18 @@ class MenuServiceTest {
   @Test
   @DisplayName("Test deleteMenu() - Should delete a menu successfully")
   void deleteMenu() {
-    when(menuRepository.existsById(anyLong())).thenReturn(true);
-    doNothing().when(menuRepository).deleteById(anyLong());
+    when(IMenuRepository.existsById(anyLong())).thenReturn(true);
+    doNothing().when(IMenuRepository).deleteById(anyLong());
 
     menuService.deleteMenu(1L);
 
-    verify(menuRepository, times(1)).deleteById(1L);
+    verify(IMenuRepository, times(1)).deleteById(1L);
   }
 
   @Test
   @DisplayName("Test deleteMenu() - Should throw RuntimeException if menu does not exist")
   void deleteMenuNotFound() {
-    when(menuRepository.existsById(anyLong())).thenReturn(false);
+    when(IMenuRepository.existsById(anyLong())).thenReturn(false);
 
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
       menuService.deleteMenu(999L);
